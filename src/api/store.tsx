@@ -7,9 +7,13 @@ import {persistStore} from 'redux-persist';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
 import Reactotron from '../../ReactotronConfig';
+import {reducerBranch} from '../redux/action/register';
+import REDUCER_PATH from '../config/reducer';
 // import { createLogger } from 'redux-logger';
 
-const rootReducer = combineReducers({}) as any;
+const rootReducer = combineReducers({
+  [REDUCER_PATH.USER]: reducerBranch,
+}) as any;
 
 const debounceNotify = _.debounce(notify => notify());
 
