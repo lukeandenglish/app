@@ -1,0 +1,1 @@
+/*eslint-disable*/module.exports={messages:JSON.parse("{\"aE5Cft\":\"Войдите или зарегистрируйтесь\",\"ZYfOsP\":\"Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве\",\"bInJFp\":\"Continue with Apple\",\"5AfSCx\":\"I agree with all that\",\"griE38\":\"Mail or telephone\",\"8ZsakT\":\"Password\",\"fgLNSM\":\"Register\",\"apxsZF\":\"Sign up with Google\"}")};
