@@ -3,23 +3,22 @@
 import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import * as React from 'react';
-import {Keyboard, StyleSheet, Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
+import {SvgXml} from 'react-native-svg';
+import {useSelector} from 'react-redux';
+import {Switch} from '../../assets/svg/switch';
 import REDUCER_PATH from '../../config/reducer';
-import {
-  IUserProfile,
-  actionChangeAgreements,
-  actionChangeEmail,
-  actionChangePassword,
-} from '../../redux/action/register';
+import {useHookUserProfile} from '../../hooks/useHookUserProfile';
+import {IUserProfile} from '../../redux/action/register';
 import {Inset, Stack} from '../../styleApp/Spacing';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
 import {Border, FontSize, Units} from '../../styleApp/Units';
 import {default as Color, default as colors} from '../../styleApp/colors';
+import {LabelText} from '../../styleApp/UI/LabelText';
 
 //TODO: SVG ADDED CLOSE
 
@@ -30,7 +29,8 @@ const LogInOrRegister = ({
   disabled,
   loading,
 }) => {
-  const dispatch = useDispatch();
+  const [state, {onChangeEmail, onChangePassword, handleCheckboxAgree}] =
+    useHookUserProfile();
   const [email, password, agreements] = useSelector(
     R.pipe(
       R.path([REDUCER_PATH.USER]),
@@ -45,7 +45,6 @@ const LogInOrRegister = ({
   const scrollRef = React.useRef<ScrollView | null>(null);
   const emailRef = React.useRef<TextInput | null>(null);
   const passwordRef = React.useRef<TextInput | null>(null);
-  const [state, setState] = React.useState({password: '', email: ''});
 
   if (loading) {
     disabled = true;
@@ -57,28 +56,6 @@ const LogInOrRegister = ({
     }
     return true;
   }, [email, password, agreements]);
-
-  const onChangeEmail = () => {
-    if (R.anyPass([R.equals('')])(state.email.trim())) {
-      dispatch(actionChangeEmail(state.email));
-      passwordRef.current.focus();
-      setState({email: '', password: ''});
-    }
-  };
-
-  const onChangePassword = () => {
-    if (R.anyPass([R.equals('')])(state.password.trim())) {
-      dispatch(actionChangePassword(state.password));
-      Keyboard.dismiss();
-      setState({email: '', password: ''});
-    }
-  };
-
-  const handleCheckboxAgree = () => {
-    dispatch(actionChangeAgreements());
-  };
-
-  console.log(email, password, registerEnabled);
 
   return (
     <View style={[{flex: 1, backgroundColor: Color.transparent}]}>
@@ -101,13 +78,15 @@ const LogInOrRegister = ({
             <View style={{height: Units.s44}}>
               <View />
             </View>
-            <Text style={[styles.text, styles.textPosition]}>
-              {t`Войдите или зарегистрируйтесь`}
-            </Text>
+            <LabelText
+              title={t`Войдите или зарегистрируйтесь`}
+              style={Object.assign([styles.text, styles.textPosition])}
+            />
             <Stack size="s16" />
-            <Text style={[styles.text1, styles.text1Typo]}>
-              {t`Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве`}
-            </Text>
+            <LabelText
+              title={t`Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве`}
+              style={Object.assign([styles.text1, styles.text1Typo])}
+            />
             <Stack size="s24" />
             <Button
               disabled={disabled}
@@ -139,55 +118,44 @@ const LogInOrRegister = ({
               }}>
               <AnimateIInput
                 ref={emailRef}
-                editable
                 keyboardType="email-address"
-                onChangeText={(email: string) => {
-                  setState({...state, email});
-                }}
-                placeholder={email}
-                returnTypeKey="next"
-                blurOnSubmit
                 onEndEditing={onChangeEmail}
-                onBlur={onChangeEmail}
                 onScrollRef={() => {
                   scrollRef.current?.scrollToEnd();
                 }}
-                value={state?.email}
-                placeholderName={t`Mail or telephone`}
+                {...state.email}
               />
               <Stack size="s16" />
               <AnimateIInput
                 ref={passwordRef}
-                editable
                 // secureTextEntry
                 keyboardType="default"
-                returnTypeKey="next"
-                blurOnSubmit
                 onEndEditing={onChangePassword}
-                onBlur={onChangePassword}
-                onChangeText={(password: string) => {
-                  setState({...state, password});
-                }}
                 onScrollRef={() => {
                   scrollRef.current?.scrollToEnd();
                 }}
-                placeholder={password}
-                value={state?.password}
-                placeholderName={t`Password`}
+                {...state.password}
               />
             </View>
 
             <Stack size="s16" />
             <View style={[styles.checkbox, styles.checkboxFlexBox]}>
               <TouchableOpacity
-                disabled={disabled}
+                disabled={state.agreements.editable}
                 onPress={handleCheckboxAgree}
                 style={[
                   styles.checkboxChild,
                   styles.checkboxChildLayout,
-                  agreements && {backgroundColor: colors.actionColor},
-                ]}
-              />
+                  state.agreements.value && {
+                    backgroundColor: colors.actionColor,
+                  },
+                ]}>
+                {state.agreements.value ? (
+                  <SvgXml xml={Switch} width={15} height={15} />
+                ) : (
+                  <View />
+                )}
+              </TouchableOpacity>
               <Text style={[styles.iAgreeWith, styles.fdfdfdfTypo]}>
                 {t`I agree with all that`}
               </Text>
@@ -325,6 +293,9 @@ const styles = StyleSheet.create({
   checkboxChild: {
     borderRadius: Border.br_5xs,
     backgroundColor: Color.whitesmoke_200,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iAgreeWith: {
     marginLeft: 12,

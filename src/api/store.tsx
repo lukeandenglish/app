@@ -3,7 +3,7 @@ import {setupListeners} from '@reduxjs/toolkit/query';
 import _ from 'lodash';
 import {useDispatch, useSelector} from 'react-redux';
 import {batchedSubscribe} from 'redux-batched-subscribe';
-import {persistStore} from 'redux-persist';
+import {persistReducer, persistStore} from 'redux-persist';
 import promiseMiddleware from 'redux-promise-middleware';
 import thunkMiddleware from 'redux-thunk';
 import Reactotron from '../../ReactotronConfig';
@@ -11,8 +11,17 @@ import {reducerBranch} from '../redux/action/register';
 import REDUCER_PATH from '../config/reducer';
 // import { createLogger } from 'redux-logger';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+export const PERSIST_STORAGE = {
+  auth: {
+    key: REDUCER_PATH.USER,
+    storage: AsyncStorage,
+  },
+};
+
 const rootReducer = combineReducers({
-  [REDUCER_PATH.USER]: reducerBranch,
+  [REDUCER_PATH.USER]: persistReducer(PERSIST_STORAGE.auth, reducerBranch),
 }) as any;
 
 const debounceNotify = _.debounce(notify => notify());

@@ -11,6 +11,7 @@ import {RV} from '../../styleApp/Utils';
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {useNavigation} from '@react-navigation/native';
 import ROUTER_PAGE from '../../config/page';
+import {LabelText} from '../../styleApp/UI/LabelText';
 
 const WIDTH = Dimensions.get('screen').width;
 const TIMER = 2500;
@@ -96,9 +97,13 @@ const IntroAndOnboarding = () => {
                 {backgroundColor: x.color},
                 ,
               ]}>
-              <Text style={[styles.revolutinaryWayOf, styles.withTheHelpClr]}>
-                {x.title}
-              </Text>
+              <LabelText
+                title={x.title}
+                style={Object.assign([
+                  styles.revolutinaryWayOf,
+                  styles.withTheHelpClr,
+                ])}
+              />
               <View style={styles.illusrt8}>
                 {/* <View
       style={styles.a73831e008630db8fbacaed58e1945Icon}
@@ -106,9 +111,13 @@ const IntroAndOnboarding = () => {
       // source={require('../assets/a73831e008630db8fbacaed58e19453f.png')}
     /> */}
               </View>
-              <Text style={[styles.withTheHelp, styles.withTheHelpClr]}>
-                {x.value}
-              </Text>
+              <LabelText
+                title={x.value}
+                style={Object.assign([
+                  styles.withTheHelp,
+                  styles.withTheHelpClr,
+                ])}
+              />
             </View>
           </Inset>
         ))}

@@ -1,6 +1,7 @@
 import React from 'react';
 import App from './screen';
 import {
+  persistor,
   // persistor,
   store,
 } from './api/store';
@@ -15,6 +16,7 @@ import {messages as messagesRu} from './locale/ru/messages';
 // import {PersistGate} from 'redux-persist/integration/react';
 import {enableScreens} from 'react-native-screens';
 import {StyleSheet} from 'react-native';
+import {PersistGate} from 'redux-persist/integration/react';
 
 const LOCALE = ['en', 'ru'] as string[];
 
@@ -34,17 +36,17 @@ enableScreens();
 export default () => {
   return (
     <Provider store={store}>
-      {/* <PersistGate loading={null} persistor={persistor}> */}
-      <SafeAreaProvider>
-        <I18nProvider i18n={i18n}>
-          <GestureHandlerRootView style={StyleSheet.absoluteFill}>
-            <BottomSheetModalProvider>
-              <App />
-            </BottomSheetModalProvider>
-          </GestureHandlerRootView>
-        </I18nProvider>
-      </SafeAreaProvider>
-      {/* </PersistGate> */}
+      <PersistGate loading={null} persistor={persistor}>
+        <SafeAreaProvider>
+          <I18nProvider i18n={i18n}>
+            <GestureHandlerRootView style={StyleSheet.absoluteFill}>
+              <BottomSheetModalProvider>
+                <App />
+              </BottomSheetModalProvider>
+            </GestureHandlerRootView>
+          </I18nProvider>
+        </SafeAreaProvider>
+      </PersistGate>
     </Provider>
   );
 };
