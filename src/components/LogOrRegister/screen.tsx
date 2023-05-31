@@ -8,7 +8,7 @@ import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {Switch} from '../../assets/svg/switch';
 import REDUCER_PATH from '../../config/reducer';
 import {useHookUserProfile} from '../../hooks/useHookUserProfile';
@@ -19,22 +19,21 @@ import {Button} from '../../styleApp/UI/Button';
 import {Border, FontSize, Units} from '../../styleApp/Units';
 import {default as Color, default as colors} from '../../styleApp/colors';
 import {LabelText} from '../../styleApp/UI/LabelText';
+import {registerApi} from '../../redux/api/registerApi';
 
 //TODO: SVG ADDED CLOSE
 
-const LogInOrRegister = ({
-  handleRegister,
+const LogInOrRegisterScreen = ({
   handleSignGoogleSign,
   handleSignAppele,
   disabled,
-  loading,
 }) => {
-  const [state, {onChangeEmail, onChangePassword, handleCheckboxAgree}] =
-    useHookUserProfile();
-  const [email, password, agreements] = useSelector(
+  const dispatchRedux = useDispatch();
+  const [state, {handleCheckboxAgree}] = useHookUserProfile();
+  let [email, password, agreements, loading] = useSelector(
     R.pipe(
       R.path([REDUCER_PATH.USER]),
-      R.paths([['email'], ['password'], ['agreements']]),
+      R.paths([['email'], ['password'], ['agreements'], ['loading']]),
     ),
   ) as [
     IUserProfile['email'],
@@ -119,7 +118,6 @@ const LogInOrRegister = ({
               <AnimateIInput
                 ref={emailRef}
                 keyboardType="email-address"
-                onEndEditing={onChangeEmail}
                 onScrollRef={() => {
                   scrollRef.current?.scrollToEnd();
                 }}
@@ -130,7 +128,6 @@ const LogInOrRegister = ({
                 ref={passwordRef}
                 // secureTextEntry
                 keyboardType="default"
-                onEndEditing={onChangePassword}
                 onScrollRef={() => {
                   scrollRef.current?.scrollToEnd();
                 }}
@@ -172,7 +169,14 @@ const LogInOrRegister = ({
           })}>
           <Button
             disabled={registerEnabled}
-            onPress={handleRegister}
+            onPress={() =>
+              dispatchRedux(
+                registerApi.endpoints.signUpQuery.initiate(
+                  {},
+                  {forceRefetch: true},
+                ),
+              )
+            }
             title={t`Register`}
             styleText={{color: colors.lightPrimary}}
             style={Object.assign([
@@ -311,4 +315,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LogInOrRegister;
+export default LogInOrRegisterScreen;

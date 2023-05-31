@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRouteName={ROUTER_PAGE.AUTH.PROFILE_MAIN}>
+      <Stack.Navigator initialRouteName={ROUTER_PAGE.UNAUTH.IntroOnBording}>
         <Stack.Screen
           name={ROUTER_PAGE.AUTH.PROFILE_MAIN}
           component={MainProfile}

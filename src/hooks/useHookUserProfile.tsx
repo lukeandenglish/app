@@ -51,24 +51,18 @@ export const useHookUserProfile = () => {
   ];
 
   const onChangeEmail = () => {
-    if (R.anyPass([R.equals('')])(state.email.trim())) {
-      dispatch(actionChangeEmail(state.email));
-      setState(INITIAL_STATE);
-    }
+    dispatch(actionChangeEmail(state.email.trim()));
+    setState(INITIAL_STATE);
   };
 
   const onChangePassword = () => {
-    if (R.anyPass([R.equals('')])(state.password.trim())) {
-      dispatch(actionChangePassword(state.password));
-      setState(INITIAL_STATE);
-    }
+    dispatch(actionChangePassword(state.password.trim()));
+    setState(INITIAL_STATE);
   };
 
   const onChangeName = () => {
-    if (R.anyPass([R.equals('')])(state.name.trim())) {
-      dispatch(actionChangeName(state.name));
-      setState(INITIAL_STATE);
-    }
+    dispatch(actionChangeName(state.name.trim()));
+    setState(INITIAL_STATE);
   };
 
   const handleCheckboxAgree = () => {
@@ -87,6 +81,8 @@ export const useHookUserProfile = () => {
         onChangeText: (name: string) => {
           setState({...state, name});
         },
+        onEndEditing: onChangeName,
+        blurOnSubmit: true,
         returnTypeKey: 'next',
         name: R.pipe(R.defaultTo(' '), R.split(' '), R.path([0]))(name),
         surname: R.pipe(R.defaultTo(' '), R.split(' '), R.path([1]))(name),
@@ -129,6 +125,8 @@ export const useHookUserProfile = () => {
         value: state.email,
         placeholder: email,
         placeholderName: t`Mail or telephone`,
+        onEndEditing: onChangeEmail,
+        blurOnSubmit: true,
         onChangeText: (email: string) => {
           setState({...state, email});
         },
@@ -138,7 +136,9 @@ export const useHookUserProfile = () => {
         editable: !loading,
         value: state.password,
         placeholder: password,
+        onEndEditing: onChangePassword,
         placeholderName: t`Password`,
+        blurOnSubmit: true,
         onChangeText: (password: string) => {
           setState({...state, password});
         },
