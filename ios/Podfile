@@ -8,6 +8,7 @@ install! 'cocoapods', :deterministic_uuids => false
 pod 'Firebase', :modular_headers => true
 pod 'FirebaseCore', :modular_headers => true
 pod 'GoogleUtilities', :modular_headers => true
+pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
 
 target 'LukeEng' do
   config = use_native_modules!
