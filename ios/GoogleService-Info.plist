@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>685639226330-hu2f846hgl4j99tag2bcq6hmn457kktv.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.685639226330-hu2f846hgl4j99tag2bcq6hmn457kktv</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAYW3PNJ9GQ3RbQgk0gWSOCnj0YsDRzMus</string>
+	<key>GCM_SENDER_ID</key>
+	<string>685639226330</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.lukeeng.io</string>
+	<key>PROJECT_ID</key>
+	<string>lukeenglish</string>
+	<key>STORAGE_BUCKET</key>
+	<string>lukeenglish.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:685639226330:ios:60a0f2e7c7057c6e4f66e3</string>
+</dict>
+</plist>

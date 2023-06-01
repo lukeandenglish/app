@@ -3,51 +3,73 @@
 import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import * as React from 'react';
-import {StyleSheet, Text, TextInput, View} from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {StyleSheet, TextInput, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {SvgXml} from 'react-native-svg';
 import {useDispatch, useSelector} from 'react-redux';
-import {Switch} from '../../assets/svg/switch';
 import REDUCER_PATH from '../../config/reducer';
 import {useHookUserProfile} from '../../hooks/useHookUserProfile';
 import {IUserProfile} from '../../redux/action/register';
+import {registerApi} from '../../redux/api/registerApi';
 import {Inset, Stack} from '../../styleApp/Spacing';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
 import {Border, FontSize, Units} from '../../styleApp/Units';
 import {default as Color, default as colors} from '../../styleApp/colors';
-import {LabelText} from '../../styleApp/UI/LabelText';
-import {registerApi} from '../../redux/api/registerApi';
+import {BlockSelect} from './comp/BlockSelect';
+import {LoginSign} from './comp/LoginSign';
+import {Register} from './comp/Register';
 
 //TODO: SVG ADDED CLOSE
 
-const LogInOrRegisterScreen = ({
-  handleSignGoogleSign,
-  handleSignAppele,
-  disabled,
-}) => {
+const useButtonRegister = () => {
+  const signUpQuery = registerApi.endpoints.signUpQuery as any;
+  const loginQuery = registerApi.endpoints.signUpQuery as any;
+
   const dispatchRedux = useDispatch();
-  const [state, {handleCheckboxAgree}] = useHookUserProfile();
-  let [email, password, agreements, loading] = useSelector(
+
+  const [mode, setMode] = React.useState(false);
+
+  const BtnProps = mode
+    ? {
+        title: t`Login`,
+        onPress: () =>
+          dispatchRedux(loginQuery.initiate({})).catch(console.info),
+      }
+    : {
+        title: t`Register`,
+        onPress: () =>
+          dispatchRedux(signUpQuery.initiate({})).catch(console.info),
+      };
+
+  return {BtnProps};
+};
+
+const LogInOrRegisterScreen = ({disabled}) => {
+  const {BtnProps} = useButtonRegister();
+  const [state] = useHookUserProfile();
+  let [email, password, agreements, RLoading] = useSelector(
     R.pipe(
       R.path([REDUCER_PATH.USER]),
       R.paths([['email'], ['password'], ['agreements'], ['loading']]),
+      R.defaultTo(['', '', false, false]),
     ),
   ) as [
     IUserProfile['email'],
     IUserProfile['password'],
     IUserProfile['agreements'],
+    IUserProfile['loading'],
   ];
   const insets = useSafeAreaInsets();
   const scrollRef = React.useRef<ScrollView | null>(null);
   const emailRef = React.useRef<TextInput | null>(null);
-  const passwordRef = React.useRef<TextInput | null>(null);
 
-  if (loading) {
+  if (RLoading) {
     disabled = true;
   }
+
+  const isRegister = false;
 
   const registerEnabled = React.useMemo(() => {
     if (password?.length > 3 && email?.length > 3 && agreements) {
@@ -69,52 +91,22 @@ const LogInOrRegisterScreen = ({
           bounces={false}
           ref={scrollRef}
           contentContainerStyle={{flexGrow: 1}}>
-          <Inset
-            horizontal="s16"
-            layout={{
-              flex: 1,
-            }}>
-            <View style={{height: Units.s44}}>
-              <View />
-            </View>
-            <LabelText
-              title={t`Войдите или зарегистрируйтесь`}
-              style={Object.assign([styles.text, styles.textPosition])}
-            />
-            <Stack size="s16" />
-            <LabelText
-              title={t`Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве`}
-              style={Object.assign([styles.text1, styles.text1Typo])}
-            />
-            <Stack size="s24" />
-            <Button
-              disabled={disabled}
-              onPress={handleSignAppele}
-              title={t`Continue with Apple`}
-              styleText={{color: colors.lightPrimary}}
-              style={{backgroundColor: colors.lightInk}}
-            />
-            <Stack size="s10" />
-            <Button
-              disabled={disabled}
-              onPress={handleSignGoogleSign}
-              title={t`Sign up with Google`}
-              styleText={{color: colors.lightInk}}
-              style={{backgroundColor: colors.transparent, borderWidth: 1}}
-            />
-            <Stack size="s32" />
-            <View
-              style={{
-                height: 1,
-                borderBottomWidth: 1,
-                borderColor: colors.stroke,
-              }}
-            />
-            <Stack size="s32" />
-            <View
-              onTouchEnd={() => {
-                scrollRef.current?.scrollToEnd();
+          <View>
+            <Inset
+              horizontal="s16"
+              layout={{
+                flex: 1,
               }}>
+              <BlockSelect disabled={disabled} />
+              <Stack size="s32" />
+              <View
+                style={{
+                  height: 1,
+                  borderBottomWidth: 1,
+                  borderColor: colors.stroke,
+                }}
+              />
+              <Stack size="s32" />
               <AnimateIInput
                 ref={emailRef}
                 keyboardType="email-address"
@@ -123,42 +115,11 @@ const LogInOrRegisterScreen = ({
                 }}
                 {...state.email}
               />
-              <Stack size="s16" />
-              <AnimateIInput
-                ref={passwordRef}
-                // secureTextEntry
-                keyboardType="default"
-                onScrollRef={() => {
-                  scrollRef.current?.scrollToEnd();
-                }}
-                {...state.password}
-              />
-            </View>
+              {isRegister && <Register />}
 
-            <Stack size="s16" />
-            <View style={[styles.checkbox, styles.checkboxFlexBox]}>
-              <TouchableOpacity
-                disabled={state.agreements.editable}
-                onPress={handleCheckboxAgree}
-                style={[
-                  styles.checkboxChild,
-                  styles.checkboxChildLayout,
-                  state.agreements.value && {
-                    backgroundColor: colors.actionColor,
-                  },
-                ]}>
-                {state.agreements.value ? (
-                  <SvgXml xml={Switch} width={15} height={15} />
-                ) : (
-                  <View />
-                )}
-              </TouchableOpacity>
-              <Text style={[styles.iAgreeWith, styles.fdfdfdfTypo]}>
-                {t`I agree with all that`}
-              </Text>
-            </View>
-            <Stack size="s32" />
-          </Inset>
+              {!isRegister && <LoginSign />}
+            </Inset>
+          </View>
         </ScrollView>
         <KeyboardSpacer />
         <Inset
@@ -169,15 +130,7 @@ const LogInOrRegisterScreen = ({
           })}>
           <Button
             disabled={registerEnabled}
-            onPress={() =>
-              dispatchRedux(
-                registerApi.endpoints.signUpQuery.initiate(
-                  {},
-                  {forceRefetch: true},
-                ),
-              )
-            }
-            title={t`Register`}
+            {...BtnProps}
             styleText={{color: colors.lightPrimary}}
             style={Object.assign([
               {
@@ -191,7 +144,7 @@ const LogInOrRegisterScreen = ({
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   checkboxChildLayout: {
     height: 24,
     width: 24,

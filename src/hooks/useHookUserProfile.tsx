@@ -14,17 +14,27 @@ import {
   actionChangeImage,
   actionChangeName,
   actionChangePassword,
+  actionChangePasswordRepeat,
 } from '../redux/action/register';
 import {Units} from '../styleApp/Units';
+import validator from 'validator';
 
 const IMAGE =
   'https://searchengineland.com/wp-content/seloads/2015/12/google-amp-fast-speed-travel-ss-1920-1536x864.jpg';
 
+interface iUserHookState {
+  name: string;
+  email: string;
+  password: string;
+  passwordRepeat: string;
+}
+
 const INITIAL_STATE = {
-  name: 'Slava Yakimov',
+  name: '',
   email: '',
   password: '',
-};
+  passwordRepeat: '',
+} as iUserHookState;
 
 const CONFIG_GALLERY = {
   mediaType: 'photo',
@@ -33,35 +43,57 @@ const CONFIG_GALLERY = {
 
 export const useHookUserProfile = () => {
   const dispatch = useDispatch();
-  const [state, setState] = React.useState<{
-    password: string;
-    email: string;
-    name: string;
-  }>(INITIAL_STATE);
-  const [email, password, agreements, name, image] = useSelector(
-    R.pipe(
-      R.path([REDUCER_PATH.USER]),
-      R.paths([['email'], ['password'], ['agreements'], ['name'], ['image']]),
-    ),
-  ) as [
-    IUserProfile['email'],
-    IUserProfile['password'],
-    IUserProfile['agreements'],
-    IUserProfile['name'],
-  ];
+  const [state, setState] = React.useState<iUserHookState>(INITIAL_STATE);
+  const [email, password, agreements, name, image, passwordRepeat] =
+    useSelector(
+      R.pipe(
+        R.path([REDUCER_PATH.USER]),
+        R.paths([
+          ['email'],
+          ['password'],
+          ['agreements'],
+          ['name'],
+          ['image'],
+          ['passwordRepeat'],
+        ]),
+      ),
+    ) as [
+      IUserProfile['email'],
+      IUserProfile['password'],
+      IUserProfile['agreements'],
+      IUserProfile['name'],
+      IUserProfile['image'],
+      IUserProfile['passwordRepeat'],
+    ];
 
   const onChangeEmail = () => {
-    dispatch(actionChangeEmail(state.email.trim()));
-    setState(INITIAL_STATE);
+    const EMAIL = state.email?.trim() as IUserProfile['email'];
+    if (EMAIL.length > 3 && validator.isEmail(EMAIL)) {
+      dispatch(actionChangeEmail(EMAIL));
+      setState(INITIAL_STATE);
+    }
+  };
+
+  const onChangepasswordRepeat = () => {
+    const PASSWORD_REPEAT =
+      state.passwordRepeat.trim() as IUserProfile['passwordRepeat'];
+    if (PASSWORD_REPEAT.length > 3) {
+      dispatch(actionChangePasswordRepeat(PASSWORD_REPEAT));
+      setState(INITIAL_STATE);
+    }
   };
 
   const onChangePassword = () => {
-    dispatch(actionChangePassword(state.password.trim()));
-    setState(INITIAL_STATE);
+    const PASSWORD = state.password.trim() as IUserProfile['password'];
+    if (PASSWORD.length > 3) {
+      dispatch(actionChangePassword(PASSWORD));
+      setState(INITIAL_STATE);
+    }
   };
 
   const onChangeName = () => {
-    dispatch(actionChangeName(state.name.trim()));
+    const NAMES = state?.name?.trim() as IUserProfile['name'];
+    dispatch(actionChangeName(NAMES));
     setState(INITIAL_STATE);
   };
 
@@ -87,9 +119,6 @@ export const useHookUserProfile = () => {
         name: R.pipe(R.defaultTo(' '), R.split(' '), R.path([0]))(name),
         surname: R.pipe(R.defaultTo(' '), R.split(' '), R.path([1]))(name),
       },
-      surname: {
-        value: 'Yakimov',
-      },
       image: {
         onPress: () => {
           try {
@@ -109,7 +138,7 @@ export const useHookUserProfile = () => {
           uri: image ?? IMAGE,
         },
         style: {
-          backgroundColor: 'rgba(255, 87, 87, 0.4)',
+          // backgroundColor: 'rgba(255, 87, 87, 0.4)',
           position: 'relative',
           alignItems: 'center',
           justifyContent: 'center',
@@ -127,7 +156,7 @@ export const useHookUserProfile = () => {
         placeholderName: t`Mail or telephone`,
         onEndEditing: onChangeEmail,
         blurOnSubmit: true,
-        onChangeText: (email: string) => {
+        onChangeText: (email: IUserProfile['email']) => {
           setState({...state, email});
         },
         returnTypeKey: 'next',
@@ -139,8 +168,20 @@ export const useHookUserProfile = () => {
         onEndEditing: onChangePassword,
         placeholderName: t`Password`,
         blurOnSubmit: true,
-        onChangeText: (password: string) => {
+        onChangeText: (password: IUserProfile['password']) => {
           setState({...state, password});
+        },
+        returnTypeKey: 'next',
+      },
+      passwordRepeat: {
+        editable: !loading,
+        value: state.passwordRepeat,
+        placeholder: passwordRepeat,
+        onEndEditing: onChangepasswordRepeat,
+        placeholderName: t`Repeat password`,
+        blurOnSubmit: true,
+        onChangeText: (passwordRepeat: IUserProfile['passwordRepeat']) => {
+          setState({...state, passwordRepeat});
         },
         returnTypeKey: 'next',
       },
@@ -169,7 +210,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: 'rgba(27, 24, 24, 0.444)',
+    backgroundColor: 'rgba(27, 24, 24, 0.25)',
     borderRadius: Units.s16,
   },
 });

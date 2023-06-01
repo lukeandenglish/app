@@ -23,17 +23,21 @@ import {Button} from '../../styleApp/UI/Button';
 import {Units} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
 import settings from '../../assets/svg/settings';
+import {registerApi} from '../../redux/api/registerApi';
+import {useDispatch} from 'react-redux';
 
 export const BlockHeader = ({small = false}: {small: boolean}) => {
   const [state, {onChangeEmail, onChangePassword, onChangeName}] =
     useHookUserProfile();
   const navigation = useNavigation();
   const disabled = false;
-  const handleSignAppele = () => {};
   const insets = useSafeAreaInsets();
   const emailRef = React.useRef<TextInput | null>(null);
   const passwordRef = React.useRef<TextInput | null>(null);
   const nameRef = React.useRef<TextInput | null>(null);
+  const dispatchRedux = useDispatch();
+  const logOutUser = registerApi.endpoints.logOutUser as any;
+  const deleteUser = registerApi.endpoints.deleteUser as any;
 
   switch (small) {
     case true:
@@ -55,6 +59,7 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
                 <ImageBackground
                   imageStyle={styles.ImageStyle}
                   {...state.image}
+                  resizeMode="cover"
                   style={[styles.customImage, state.image.style]}>
                   {state.image?.children() ?? <View />}
                 </ImageBackground>
@@ -105,6 +110,7 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
             <TouchableOpacity onPress={state.image?.onPress}>
               <ImageBackground
                 {...state.image}
+                resizeMode="cover"
                 imageStyle={styles.ImageStyle}
                 style={[styles.customImage, state.image.style]}>
                 {state.image?.children()}
@@ -142,7 +148,7 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
           <Inset horizontal="s12" vertical="s12">
             <Button
               disabled={disabled}
-              onPress={handleSignAppele}
+              onPress={() => dispatchRedux(logOutUser.initiate())}
               title={t`Log out`}
               styleText={styles.btnLogOutTxt}
               style={styles.logOutBtn}
@@ -150,7 +156,7 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
             <Stack size="s16" />
             <Button
               disabled={disabled}
-              onPress={handleSignAppele}
+              onPress={() => dispatchRedux(deleteUser.initiate())}
               title={t`Delete account`}
               styleText={styles.deleteBtnTxt}
               style={styles.deleteAccountBtn}

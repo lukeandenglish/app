@@ -38,17 +38,17 @@ export default () => {
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <SafeAreaProvider>
-          <I18nProvider i18n={i18n}>
-            <GestureHandlerRootView style={StyleSheet.absoluteFill}>
-              <NotifierWrapper>
-                <BottomSheetModalProvider>
+        <BottomSheetModalProvider>
+          <SafeAreaProvider>
+            <I18nProvider i18n={i18n}>
+              <GestureHandlerRootView style={StyleSheet.absoluteFill}>
+                <NotifierWrapper>
                   <App />
-                </BottomSheetModalProvider>
-              </NotifierWrapper>
-            </GestureHandlerRootView>
-          </I18nProvider>
-        </SafeAreaProvider>
+                </NotifierWrapper>
+              </GestureHandlerRootView>
+            </I18nProvider>
+          </SafeAreaProvider>
+        </BottomSheetModalProvider>
       </PersistGate>
     </Provider>
   );
