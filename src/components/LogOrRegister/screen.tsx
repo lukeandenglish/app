@@ -4,7 +4,7 @@ import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import * as React from 'react';
 import {StyleSheet, TextInput, View} from 'react-native';
-import {ScrollView} from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch, useSelector} from 'react-redux';
@@ -79,7 +79,10 @@ const LogInOrRegisterScreen = ({disabled}) => {
   }, [email, password, agreements]);
 
   return (
-    <View style={[{flex: 1, backgroundColor: Color.transparent}]}>
+    <View
+      style={[
+        {flex: 1, backgroundColor: Color.transparent, paddingTop: Units.s8},
+      ]}>
       <View
         style={{
           flex: 1,
@@ -181,19 +184,16 @@ export const styles = StyleSheet.create({
     flexDirection: 'row',
   },
   fdfdfdfTypo: {
-    // fontFamily: FontFamily.graphikRegular,
     textAlign: 'left',
   },
 
   text: {
     fontSize: FontSize.heading1_size,
     lineHeight: 40,
-    // fontFamily: FontFamily.subHeading,
     color: Color.lightInk,
   },
   text1: {
     lineHeight: 22,
-    // fontFamily: FontFamily.coFoSansLaModaRegular,
     textAlign: 'center',
   },
   button: {

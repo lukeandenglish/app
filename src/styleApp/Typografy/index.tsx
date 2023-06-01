@@ -84,6 +84,15 @@ export const Typography: Record<FontSize, TextStyle> = {
   },
 };
 
+export const FontFamily = {
+  wermut: {fontfamily: 'Wermut'},
+  500: {fontfamily: 'Graphik-Regular', fontWeight: '500'},
+  400: {fontfamily: 'Graphik-Light', fontWeight: '400'},
+  300: {fontfamily: 'Graphik-Thin', fontWeight: '300'},
+  600: {fontfamily: 'Graphik-Medium', fontWeight: '600'},
+  700: {fontfamily: 'Graphik-Bold', fontWeight: '700'},
+};
+
 export const Styles = {
   animateInput: (state: boolean): ViewStyle | TextStyle => ({
     borderColor: state ? colors.white : colors.white,

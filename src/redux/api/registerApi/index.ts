@@ -25,11 +25,12 @@ export const registerApi = createApi({
 
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.lukeandenglish.com/',
-    prepareHeaders: (headers, {getState}) => {
-      headers.set('x-api-key', 'dQ3vI8XMdqRV-zmIxAlVylBedyb9BhwF');
+    prepareHeaders: (headers, props) => {
+      headers.set(
+        'x-api-key',
+        'a5de976afb69939cd1e0bfc0da797ca5ab10047ecc0a54301dcc01f2bc2a7142',
+      );
       headers.set('Access-Control-Allow-Origin', '*');
-
-      console.log(headers);
 
       return headers;
     },

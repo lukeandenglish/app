@@ -5,7 +5,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlockHeader} from '../../../block/profile/BlockHeader';
 import colors from '../../../styleApp/colors';
 
-export default () => {
+export default (): React.ReactNode => {
   const insets = useSafeAreaInsets();
   const scrollRef = React.useRef<ScrollView | null>(null);
 

@@ -6,7 +6,7 @@ import {useHookUserProfile} from '../../../hooks/useHookUserProfile';
 import {Stack} from '../../../styleApp/Spacing';
 import {AnimateIInput} from '../../../styleApp/UI/AnimatedUIInput';
 import {default as colors} from '../../../styleApp/colors';
-import {Typography} from '../../../styleApp/Typografy';
+import {FontFamily, Typography} from '../../../styleApp/Typografy';
 import {useNavigation} from '@react-navigation/native';
 import ROUTER_PATH from '../../../config/page';
 import {styles} from '../screen';
@@ -46,8 +46,9 @@ export function Register() {
             style={[
               styles.iAgreeWith,
               styles.fdfdfdfTypo,
-              {color: colors.actionColor, fontWeight: '500'},
-              Typography.text16,
+              {color: colors.actionColor},
+              FontFamily['500'],
+              Typography.text14,
             ]}>
             {t`Forget password?`}
           </Text>

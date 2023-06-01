@@ -11,7 +11,7 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import {Inset, Stack} from '../Spacing';
-import {Typography} from '../Typografy';
+import {FontFamily, Typography} from '../Typografy';
 import {Units} from '../Units';
 import colors from '../colors';
 
@@ -35,8 +35,6 @@ export const AnimateIInput = React.forwardRef(
       focus,
     }));
 
-    console.log(state);
-
     const Container = TextInput;
 
     return (
@@ -46,7 +44,12 @@ export const AnimateIInput = React.forwardRef(
         style={[props.style ? props.style : {}]}>
         {props?.placeholderName && (
           <Inset horizontal="s16" vertical="s1">
-            <Text style={[Typography.text14, styles.placeholder]}>
+            <Text
+              style={[
+                Typography.text14,
+                styles.placeholder,
+                FontFamily['300'],
+              ]}>
               {props?.placeholderName ?? ''}
             </Text>
           </Inset>
@@ -76,11 +79,11 @@ export const AnimateIInput = React.forwardRef(
               style={StyleSheet.flatten([
                 Typography.text16,
                 {
-                  fontWeight: '500',
                   color: colors.lightInk,
                   minWidth: 200,
                   width: '100%',
                 },
+                FontFamily['500'],
                 {paddingVertical: Units.s20},
                 {paddingHorizontal: Units.s20},
                 props?.styleInput ?? {},

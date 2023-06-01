@@ -1,20 +1,20 @@
 /* fonts */
-export const FontFamily = {
-  sFProTextSemibold: 'SF Pro Text_semibold',
-  sFProTextBold: 'SF Pro Text_bold',
-  graphikRegular: 'Graphik_regular',
-  graphikMedium: 'Graphik_medium',
-  coFoSansLaModaRegular: 'CoFo Sans LaModa_regular',
-  subHeading: 'Wermut_regular',
-  subheading3: 'Graphik LC_medium',
-  caption: 'Graphik LC_regular',
-  graphikSemibold: 'Graphik_semibold',
-  cooperBTMedium: 'Cooper BT_medium',
-  interRegular: 'Inter_regular',
-  sFProTextRegular: 'SF Pro Text_regular',
-  sFProTextLight: 'SF Pro Text_light',
-  coFoSansLaModaBold: 'CoFo Sans LaModa_bold',
-};
+// export const FontFamily = {
+//   sFProTextSemibold: 'SF Pro Text_semibold',
+//   sFProTextBold: 'SF Pro Text_bold',
+//   graphikRegular: 'Graphik_regular',
+//   graphikMedium: 'Graphik_medium',
+//   coFoSansLaModaRegular: 'CoFo Sans LaModa_regular',
+//   subHeading: 'Wermut_regular',
+//   subheading3: 'Graphik LC_medium',
+//   caption: 'Graphik LC_regular',
+//   graphikSemibold: 'Graphik_semibold',
+//   cooperBTMedium: 'Cooper BT_medium',
+//   interRegular: 'Inter_regular',
+//   sFProTextRegular: 'SF Pro Text_regular',
+//   sFProTextLight: 'SF Pro Text_light',
+//   coFoSansLaModaBold: 'CoFo Sans LaModa_bold',
+// };
 /* font sizes */
 export const FontSize = {
   size_mini: 15,

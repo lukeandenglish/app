@@ -4,7 +4,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {iButtonProps} from '.';
 import {Units} from '../Units';
 import {Inset, Queue} from '../Spacing';
-import {Typography} from '../Typografy';
+import {FontFamily, Typography} from '../Typografy';
 import colors from '../colors';
 
 export function Button({
@@ -48,6 +48,7 @@ export function Button({
               color: colors.gray_200,
             },
             styleText,
+            FontFamily['500'],
           ])}>
           {title}
         </Text>

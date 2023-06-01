@@ -1,0 +1,85 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "assets/fonts/Graphik-Black.ttf",
+      "sha1": "cafd8a91b45b7d9ce1b016fb3214b7bd250d2327"
+    },
+    {
+      "path": "assets/fonts/Graphik-BlackItalic.ttf",
+      "sha1": "965db64dc4d9f55f5f738627868b3776384b74f7"
+    },
+    {
+      "path": "assets/fonts/Graphik-Bold.ttf",
+      "sha1": "97f9537c036d8ead3dc2375203eadc8b764d0b87"
+    },
+    {
+      "path": "assets/fonts/Graphik-BoldItalic.ttf",
+      "sha1": "1796c5aafb1309f43444d5cdd14ff0d40e8b2571"
+    },
+    {
+      "path": "assets/fonts/Graphik-Extralight.ttf",
+      "sha1": "d040497aa79ec671f0504272a88137e75af98ef4"
+    },
+    {
+      "path": "assets/fonts/Graphik-ExtralightItalic.ttf",
+      "sha1": "ec0cc99e580bf19fdad2d0c9c85367de0e140164"
+    },
+    {
+      "path": "assets/fonts/Graphik-Light.ttf",
+      "sha1": "b4664b8b825d847cff2cfc994cea67a031a236b5"
+    },
+    {
+      "path": "assets/fonts/Graphik-LightItalic.ttf",
+      "sha1": "d0f4c84769b196eb2deb30b2594030f88da6040e"
+    },
+    {
+      "path": "assets/fonts/Graphik-Medium.ttf",
+      "sha1": "1fae0edbbe7069ebc62f78941acb5047f0c7c148"
+    },
+    {
+      "path": "assets/fonts/Graphik-MediumItalic.ttf",
+      "sha1": "46613c054340bd908e0ef7005161d9295b48d0f4"
+    },
+    {
+      "path": "assets/fonts/Graphik-Regular.ttf",
+      "sha1": "616f4749f23568cec3e6c9a3b441ebeaf30c5706"
+    },
+    {
+      "path": "assets/fonts/Graphik-RegularItalic.ttf",
+      "sha1": "18147433d51176431d61cbca3802883c652eb6f8"
+    },
+    {
+      "path": "assets/fonts/Graphik-Semibold.ttf",
+      "sha1": "2b7652237ec7ca6f9efa4d1b86d0296399d31308"
+    },
+    {
+      "path": "assets/fonts/Graphik-SemiboldItalic.ttf",
+      "sha1": "63a6e026df426b5aaf094fcd133aeeadfa33ecc3"
+    },
+    {
+      "path": "assets/fonts/Graphik-Super.ttf",
+      "sha1": "0c1ae3663260bd176fdecf82922dcc3103fe12de"
+    },
+    {
+      "path": "assets/fonts/Graphik-SuperItalic.ttf",
+      "sha1": "8f5ab895513cddc044c37c7adcfb7eac83a3f017"
+    },
+    {
+      "path": "assets/fonts/Graphik-Thin.ttf",
+      "sha1": "f0969efb9a6a057c27c2b6720a46eb2eb41d75d3"
+    },
+    {
+      "path": "assets/fonts/Graphik-ThinItalic.ttf",
+      "sha1": "f65ca25ce41bedeaeeee910333916a40fd4da36e"
+    },
+    {
+      "path": "assets/fonts/Wermut-Italic.ttf",
+      "sha1": "86c9a66758ec05639764106ed693010a0bf40f03"
+    },
+    {
+      "path": "assets/fonts/Wermut.ttf",
+      "sha1": "8eef7503a068cdd8c533f16b523e39ae02c416c4"
+    }
+  ]
+}

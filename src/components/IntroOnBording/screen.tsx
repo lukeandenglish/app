@@ -1,47 +1,25 @@
-import * as React from 'react';
-import {Button} from '../../styleApp/UI/Button';
-import {Dimensions, StyleSheet, Text, View} from 'react-native';
-import {Border, FontSize, Units} from '../../styleApp/Units';
-import {default as Color, default as colors} from '../../styleApp/colors';
-import {t} from '@lingui/macro';
-import {ScrollView} from 'react-native-gesture-handler';
-import {Inset, Queue, Stack} from '../../styleApp/Spacing';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {RV} from '../../styleApp/Utils';
+/* eslint-disable react-hooks/exhaustive-deps */
 import {TouchableOpacity} from '@gorhom/bottom-sheet';
+import {t} from '@lingui/macro';
 import {useNavigation} from '@react-navigation/native';
+import lodash from 'lodash';
+import * as React from 'react';
+import {Dimensions, StyleSheet, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SvgXml} from 'react-native-svg';
+import {PalletColor, one, three, two} from '../../assets/info';
 import ROUTER_PAGE from '../../config/page';
+import {Inset, Queue, Stack} from '../../styleApp/Spacing';
+import {FontFamily} from '../../styleApp/Typografy';
+import {Button} from '../../styleApp/UI/Button';
 import {LabelText} from '../../styleApp/UI/LabelText';
+import {Border, FontSize, Units} from '../../styleApp/Units';
+import {RV} from '../../styleApp/Utils';
+import {default as Color, default as colors} from '../../styleApp/colors';
 
 const WIDTH = Dimensions.get('screen').width;
 const TIMER = 2500;
-
-const DATA = [
-  {
-    title: t`Revolutinary way of learning English`,
-    value: t`With the help of interval trainings that you design by yourself`,
-    icon: '',
-    color: Color.lavender,
-  },
-  {
-    title: t`Revolutinary way of learning English`,
-    value: t`With the help of interval trainings that you design by yourself`,
-    icon: '',
-    color: Color.coral,
-  },
-  {
-    title: t`Revolutinary way of learning English`,
-    value: t`With the help of interval trainings that you design by yourself`,
-    icon: '',
-    color: Color.additional,
-  },
-  {
-    title: t`Revolutinary way of learning English`,
-    value: t`With the help of interval trainings that you design by yourself`,
-    icon: '',
-    color: Color.sucess,
-  },
-];
 
 const IntroAndOnboarding = () => {
   const insets = useSafeAreaInsets();
@@ -49,15 +27,50 @@ const IntroAndOnboarding = () => {
   const refTimer = React.useRef<ReturnType<typeof setTimeout> | null>(null);
   const [state, setState] = React.useState<number>(0);
   const navigation = useNavigation();
+  const svg = [one, two, three] as string[];
 
-  const switchCard = (numberIdx: number) => {
-    setState(numberIdx === DATA.length ? 0 : numberIdx);
-    scrollRef.current?.scrollTo({
-      x: numberIdx === DATA.length ? 0 : numberIdx * WIDTH,
-      y: 0,
-      animated: true,
-    });
-  };
+  const DATA = React.useMemo(() => {
+    const count = lodash.random(0, svg.length - 1);
+    const pallet = lodash.random(0, PalletColor.length - 1);
+    return [
+      {
+        title: t`Revolutinary way of learning English`,
+        value: t`With the help of interval trainings that you design by yourself`,
+        icon: svg[count],
+        color: PalletColor[pallet],
+      },
+      {
+        title: t`Revolutinary way of learning English`,
+        value: t`With the help of interval trainings that you design by yourself`,
+        icon: svg[count],
+        color: PalletColor[pallet],
+      },
+      {
+        title: t`Revolutinary way of learning English`,
+        value: t`With the help of interval trainings that you design by yourself`,
+        icon: svg[count],
+        color: PalletColor[pallet],
+      },
+      {
+        title: t`Revolutinary way of learning English`,
+        value: t`With the help of interval trainings that you design by yourself`,
+        icon: svg[count],
+        color: PalletColor[pallet],
+      },
+    ];
+  }, [svg]);
+
+  const switchCard = React.useCallback(
+    (numberIdx: number) => {
+      setState(numberIdx === DATA.length ? 0 : numberIdx);
+      scrollRef.current?.scrollTo({
+        x: numberIdx === DATA.length ? 0 : numberIdx * WIDTH,
+        y: 0,
+        animated: true,
+      });
+    },
+    [DATA.length],
+  );
 
   React.useLayoutEffect(() => {
     refTimer.current && clearTimeout(refTimer.current);
@@ -68,7 +81,7 @@ const IntroAndOnboarding = () => {
     return () => {
       refTimer.current && clearTimeout(refTimer.current);
     };
-  }, [state]);
+  }, [state, switchCard]);
 
   return (
     <ScrollView
@@ -95,7 +108,6 @@ const IntroAndOnboarding = () => {
                 styles.revolutinaryWayOfLearningEParent,
                 styles.blockStyle,
                 {backgroundColor: x.color},
-                ,
               ]}>
               <LabelText
                 title={x.title}
@@ -105,17 +117,14 @@ const IntroAndOnboarding = () => {
                 ])}
               />
               <View style={styles.illusrt8}>
-                {/* <View
-      style={styles.a73831e008630db8fbacaed58e1945Icon}
-      // contentFit="cover"
-      // source={require('../assets/a73831e008630db8fbacaed58e19453f.png')}
-    /> */}
+                <SvgXml xml={x.icon} />
               </View>
               <LabelText
                 title={x.value}
                 style={Object.assign([
                   styles.withTheHelp,
                   styles.withTheHelpClr,
+                  FontFamily['300'],
                 ])}
               />
             </View>
@@ -197,17 +206,18 @@ const styles = StyleSheet.create({
   revolutinaryWayOf: {
     fontSize: FontSize.heading1_size,
     lineHeight: 40,
-    // // fontFamily: FontFamily.subHeading,
     width: RV(295),
   },
   illusrt8: {
     width: RV(220),
-    height: RV(211),
+    height: RV(220),
+    alignItems: 'center',
+    justifyContent: 'center',
     overflow: 'hidden',
+    mixBlendMode: 'overlay',
   },
   withTheHelp: {
     lineHeight: 22,
-    // // fontFamily: FontFamily.graphikRegular,
     width: RV(279),
     marginTop: Units.s44,
     fontSize: FontSize.subheading3_size,

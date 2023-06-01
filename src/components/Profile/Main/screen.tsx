@@ -13,7 +13,7 @@ import colors from '../../../styleApp/colors';
 import {useNavigation} from '@react-navigation/native';
 import ROUTER_PATH from '../../../config/page';
 
-export default () => {
+export default (): React.ReactNode => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
 

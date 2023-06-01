@@ -1,10 +1,9 @@
-import colors from '../styleApp/colors';
 import {TransitionPresets} from '@react-navigation/stack';
 
 export const ModalSlideFunc = (header: boolean) => ({
-  // animationEnabled: false,
+  animationEnabled: true,
   cardOverlayEnabled: true,
-  cardStyle: {backgroundColor: colors.transparent, shadowColor: 'transparent'},
+  cardStyle: {shadowColor: 'transparent'},
   gestureEnabled: true,
   headerShown: header || false,
   presentation: 'modal',

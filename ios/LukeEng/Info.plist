@@ -51,7 +51,7 @@
 		</dict>
 	</dict>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
 	<key>UIRequiredDeviceCapabilities</key>
@@ -72,5 +72,28 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Graphik-Black.ttf</string>
+		<string>Graphik-BlackItalic.ttf</string>
+		<string>Graphik-Bold.ttf</string>
+		<string>Graphik-BoldItalic.ttf</string>
+		<string>Graphik-Extralight.ttf</string>
+		<string>Graphik-ExtralightItalic.ttf</string>
+		<string>Graphik-Light.ttf</string>
+		<string>Graphik-LightItalic.ttf</string>
+		<string>Graphik-Medium.ttf</string>
+		<string>Graphik-MediumItalic.ttf</string>
+		<string>Graphik-Regular.ttf</string>
+		<string>Graphik-RegularItalic.ttf</string>
+		<string>Graphik-Semibold.ttf</string>
+		<string>Graphik-SemiboldItalic.ttf</string>
+		<string>Graphik-Super.ttf</string>
+		<string>Graphik-SuperItalic.ttf</string>
+		<string>Graphik-Thin.ttf</string>
+		<string>Graphik-ThinItalic.ttf</string>
+		<string>Wermut-Italic.ttf</string>
+		<string>Wermut.ttf</string>
+	</array>
 </dict>
 </plist>
