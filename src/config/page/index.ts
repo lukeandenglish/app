@@ -6,6 +6,11 @@ export default {
     Login: 'Login',
     ForgotPassword: 'ForgotPassword',
   },
+  TAB: {
+    HOME: 'Home',
+    CREATE: 'CREATE',
+    SETTINGS: 'SETTINGS',
+  },
   AUTH: {
     PROFILE_MAIN: 'ProfileMain',
     PROFILE_APPERANCE: 'ProfileApperance',

@@ -37,9 +37,10 @@ export type FontSize =
   | 'text18'
   | 'text20'
   | 'text22'
+  | 'text24'
+  | 'text38'
   | 'text52'
-  | 'text72'
-  | 'text24';
+  | 'text72';
 
 export const Typography: Record<FontSize, TextStyle> = {
   text10: {
@@ -73,6 +74,10 @@ export const Typography: Record<FontSize, TextStyle> = {
   text24: {
     fontSize: RV(24),
     lineHeight: RV(28),
+  },
+  text38: {
+    fontSize: RV(38),
+    lineHeight: RV(40),
   },
   text52: {
     fontSize: RV(52),
