@@ -67,4 +67,4 @@ export default {
   greenyellow: '#ccff00',
   lightsteelblue: '#c0d4ff',
   transparent: 'transparent',
-} as {[x: Colors | string]: string};
+} as Record<Colors, string>;

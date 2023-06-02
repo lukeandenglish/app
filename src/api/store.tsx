@@ -14,6 +14,7 @@ import * as R from 'ramda';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {registerApi} from '../redux/api/registerApi';
+import {deckCard} from '../redux/api/deckCard';
 import {Notifier, NotifierComponents} from 'react-native-notifier';
 
 export const PERSIST_STORAGE = {
@@ -25,7 +26,8 @@ export const PERSIST_STORAGE = {
 
 const rootReducer = combineReducers({
   [REDUCER_PATH.USER]: persistReducer(PERSIST_STORAGE.auth, reducerBranch),
-  [REDUCER_PATH.REGISTER]: registerApi.reducer,
+  [registerApi.reducerPath]: registerApi.reducer,
+  [deckCard.reducerPath]: deckCard.reducer,
 }) as any;
 
 const debounceNotify = _.debounce(notify => notify());
@@ -34,10 +36,12 @@ const store = configureStore({
   enhancers: [batchedSubscribe(debounceNotify), Reactotron.createEnhancer!()],
   middleware: getDefaultMiddleware =>
     getDefaultMiddleware({
-      serializableCheck: true,
+      immutableCheck: false,
+      serializableCheck: false,
     })
       .concat(thunkMiddleware)
       .concat(registerApi.middleware)
+      .concat(deckCard.middleware)
       .concat(promiseMiddleware),
   // .concat(createLogger({ diff: false }))
   preloadedState: {},

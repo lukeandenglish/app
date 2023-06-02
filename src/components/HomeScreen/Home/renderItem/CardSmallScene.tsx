@@ -9,9 +9,10 @@ import colors from '../../../../styleApp/colors';
 import {SvgXml} from 'react-native-svg';
 import {two} from '../../../../assets/info';
 import lodash from 'lodash';
+import {iListItem} from '../../../../redux/api/deckCard/helper';
 // import {WIDTH} from '../screen';
 
-export default () => {
+export default ({cardLength, title}: iListItem) => {
   return (
     <Inset
       horizontal="s6"
@@ -35,7 +36,7 @@ export default () => {
         </View>
         <Inset horizontal="s16" vertical="s16">
           <LabelText
-            title={'Most important English phrases'}
+            title={title}
             style={Object.assign([
               Typography.text16,
               {color: colors.lightInk, textAlign: 'left'},
@@ -44,7 +45,7 @@ export default () => {
           />
           <Stack size="s8" />
           <LabelText
-            title={'3 456 words'}
+            title={[cardLength, 'words'].join(' ')}
             style={Object.assign([
               Typography.text16,
               {textAlign: 'left'},

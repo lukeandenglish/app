@@ -7,8 +7,9 @@ import {FontFamily, Typography} from '../../../../styleApp/Typografy';
 import {LabelText} from '../../../../styleApp/UI/LabelText';
 import {RV} from '../../../../styleApp/Utils';
 import colors from '../../../../styleApp/colors';
+import {iListItem} from '../../../../redux/api/deckCard/helper';
 
-export default () => {
+export default ({cardLength, title}: iListItem) => {
   return (
     <Inset
       horizontal="s6"
@@ -30,7 +31,7 @@ export default () => {
             {justifyContent: 'space-between'},
           ])}>
           <LabelText
-            title={'4000 важнейших английских слов'}
+            title={title}
             style={Object.assign([
               Typography.text24,
               {color: colors.lightInk, textAlign: 'left'},
@@ -38,7 +39,7 @@ export default () => {
             ])}
           />
           <LabelText
-            title={'3 456 words'}
+            title={[cardLength, 'words'].join(' ')}
             style={Object.assign([
               Typography.text16,
               {textAlign: 'left'},

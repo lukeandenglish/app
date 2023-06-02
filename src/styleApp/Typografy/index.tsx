@@ -100,9 +100,9 @@ export const FontFamily = {
 
 export const Styles = {
   animateInput: (state: boolean): ViewStyle | TextStyle => ({
-    borderColor: state ? colors.white : colors.white,
+    borderColor: state ? colors.lightInk : colors.lightInk,
     borderRadius: Units.s6,
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '500',
     paddingBottom: Platform.select({
       android: Units.s4,
@@ -111,7 +111,7 @@ export const Styles = {
     paddingTop: 0,
   }),
   animateInputContainer: (state: boolean): ViewStyle | TextStyle => ({
-    borderColor: state ? colors.white : colors.white,
+    borderColor: state ? colors.lightInk : colors.lightInk,
     borderRadius: Units.s6,
     borderWidth: 1,
     flex: 1,
@@ -120,25 +120,25 @@ export const Styles = {
     paddingHorizontal: Units.s10,
   }),
   button: {
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '600',
     letterSpacing: 0,
     padding: 0,
   },
   cardModalView: {
-    backgroundColor: colors.white,
+    backgroundColor: colors.lightInk,
     borderTopLeftRadius: 12,
     borderTopRightRadius: 12,
     maxHeight: '60%',
   },
   customDescriptionText: {
-    color: colors.white,
+    color: colors.lightInk,
     lineHeight: 20,
     marginTop: 0,
     textTransform: 'none',
   },
   customInput: {
-    color: colors.white,
+    color: colors.lightInk,
     flex: 1,
     fontWeight: '500',
     paddingBottom: Platform.select({
@@ -152,13 +152,13 @@ export const Styles = {
     }),
   },
   customText: {
-    color: colors.white,
+    color: colors.lightInk,
     lineHeight: 20,
     marginTop: 0,
     textTransform: 'none',
   },
   headerModalText: {
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '600',
     lineHeight: 20,
     marginTop: 0,
@@ -166,16 +166,16 @@ export const Styles = {
     textTransform: 'none',
   },
   headerText: {
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '600',
     letterSpacing: 1,
     padding: 0,
   },
   headerWrapper: {
     alignItems: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.lightInk,
     borderBottomWidth: Units.s1,
-    borderColor: colors.white,
+    borderColor: colors.lightInk,
     borderTopWidth: Units.s1,
     flex: 1,
     flexDirection: 'row',
@@ -187,7 +187,7 @@ export const Styles = {
     width: '100%',
   },
   historyText: {
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '500',
     letterSpacing: 0,
     ...Typography.text14,
@@ -200,11 +200,11 @@ export const Styles = {
   },
   inputSearchContainer: (state: boolean): ViewStyle | TextStyle => ({
     // borderWidth: Units.s1,
-    color: colors.white,
+    color: colors.lightInk,
     flex: 1,
   }),
   inputSingleContainer: (state: boolean): ViewStyle | TextStyle => ({
-    borderColor: state ? colors.white : colors.white,
+    borderColor: state ? colors.lightInk : colors.lightInk,
     borderRadius: Units.s6,
     borderWidth: Units.s1,
     flexDirection: 'row',
@@ -212,9 +212,9 @@ export const Styles = {
   }),
   inputWrapper: {
     alignItems: 'center',
-    backgroundColor: colors.white,
+    backgroundColor: colors.lightInk,
     borderBottomWidth: Units.s1,
-    borderColor: colors.white,
+    borderColor: colors.lightInk,
     borderTopWidth: Units.s1,
     flex: 1,
     flexDirection: 'row',
@@ -223,17 +223,17 @@ export const Styles = {
     minHeight: Units.s56,
   },
   textAnimatePlaceholder: {
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '400',
   },
   textError: {
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '300',
     letterSpacing: 0,
     ...Typography.text14,
   },
   textPlaceholder: {
-    color: colors.white,
+    color: colors.lightInk,
     fontWeight: '400',
   },
   titleText: {

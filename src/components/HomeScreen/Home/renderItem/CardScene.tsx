@@ -1,19 +1,20 @@
-import React from 'react';
-import {StyleSheet, View} from 'react-native';
-import {Button} from '../../../../styleApp/UI/Button';
-import {Inset, Stack} from '../../../../styleApp/Spacing';
-import {RV} from '../../../../styleApp/Utils';
-import {PalletColor} from '../../../../assets/info/index';
-import {LabelText} from '../../../../styleApp/UI/LabelText';
-import {FontFamily, Typography} from '../../../../styleApp/Typografy';
-import colors from '../../../../styleApp/colors';
-import {SvgXml} from 'react-native-svg';
-import {two} from '../../../../assets/info';
 import {t} from '@lingui/macro';
 import lodash from 'lodash';
+import React from 'react';
+import {StyleSheet, View} from 'react-native';
+import {SvgXml} from 'react-native-svg';
+import {two} from '../../../../assets/info';
+import {PalletColor} from '../../../../assets/info/index';
+import {Inset, Stack} from '../../../../styleApp/Spacing';
+import {FontFamily, Typography} from '../../../../styleApp/Typografy';
+import {Button} from '../../../../styleApp/UI/Button';
+import {LabelText} from '../../../../styleApp/UI/LabelText';
+import {RV} from '../../../../styleApp/Utils';
+import colors from '../../../../styleApp/colors';
 import {WIDTH} from '../screen';
+import {iListItem} from '../../../../redux/api/deckCard/helper';
 
-export default () => {
+export default ({cardLength, title}: iListItem) => {
   return (
     <Inset
       horizontal="s16"
@@ -38,7 +39,7 @@ export default () => {
           layout={StyleSheet.flatten(styles.rowBlock)}>
           <View style={styles.content}>
             <LabelText
-              title={'Most important English phrases'}
+              title={title}
               style={Object.assign([
                 Typography.text16,
                 {color: colors.lightInk},
@@ -47,7 +48,7 @@ export default () => {
             />
             <Stack size="s8" />
             <LabelText
-              title={'3 456 words'}
+              title={[cardLength, t`words`].join(' ')}
               style={Object.assign([
                 Typography.text12,
                 {textAlign: 'left'},

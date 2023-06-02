@@ -18,6 +18,7 @@ import {enableScreens} from 'react-native-screens';
 import {StyleSheet} from 'react-native';
 import {PersistGate} from 'redux-persist/integration/react';
 import {NotifierWrapper} from 'react-native-notifier';
+import { PortalProvider } from '@gorhom/portal';
 
 const LOCALE = ['en', 'ru'] as string[];
 
@@ -42,9 +43,11 @@ export default () => {
           <SafeAreaProvider>
             <I18nProvider i18n={i18n}>
               <GestureHandlerRootView style={StyleSheet.absoluteFill}>
-                <NotifierWrapper>
-                  <App />
-                </NotifierWrapper>
+                <PortalProvider>
+                  <NotifierWrapper>
+                    <App />
+                  </NotifierWrapper>
+                </PortalProvider>
               </GestureHandlerRootView>
             </I18nProvider>
           </SafeAreaProvider>
