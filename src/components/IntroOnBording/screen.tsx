@@ -85,11 +85,13 @@ const IntroAndOnboarding = () => {
 
   return (
     <ScrollView
+      bounces={false}
+      showsVerticalScrollIndicator={false}
       contentContainerStyle={[
         styles.scrolView,
         {
-          paddingTop: insets.top,
-          paddingBottom: insets.bottom,
+          paddingTop: RV(insets.top),
+          paddingBottom: RV(insets.bottom + 50),
           backgroundColor: colors.lightPrimary,
         },
       ]}>
@@ -175,7 +177,7 @@ const IntroAndOnboarding = () => {
 
 const styles = StyleSheet.create({
   blockSelect: {
-    height: 12,
+    height: RV(12),
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -194,9 +196,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.transparent,
   },
   dot: {
-    height: 12,
-    width: 12,
-    borderRadius: 50,
+    height: RV(12),
+    width: RV(12),
+    borderRadius: RV(50),
     backgroundColor: Color.dot,
   },
   withTheHelpClr: {
@@ -205,7 +207,7 @@ const styles = StyleSheet.create({
   },
   revolutinaryWayOf: {
     fontSize: FontSize.heading1_size,
-    lineHeight: 40,
+    lineHeight: RV(40),
     width: RV(295),
   },
   illusrt8: {
@@ -217,7 +219,7 @@ const styles = StyleSheet.create({
     mixBlendMode: 'overlay',
   },
   withTheHelp: {
-    lineHeight: 22,
+    lineHeight: RV(22),
     width: RV(279),
     marginTop: Units.s44,
     fontSize: FontSize.subheading3_size,

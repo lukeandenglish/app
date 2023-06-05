@@ -14,6 +14,7 @@ import {Inset, Stack} from '../Spacing';
 import {FontFamily, Typography} from '../Typografy';
 import {Units} from '../Units';
 import colors from '../colors';
+import {RV} from '../Utils';
 
 export const AnimateIInput = React.forwardRef(
   (props: iRestCustom & any, ref) => {
@@ -61,7 +62,7 @@ export const AnimateIInput = React.forwardRef(
           style={[
             {
               borderWidth: 1,
-              borderRadius: 100,
+              borderRadius: RV(100),
               backgroundColor: colors.whitesmoke_100,
               borderColor: colors.whitesmoke_100,
             },
@@ -80,8 +81,11 @@ export const AnimateIInput = React.forwardRef(
                 Typography.text16,
                 {
                   color: colors.lightInk,
-                  minWidth: 200,
+                  minWidth: RV(200),
                   width: '100%',
+                  lineHeight: Units.s14,
+                  marginTop: 0,
+                  marginBottom: 0,
                 },
                 FontFamily['500'],
                 {paddingVertical: Units.s20},
@@ -93,14 +97,14 @@ export const AnimateIInput = React.forwardRef(
               <TouchableOpacity
                 onPress={() => setSecure(!secure)}
                 style={{
-                  width: 30,
-                  height: 30,
+                  width: RV(30),
+                  height: RV(30),
                   position: 'absolute',
                   zIndex: 1000,
                   backgroundColor: 'red',
-                  right: 10,
-                  top: 15,
-                  bottom: 15,
+                  right: RV(10),
+                  top: RV(15),
+                  bottom: RV(15),
                 }}
               />
             )}
@@ -121,8 +125,8 @@ export const styles = StyleSheet.create({
     backgroundColor: colors.gray_100,
     borderRadius: Units.s6,
     justifyContent: 'center',
-    minHeight: 40,
-    maxHeight: 48,
+    minHeight: RV(40),
+    maxHeight: RV(48),
   },
 
   insetsScroll: {

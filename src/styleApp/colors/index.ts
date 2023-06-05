@@ -30,6 +30,8 @@ type Colors =
   | 'additional'
   | 'beige'
   | 'greenyellow'
+  | 'dot'
+  | 'transparent'
   | 'lightsteelblue';
 
 export default {

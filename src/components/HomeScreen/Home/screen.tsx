@@ -1,30 +1,29 @@
 /* eslint-disable react-native/no-inline-styles */
+import {useFocusEffect} from '@react-navigation/native';
 import {FlashList} from '@shopify/flash-list';
+import * as R from 'ramda';
 import React from 'react';
 import {
   Dimensions,
   ListRenderItemInfo,
-  RefreshControl,
   SectionList,
   StyleSheet,
   View,
 } from 'react-native';
-import {useFocusEffect} from '@react-navigation/native';
-import * as R from 'ramda';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
 import {registerCallbackEndpoints} from '../../../api/store';
 import {deckCard} from '../../../redux/api/deckCard';
+import {iListDeckCatalog, iListItem} from '../../../redux/api/deckCard/helper';
 import {Inset} from '../../../styleApp/Spacing';
 import {FontFamily, Typography} from '../../../styleApp/Typografy';
 import {LabelText} from '../../../styleApp/UI/LabelText';
+import {Units} from '../../../styleApp/Units';
+import {AnimatedViewBlock} from '../../../styleApp/animate/AnimatedViewBlock';
 import colors from '../../../styleApp/colors';
 import {Card, getCurrentMode, getCurrentScene} from './Card';
 import {Container} from './Container';
-import {AnimatedViewBlock} from '../../../styleApp/animate/AnimatedViewBlock';
-import {Units} from '../../../styleApp/Units';
-import {iListDeckCatalog, iListItem} from '../../../redux/api/deckCard/helper';
 
 export const WIDTH = Dimensions.get('screen').width;
 

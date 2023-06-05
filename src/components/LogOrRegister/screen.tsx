@@ -20,6 +20,7 @@ import {default as Color, default as colors} from '../../styleApp/colors';
 import {BlockSelect} from './comp/BlockSelect';
 import {LoginSign} from './comp/LoginSign';
 import {Register} from './comp/Register';
+import {RV} from '../../styleApp/Utils';
 
 //TODO: SVG ADDED CLOSE
 
@@ -81,7 +82,11 @@ const LogInOrRegisterScreen = ({disabled}) => {
   return (
     <View
       style={[
-        {flex: 1, backgroundColor: Color.transparent, paddingTop: Units.s8},
+        {
+          flex: 1,
+          backgroundColor: Color.transparent,
+          paddingTop: Units.s8,
+        },
       ]}>
       <View
         style={{
@@ -127,7 +132,8 @@ const LogInOrRegisterScreen = ({disabled}) => {
         <KeyboardSpacer />
         <Inset
           horizontal="s16"
-          vertical="s1"
+          bottom="s6"
+          _debug
           layout={StyleSheet.flatten({
             paddingBottom: insets.bottom,
           })}>
@@ -149,55 +155,19 @@ const LogInOrRegisterScreen = ({disabled}) => {
 
 export const styles = StyleSheet.create({
   checkboxChildLayout: {
-    height: 24,
-    width: 24,
+    height: RV(24),
+    width: RV(24),
   },
   textPosition: {
     textAlign: 'center',
   },
-  text1Typo: {
-    fontSize: FontSize.subheading3_size,
-    color: Color.lightInk,
-  },
-  buttonFlexBox: {
-    justifyContent: 'center',
-    padding: Units.p_base,
-    borderRadius: Border.br_xs,
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: 343,
-    left: 16,
-  },
-  logInOrClr: {
-    color: Color.lightPrimary,
-    textAlign: 'center',
-  },
-  fieldLayout: {
-    height: 74,
-    width: 343,
-    left: 16,
-    position: 'absolute',
-    overflow: 'hidden',
-  },
-  checkboxFlexBox: {
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  fdfdfdfTypo: {
-    textAlign: 'left',
-  },
-
   text: {
     fontSize: FontSize.heading1_size,
-    lineHeight: 40,
+    lineHeight: RV(40),
     color: Color.lightInk,
   },
-  text1: {
-    lineHeight: 22,
-    textAlign: 'center',
-  },
   button: {
-    top: 332,
+    top: RV(332),
     borderColor: '#000',
     borderWidth: 1,
     borderStyle: 'solid',
@@ -216,20 +186,6 @@ export const styles = StyleSheet.create({
     backgroundColor: Color.whitesmoke_100,
     padding: Units.p_xl,
     width: '100%',
-  },
-  fieldName: {
-    fontSize: FontSize.caption_size,
-    color: Color.dimgray,
-    textAlign: 'left',
-    top: 0,
-    left: 16,
-    position: 'absolute',
-  },
-  field: {
-    top: 443,
-  },
-  field1: {
-    top: 533,
   },
   logInOr: {
     display: 'flex',
