@@ -1,0 +1,47 @@
+{
+    "project_info": {
+      "project_number": "685639226330",
+      "project_id": "lukeenglish",
+      "storage_bucket": "lukeenglish.appspot.com"
+    },
+    "client": [
+      {
+        "client_info": {
+          "mobilesdk_app_id": "1:685639226330:android:6b787a1139c7b5814f66e3",
+          "android_client_info": {
+            "package_name": "com.lukeeng.io"
+          }
+        },
+        "oauth_client": [
+          {
+            "client_id": "685639226330-ti5rv1f4of9r0as7th9hj8bttbat75i8.apps.googleusercontent.com",
+            "client_type": 3
+          }
+        ],
+        "api_key": [
+          {
+            "current_key": "AIzaSyBFVdg4uavMv9IDEMY3Lx2WjeGSM-VO1fk"
+          }
+        ],
+        "services": {
+          "appinvite_service": {
+            "other_platform_oauth_client": [
+              {
+                "client_id": "685639226330-ti5rv1f4of9r0as7th9hj8bttbat75i8.apps.googleusercontent.com",
+                "client_type": 3
+              },
+              {
+                "client_id": "685639226330-hu2f846hgl4j99tag2bcq6hmn457kktv.apps.googleusercontent.com",
+                "client_type": 2,
+                "ios_info": {
+                  "bundle_id": "com.lukeeng.io"
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "configuration_version": "1"
+  }
+  
