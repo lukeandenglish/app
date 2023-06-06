@@ -4,7 +4,7 @@ import {t} from '@lingui/macro';
 import {useNavigation} from '@react-navigation/native';
 import lodash from 'lodash';
 import * as React from 'react';
-import {Dimensions, StyleSheet, View} from 'react-native';
+import {Dimensions, Platform, StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
@@ -14,11 +14,16 @@ import {Inset, Queue, Stack} from '../../styleApp/Spacing';
 import {FontFamily} from '../../styleApp/Typografy';
 import {Button} from '../../styleApp/UI/Button';
 import {LabelText} from '../../styleApp/UI/LabelText';
-import {Border, FontSize, Units} from '../../styleApp/Units';
+import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
 import {RV} from '../../styleApp/Utils';
 import {default as Color, default as colors} from '../../styleApp/colors';
+import {Layout} from '../../styleApp/Layout';
+import {ScaledSheet} from 'react-native-size-matters';
+import {vh} from 'react-native-viewport-units';
 
 const WIDTH = Dimensions.get('screen').width;
+const ModelSelect = Platform.select({android: 8, ios: 8.2}) as number;
+
 const TIMER = 2500;
 
 const IntroAndOnboarding = () => {
@@ -90,94 +95,103 @@ const IntroAndOnboarding = () => {
       contentContainerStyle={[
         styles.scrolView,
         {
-          paddingTop: RV(insets.top),
-          paddingBottom: RV(insets.bottom + 50),
+          paddingTop: insets.top,
+          paddingBottom: insets.bottom,
           backgroundColor: colors.lightPrimary,
+          flexGrow: 1,
         },
       ]}>
-      <Stack size="s40" />
-      <ScrollView
-        ref={scrollRef}
-        pagingEnabled
-        horizontal
-        enabled={false}
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.horizontScroll}>
-        {DATA.map((x, idx) => (
-          <Inset key={[idx, x.color].join('_')} horizontal="s16">
-            <View
-              style={[
-                styles.revolutinaryWayOfLearningEParent,
-                styles.blockStyle,
-                {backgroundColor: x.color},
-              ]}>
-              <LabelText
-                title={x.title}
-                style={Object.assign([
-                  styles.revolutinaryWayOf,
-                  styles.withTheHelpClr,
-                ])}
-              />
-              <View style={styles.illusrt8}>
-                <SvgXml xml={x.icon} />
+      <Inset
+        vertical="s16"
+        layout={StyleSheet.flatten({minHeight: isCalcSize(550)})}>
+        <ScrollView
+          ref={scrollRef}
+          pagingEnabled
+          horizontal
+          enabled={false}
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.horizontScroll}>
+          {DATA.map((x, idx) => (
+            <Inset key={[idx, x.color].join('_')} horizontal="s16">
+              <View
+                style={[
+                  styles.revolutinaryWayOfLearningEParent,
+                  styles.blockStyle,
+                  {backgroundColor: x.color, justifyContent: 'space-between'},
+                ]}>
+                <LabelText
+                  title={x.title}
+                  style={Object.assign([
+                    styles.revolutinaryWayOf,
+                    styles.withTheHelpClr,
+                  ])}
+                />
+                <View style={styles.illusrt8}>
+                  <SvgXml xml={x.icon} />
+                </View>
+                <LabelText
+                  title={x.value}
+                  style={Object.assign([
+                    styles.withTheHelp,
+                    styles.withTheHelpClr,
+                    FontFamily['300'],
+                  ])}
+                />
               </View>
-              <LabelText
-                title={x.value}
-                style={Object.assign([
-                  styles.withTheHelp,
-                  styles.withTheHelpClr,
-                  FontFamily['300'],
-                ])}
-              />
-            </View>
-          </Inset>
-        ))}
-      </ScrollView>
-      <Stack size="s30" />
-      <View style={styles.blockSelect}>
-        <Queue size="s16" />
-        {DATA.map((x, idx) => (
-          <View key={[idx, 'dots'].join('')} style={{flexDirection: 'row'}}>
-            <TouchableOpacity
-              onPress={() => switchCard(idx)}
-              style={[
-                styles.dot,
-                state === idx && {backgroundColor: Color.lightInk},
-              ]}
-            />
-            <Queue size="s16" />
-          </View>
-        ))}
-      </View>
-      <Stack size="s52" />
-      <Inset horizontal="s16">
-        <Button
-          disabled={false}
-          onPress={() =>
-            navigation.navigate(ROUTER_PAGE.UNAUTH.LogInOrRegister)
-          }
-          title={t`Log in or register`}
-          styleText={{color: colors.lightPrimary}}
-          style={{backgroundColor: colors.lightInk}}
-        />
-        <Stack size="s16" />
-        <Button
-          disabled={false}
-          onPress={() =>
-            navigation.navigate(ROUTER_PAGE.UNAUTH.LogInOrRegister)
-          }
-          title={t`Let’s go`}
-          styleText={{color: colors.lightPrimary}}
-          style={{backgroundColor: colors.actionColor}}
-        />
+            </Inset>
+          ))}
+        </ScrollView>
       </Inset>
+      <Stack size="s16" />
+      <View
+        style={{
+          justifyContent: 'space-around',
+          paddingBottom: insets.bottom + insets.top,
+        }}>
+        <View style={styles.blockSelect}>
+          <Queue size="s16" />
+          {DATA.map((x, idx) => (
+            <View key={[idx, 'dots'].join('')} style={{flexDirection: 'row'}}>
+              <TouchableOpacity
+                onPress={() => switchCard(idx)}
+                style={[
+                  styles.dot,
+                  state === idx && {backgroundColor: Color.lightInk},
+                ]}
+              />
+              <Queue size="s16" />
+            </View>
+          ))}
+        </View>
+        <Stack size="s32" />
+        <Inset horizontal="s16" vertical="s16">
+          <Button
+            disabled={false}
+            onPress={() =>
+              navigation.navigate(ROUTER_PAGE.UNAUTH.LogInOrRegister)
+            }
+            title={t`Log in or register`}
+            styleText={{color: colors.lightPrimary}}
+            style={{backgroundColor: colors.lightInk}}
+          />
+          <Stack size="s16" />
+          <Button
+            disabled={false}
+            onPress={() =>
+              navigation.navigate(ROUTER_PAGE.UNAUTH.LogInOrRegister)
+            }
+            title={t`Let’s go`}
+            styleText={{color: colors.lightPrimary}}
+            style={{backgroundColor: colors.actionColor}}
+          />
+        </Inset>
+      </View>
     </ScrollView>
   );
 };
 
-const styles = StyleSheet.create({
+const styles = ScaledSheet.create({
   blockSelect: {
-    height: RV(12),
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
@@ -188,17 +202,18 @@ const styles = StyleSheet.create({
   },
   horizontScroll: {
     position: 'relative',
-    height: RV(511),
+    height: isCalcSize(521),
+    flexGrow: 1,
     paddingBottom: 0,
   },
   scrolView: {
-    flexGrow: 1,
-    backgroundColor: colors.transparent,
+    backgroundColor: colors.lightPrimary,
+    maxHeight: Layout.window.height,
   },
   dot: {
-    height: RV(12),
-    width: RV(12),
-    borderRadius: RV(50),
+    height: Units.s12,
+    width: Units.s12,
+    borderRadius: isCalcSize(50),
     backgroundColor: Color.dot,
   },
   withTheHelpClr: {
@@ -207,20 +222,20 @@ const styles = StyleSheet.create({
   },
   revolutinaryWayOf: {
     fontSize: FontSize.heading1_size,
-    lineHeight: RV(40),
-    width: RV(295),
+    lineHeight: isCalcSize(40),
+    width: isCalcSize(295),
   },
   illusrt8: {
-    width: RV(220),
-    height: RV(220),
+    width: isCalcSize(220),
+    height: isCalcSize(220),
     alignItems: 'center',
     justifyContent: 'center',
     overflow: 'hidden',
     mixBlendMode: 'overlay',
   },
   withTheHelp: {
-    lineHeight: RV(22),
-    width: RV(279),
+    lineHeight: isCalcSize(22),
+    width: isCalcSize(279),
     marginTop: Units.s44,
     fontSize: FontSize.subheading3_size,
     color: Color.lightInk,

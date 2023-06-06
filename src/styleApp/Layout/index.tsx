@@ -1,8 +1,8 @@
 import {Dimensions, Platform} from 'react-native';
 import {getBottomSpace, getStatusBarHeight} from 'react-native-iphone-x-helper';
 
-const {width} = Dimensions.get('window');
-const {height} = Dimensions.get('window');
+const {width} = Dimensions.get('screen');
+const {height} = Dimensions.get('screen');
 
 export const Layout = {
   BOTTOM_SPACE: getBottomSpace(),

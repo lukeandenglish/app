@@ -10,16 +10,15 @@ const DEVICE_HEIGHT = Layout.window.height;
 // 896 - XR, XS Max, 11, 11 Pro Max
 // 926 - 12 Pro Max
 // --- END ---
-const STANDARD_SCREEN_HEIGHT = 870;
+const STANDARD_SCREEN_HEIGHT = 812;
 const MAX_DEVICE_HEIGHT = Math.max(
   Math.min(DEVICE_HEIGHT * 1.05, STANDARD_SCREEN_HEIGHT),
-  500,
+  375,
 );
-const HEIGTH_K = MAX_DEVICE_HEIGHT / 926;
+const HEIGTH_K = MAX_DEVICE_HEIGHT / STANDARD_SCREEN_HEIGHT;
 
 export function RV(value: number): number {
   const heightPercent = value * HEIGTH_K;
-
   return parseFloat(heightPercent.toFixed(2));
 }
 

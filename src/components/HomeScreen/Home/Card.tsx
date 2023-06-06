@@ -24,7 +24,6 @@ export const getCurrentMode = R.pipe(
 
 export const Card = React.memo(
   ({mode, scene, cardLength, title}: iListItem) => {
-    console.log(cardLength, title);
     switch (mode) {
       case ChangeMode[0]:
         return (

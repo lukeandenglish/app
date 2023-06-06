@@ -30,7 +30,7 @@ export const LabelText = ({
         return Object.assign([
           {
             fontWeight: '400',
-            color: colors.black,
+            color: colors.lightInk,
             lineHeight: Units.s22,
             fontSize: Units.s16,
           },
