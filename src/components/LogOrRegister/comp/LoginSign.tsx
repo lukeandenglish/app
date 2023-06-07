@@ -1,21 +1,30 @@
 import {t} from '@lingui/macro';
 import * as React from 'react';
-import {Text, TextInput, View, StyleSheet} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {SvgXml} from 'react-native-svg';
 import {Switch} from '../../../assets/svg/switch';
 import {useHookUserProfile} from '../../../hooks/useHookUserProfile';
 import {Stack} from '../../../styleApp/Spacing';
 import {AnimateIInput} from '../../../styleApp/UI/AnimatedUIInput';
+import {Border, FontSize, Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
-import {Units, FontSize, Border} from '../../../styleApp/Units';
-import {RV} from '../../../styleApp/Utils';
-import {WIDTH} from '../../HomeScreen/Home/screen';
 
-export function LoginSign() {
+export function LoginSign({onFocus}: {onFocus: () => void}) {
   const [state, {handleCheckboxAgree}] = useHookUserProfile();
   const scrollRef = React.useRef<ScrollView | null>(null);
   const passwordRef = React.useRef<TextInput | null>(null);
+  const passwordRepeatRef = React.useRef<TextInput | null>(null);
+
+  const funcMoveInput = pos => () => {
+    if (pos === 1) {
+      passwordRef.current?.focus();
+    }
+    if (pos === 2) {
+      passwordRepeatRef.current?.focus();
+    }
+    onFocus();
+  };
 
   return (
     <>
@@ -28,9 +37,7 @@ export function LoginSign() {
           ref={passwordRef}
           // secureTextEntry
           keyboardType="default"
-          onScrollRef={() => {
-            scrollRef.current?.scrollToEnd();
-          }}
+          onScrollRef={funcMoveInput(1)}
           {...state.password}
         />
         <Stack size="s16" />
@@ -38,9 +45,7 @@ export function LoginSign() {
           ref={passwordRef}
           // secureTextEntry
           keyboardType="default"
-          onScrollRef={() => {
-            scrollRef.current?.scrollToEnd();
-          }}
+          onScrollRef={funcMoveInput(2)}
           {...state.passwordRepeat}
         />
         <Stack size="s16" />

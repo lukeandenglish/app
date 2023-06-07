@@ -15,7 +15,7 @@ import {registerApi} from '../../redux/api/registerApi';
 import {Inset, Stack} from '../../styleApp/Spacing';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
-import {Border, FontSize, Units} from '../../styleApp/Units';
+import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
 import {default as Color, default as colors} from '../../styleApp/colors';
 import {BlockSelect} from './comp/BlockSelect';
 import {LoginSign} from './comp/LoginSign';
@@ -85,7 +85,6 @@ const LogInOrRegisterScreen = ({disabled}) => {
         {
           flex: 1,
           backgroundColor: Color.transparent,
-          paddingTop: Units.s8,
         },
       ]}>
       <View
@@ -94,6 +93,7 @@ const LogInOrRegisterScreen = ({disabled}) => {
           borderTopRightRadius: Border.br_base,
           backgroundColor: colors.lightPrimary,
           borderTopLeftRadius: Border.br_base,
+          paddingBottom: insets.bottom,
         }}>
         <ScrollView
           bounces={false}
@@ -106,7 +106,7 @@ const LogInOrRegisterScreen = ({disabled}) => {
                 flex: 1,
               }}>
               <BlockSelect disabled={disabled} />
-              <Stack size="s32" />
+              <Stack size="s16" _debug />
               <View
                 style={{
                   height: 1,
@@ -115,17 +115,42 @@ const LogInOrRegisterScreen = ({disabled}) => {
                 }}
               />
               <Stack size="s32" />
-              <AnimateIInput
-                ref={emailRef}
-                keyboardType="email-address"
-                onScrollRef={() => {
-                  scrollRef.current?.scrollToEnd();
-                }}
-                {...state.email}
-              />
-              {isRegister && <Register />}
+              <View
+                onTouchStart={() => {
+                  setTimeout(() => {
+                    scrollRef.current?.scrollToEnd();
+                  });
+                }}>
+                <AnimateIInput
+                  ref={emailRef}
+                  keyboardType="email-address"
+                  onScrollRef={() => {
+                    setTimeout(() => {
+                      scrollRef.current?.scrollToEnd();
+                    });
+                  }}
+                  {...state.email}
+                />
+                {isRegister && (
+                  <Register
+                    onFocus={() => {
+                      setTimeout(() => {
+                        scrollRef.current?.scrollToEnd();
+                      });
+                    }}
+                  />
+                )}
 
-              {!isRegister && <LoginSign />}
+                {!isRegister && (
+                  <LoginSign
+                    onFocus={() => {
+                      setTimeout(() => {
+                        scrollRef.current?.scrollToEnd();
+                      });
+                    }}
+                  />
+                )}
+              </View>
             </Inset>
           </View>
         </ScrollView>
@@ -134,9 +159,7 @@ const LogInOrRegisterScreen = ({disabled}) => {
           horizontal="s16"
           bottom="s6"
           _debug
-          layout={StyleSheet.flatten({
-            paddingBottom: insets.bottom,
-          })}>
+          layout={StyleSheet.flatten({bottom: 0})}>
           <Button
             disabled={registerEnabled}
             {...BtnProps}
@@ -155,19 +178,19 @@ const LogInOrRegisterScreen = ({disabled}) => {
 
 export const styles = StyleSheet.create({
   checkboxChildLayout: {
-    height: RV(24),
-    width: RV(24),
+    height: isCalcSize(24),
+    width: isCalcSize(24),
   },
   textPosition: {
     textAlign: 'center',
   },
   text: {
     fontSize: FontSize.heading1_size,
-    lineHeight: RV(40),
+    lineHeight: isCalcSize(40),
     color: Color.lightInk,
   },
   button: {
-    top: RV(332),
+    top: isCalcSize(332),
     borderColor: '#000',
     borderWidth: 1,
     borderStyle: 'solid',
@@ -189,19 +212,14 @@ export const styles = StyleSheet.create({
   },
   logInOr: {
     display: 'flex',
-    width: 243,
+    width: isCalcSize(243),
     // fontFamily: FontFamily.graphikMedium,
     fontWeight: '500',
     color: Color.lightPrimary,
-    height: 16,
+    height: isCalcSize(16),
     justifyContent: 'center',
     alignItems: 'center',
     fontSize: FontSize.subheading3_size,
-  },
-  button3: {
-    top: 745,
-    backgroundColor: Color.actionColor,
-    position: 'absolute',
   },
   checkboxChild: {
     borderRadius: Border.br_5xs,
@@ -211,7 +229,7 @@ export const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   iAgreeWith: {
-    marginLeft: 12,
+    marginLeft: isCalcSize(12),
     textAlign: 'left',
     fontSize: FontSize.subheading3_size,
     color: Color.lightInk,

@@ -4,25 +4,24 @@ import {t} from '@lingui/macro';
 import {useNavigation} from '@react-navigation/native';
 import lodash from 'lodash';
 import * as React from 'react';
-import {Dimensions, Platform, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler';
+import Animated, {
+  FadeOutDown,
+  Layout as RNRLayout,
+  ZoomInUp,
+} from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
 import {PalletColor, one, three, two} from '../../assets/info';
 import ROUTER_PAGE from '../../config/page';
+import {Layout} from '../../styleApp/Layout';
 import {Inset, Queue, Stack} from '../../styleApp/Spacing';
 import {FontFamily} from '../../styleApp/Typografy';
 import {Button} from '../../styleApp/UI/Button';
 import {LabelText} from '../../styleApp/UI/LabelText';
 import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
-import {RV} from '../../styleApp/Utils';
-import {default as Color, default as colors} from '../../styleApp/colors';
-import {Layout} from '../../styleApp/Layout';
-import {ScaledSheet} from 'react-native-size-matters';
-import {vh} from 'react-native-viewport-units';
-
-const WIDTH = Dimensions.get('screen').width;
-const ModelSelect = Platform.select({android: 8, ios: 8.2}) as number;
+import colors from '../../styleApp/colors';
 
 const TIMER = 2500;
 
@@ -69,7 +68,7 @@ const IntroAndOnboarding = () => {
     (numberIdx: number) => {
       setState(numberIdx === DATA.length ? 0 : numberIdx);
       scrollRef.current?.scrollTo({
-        x: numberIdx === DATA.length ? 0 : numberIdx * WIDTH,
+        x: numberIdx === DATA.length ? 0 : numberIdx * Layout.window.width,
         y: 0,
         animated: true,
       });
@@ -88,6 +87,10 @@ const IntroAndOnboarding = () => {
     };
   }, [state, switchCard]);
 
+  const selectNavigate = () => {
+    navigation.navigate(ROUTER_PAGE.UNAUTH.LogInOrRegister);
+  };
+
   return (
     <ScrollView
       bounces={false}
@@ -97,9 +100,8 @@ const IntroAndOnboarding = () => {
         {
           paddingTop: insets.top,
           paddingBottom: insets.bottom,
-          backgroundColor: colors.lightPrimary,
-          flexGrow: 1,
         },
+        styles.scrollView,
       ]}>
       <Inset
         vertical="s16"
@@ -113,51 +115,49 @@ const IntroAndOnboarding = () => {
           contentContainerStyle={styles.horizontScroll}>
           {DATA.map((x, idx) => (
             <Inset key={[idx, x.color].join('_')} horizontal="s16">
-              <View
-                style={[
-                  styles.revolutinaryWayOfLearningEParent,
-                  styles.blockStyle,
-                  {backgroundColor: x.color, justifyContent: 'space-between'},
-                ]}>
-                <LabelText
-                  title={x.title}
-                  style={Object.assign([
-                    styles.revolutinaryWayOf,
-                    styles.withTheHelpClr,
-                  ])}
-                />
-                <View style={styles.illusrt8}>
-                  <SvgXml xml={x.icon} />
+              <Animated.View
+                entering={ZoomInUp}
+                exiting={FadeOutDown}
+                layout={RNRLayout.duration(1400).delay(1400)}>
+                <View
+                  style={[
+                    styles.revolutinaryWayOfLearningEParent,
+                    styles.blockStyle,
+                    {backgroundColor: x.color, justifyContent: 'space-between'},
+                  ]}>
+                  <LabelText
+                    title={x.title}
+                    style={Object.assign([
+                      styles.revolutinaryWayOf,
+                      styles.withTheHelpClr,
+                    ])}
+                  />
+                  <View style={styles.illusrt8}>
+                    <SvgXml xml={x.icon} />
+                  </View>
+                  <LabelText
+                    title={x.value}
+                    style={Object.assign([
+                      styles.withTheHelp,
+                      styles.withTheHelpClr,
+                      FontFamily['300'],
+                    ])}
+                  />
                 </View>
-                <LabelText
-                  title={x.value}
-                  style={Object.assign([
-                    styles.withTheHelp,
-                    styles.withTheHelpClr,
-                    FontFamily['300'],
-                  ])}
-                />
-              </View>
+              </Animated.View>
             </Inset>
           ))}
         </ScrollView>
       </Inset>
       <Stack size="s16" />
-      <View
-        style={{
-          justifyContent: 'space-around',
-          paddingBottom: insets.bottom + insets.top,
-        }}>
+      <View style={styles.spaceAround}>
         <View style={styles.blockSelect}>
           <Queue size="s16" />
           {DATA.map((x, idx) => (
-            <View key={[idx, 'dots'].join('')} style={{flexDirection: 'row'}}>
+            <View key={[idx, 'dots'].join('')} style={styles.row}>
               <TouchableOpacity
                 onPress={() => switchCard(idx)}
-                style={[
-                  styles.dot,
-                  state === idx && {backgroundColor: Color.lightInk},
-                ]}
+                style={[styles.dot, state === idx && styles.selectDots]}
               />
               <Queue size="s16" />
             </View>
@@ -167,9 +167,7 @@ const IntroAndOnboarding = () => {
         <Inset horizontal="s16" vertical="s16">
           <Button
             disabled={false}
-            onPress={() =>
-              navigation.navigate(ROUTER_PAGE.UNAUTH.LogInOrRegister)
-            }
+            onPress={selectNavigate}
             title={t`Log in or register`}
             styleText={{color: colors.lightPrimary}}
             style={{backgroundColor: colors.lightInk}}
@@ -177,9 +175,7 @@ const IntroAndOnboarding = () => {
           <Stack size="s16" />
           <Button
             disabled={false}
-            onPress={() =>
-              navigation.navigate(ROUTER_PAGE.UNAUTH.LogInOrRegister)
-            }
+            onPress={selectNavigate}
             title={t`Let’s go`}
             styleText={{color: colors.lightPrimary}}
             style={{backgroundColor: colors.actionColor}}
@@ -190,7 +186,13 @@ const IntroAndOnboarding = () => {
   );
 };
 
-const styles = ScaledSheet.create({
+const styles = StyleSheet.create({
+  scrollView: {
+    backgroundColor: colors.lightPrimary,
+    flexGrow: 1,
+  },
+  row: {flexDirection: 'row'},
+  selectDots: {backgroundColor: colors.lightInk},
   blockSelect: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -198,7 +200,7 @@ const styles = ScaledSheet.create({
   },
   blockStyle: {
     height: '100%',
-    width: WIDTH - 2 * Units.s16,
+    width: Layout.window.width - 2 * Units.s16,
   },
   horizontScroll: {
     position: 'relative',
@@ -214,10 +216,10 @@ const styles = ScaledSheet.create({
     height: Units.s12,
     width: Units.s12,
     borderRadius: isCalcSize(50),
-    backgroundColor: Color.dot,
+    backgroundColor: colors.dot,
   },
   withTheHelpClr: {
-    color: Color.lightInk,
+    color: colors.lightInk,
     textAlign: 'center',
   },
   revolutinaryWayOf: {
@@ -238,13 +240,16 @@ const styles = ScaledSheet.create({
     width: isCalcSize(279),
     marginTop: Units.s44,
     fontSize: FontSize.subheading3_size,
-    color: Color.lightInk,
+    color: colors.lightInk,
   },
   revolutinaryWayOfLearningEParent: {
     borderRadius: Border.br_base,
-    backgroundColor: Color.lavender,
+    backgroundColor: colors.lavender,
     padding: Units.p_5xl,
     alignItems: 'center',
+  },
+  spaceAround: {
+    justifyContent: 'space-around',
   },
 });
 

@@ -5,6 +5,7 @@ import {StyleSheet, View} from 'react-native';
 import {CameraOptions, launchImageLibrary} from 'react-native-image-picker';
 import {SvgXml} from 'react-native-svg';
 import {useDispatch, useSelector} from 'react-redux';
+import validator from 'validator';
 import photo from '../assets/svg/photo';
 import REDUCER_PATH from '../config/reducer';
 import {
@@ -17,7 +18,6 @@ import {
   actionChangePasswordRepeat,
 } from '../redux/action/register';
 import {Units} from '../styleApp/Units';
-import validator from 'validator';
 
 const IMAGE =
   'https://searchengineland.com/wp-content/seloads/2015/12/google-amp-fast-speed-travel-ss-1920-1536x864.jpg';
@@ -103,6 +103,22 @@ export const useHookUserProfile = () => {
 
   const loading = false;
 
+  console.log(state, validator.isMobilePhone(state.email));
+
+  const placeHolderName = R.pipe(
+    R.path(['email']),
+    R.defaultTo(''),
+    R.cond([
+      [
+        R.pipe(validator.isMobilePhone),
+        R.always(t`Register with telephone number`),
+      ],
+      [R.pipe(validator.isEmail), R.always(t`Register with email`)],
+      [R.F, R.always(t`Mail or telephone`)],
+      [R.T, R.always(t`Mail or telephone`)],
+    ]),
+  )(state);
+
   return [
     {
       name: {
@@ -153,7 +169,7 @@ export const useHookUserProfile = () => {
         editable: !loading,
         value: state.email,
         placeholder: email,
-        placeholderName: t`Mail or telephone`,
+        placeholderName: placeHolderName,
         onEndEditing: onChangeEmail,
         blurOnSubmit: true,
         onChangeText: (email: IUserProfile['email']) => {

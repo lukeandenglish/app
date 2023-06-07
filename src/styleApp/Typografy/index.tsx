@@ -96,7 +96,7 @@ export const FontFamily = {
   300: {fontfamily: 'Graphik-Thin', fontWeight: '300'},
   600: {fontfamily: 'Graphik-Medium', fontWeight: '600'},
   700: {fontfamily: 'Graphik-Bold', fontWeight: '700'},
-};
+} as {[x: string]: TextStyle};
 
 export const Styles = {
   animateInput: (state: boolean): ViewStyle | TextStyle => ({

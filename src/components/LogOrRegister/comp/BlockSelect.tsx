@@ -18,9 +18,7 @@ export function BlockSelect({disabled}: {disabled: boolean}) {
 
   return (
     <>
-      <View style={{height: Units.s44}}>
-        <View />
-      </View>
+      <Stack size="s32" _debug />
       <LabelText
         title={t`Войдите или зарегистрируйтесь`}
         style={Object.assign([styles.text, styles.textPosition])}

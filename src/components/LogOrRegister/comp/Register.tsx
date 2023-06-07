@@ -1,17 +1,17 @@
 import {t} from '@lingui/macro';
+import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
-import {Text, TextInput, View} from 'react-native';
+import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import ROUTER_PATH from '../../../config/page';
 import {useHookUserProfile} from '../../../hooks/useHookUserProfile';
 import {Stack} from '../../../styleApp/Spacing';
-import {AnimateIInput} from '../../../styleApp/UI/AnimatedUIInput';
-import {default as colors} from '../../../styleApp/colors';
 import {FontFamily, Typography} from '../../../styleApp/Typografy';
-import {useNavigation} from '@react-navigation/native';
-import ROUTER_PATH from '../../../config/page';
-import {styles} from '../screen';
+import {AnimateIInput} from '../../../styleApp/UI/AnimatedUIInput';
+import {FontSize} from '../../../styleApp/Units';
+import colors from '../../../styleApp/colors';
 
-export function Register() {
+export function Register({onFocus}: {onFocus: () => void}) {
   const [state] = useHookUserProfile();
   const navigation = useNavigation();
 
@@ -20,6 +20,13 @@ export function Register() {
 
   const onForgotPassword = () =>
     navigation.navigate(ROUTER_PATH.UNAUTH.ForgotPassword);
+
+  const funcMoveInput = pos => () => {
+    if (pos === 1) {
+      passwordRef.current?.focus();
+    }
+    onFocus();
+  };
 
   return (
     <>
@@ -32,15 +39,13 @@ export function Register() {
           ref={passwordRef}
           secureTextEntry
           keyboardType="default"
-          onScrollRef={() => {
-            scrollRef.current?.scrollToEnd();
-          }}
+          onScrollRef={funcMoveInput(1)}
           {...state.password}
         />
       </View>
 
       <Stack size="s16" />
-      <View style={[styles.checkbox, styles.checkboxFlexBox]}>
+      <View style={[styles.checkboxFlexBox]}>
         <TouchableOpacity disabled={false} onPress={onForgotPassword}>
           <Text
             style={[
@@ -58,3 +63,29 @@ export function Register() {
     </>
   );
 }
+
+const styles = StyleSheet.create({
+  checkboxFlexBox: {
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  fdfdfdfTypo: {
+    textAlign: 'left',
+  },
+
+  text: {
+    fontSize: FontSize.heading1_size,
+    lineHeight: 40,
+    color: colors.lightInk,
+  },
+  text1: {
+    lineHeight: 22,
+    textAlign: 'center',
+  },
+  iAgreeWith: {
+    marginLeft: 12,
+    textAlign: 'left',
+    fontSize: FontSize.subheading3_size,
+    color: colors.lightInk,
+  },
+});
