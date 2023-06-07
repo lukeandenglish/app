@@ -4,6 +4,7 @@ import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {BlockHeader} from '../../../block/profile/BlockHeader';
 import colors from '../../../styleApp/colors';
+import {isCalcSize} from '../../../styleApp/Units';
 
 export default (): React.ReactNode => {
   const insets = useSafeAreaInsets();
@@ -17,7 +18,7 @@ export default (): React.ReactNode => {
         contentContainerStyle={[
           styles.scrolView,
           {
-            paddingBottom: insets.bottom + 100,
+            paddingBottom: insets.bottom + isCalcSize(100),
             backgroundColor: colors.lightPrimary,
           },
         ]}>
@@ -30,8 +31,8 @@ export default (): React.ReactNode => {
 
 export const styles = StyleSheet.create({
   borderIcon: {
-    width: 20,
-    height: 20,
+    width: isCalcSize(20),
+    height: isCalcSize(20),
     alignItems: 'center',
     justifyContent: 'center',
   },

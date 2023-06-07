@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-shadow */
 import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import React from 'react';
@@ -18,6 +19,8 @@ import {
   actionChangePasswordRepeat,
 } from '../redux/action/register';
 import {Units} from '../styleApp/Units';
+import colors from '../styleApp/colors';
+import {isCheckElement} from '../helper';
 
 const IMAGE =
   'https://searchengineland.com/wp-content/seloads/2015/12/google-amp-fast-speed-travel-ss-1920-1536x864.jpg';
@@ -27,6 +30,7 @@ interface iUserHookState {
   email: string;
   password: string;
   passwordRepeat: string;
+  agreements: boolean;
 }
 
 const INITIAL_STATE = {
@@ -34,6 +38,7 @@ const INITIAL_STATE = {
   email: '',
   password: '',
   passwordRepeat: '',
+  agreements: false,
 } as iUserHookState;
 
 const CONFIG_GALLERY = {
@@ -103,19 +108,32 @@ export const useHookUserProfile = () => {
 
   const loading = false;
 
-  console.log(state, validator.isMobilePhone(state.email));
-
   const placeHolderName = R.pipe(
     R.path(['email']),
     R.defaultTo(''),
+    x => (x.length === 0 ? email : x),
+    isCheckElement,
     R.cond([
       [
-        R.pipe(validator.isMobilePhone),
-        R.always(t`Register with telephone number`),
+        R.whereEq({phone: true}),
+        R.always(t`Register or login with telephone number`),
       ],
-      [R.pipe(validator.isEmail), R.always(t`Register with email`)],
+      [R.whereEq({email: true}), R.always(t`Register or login with email`)],
       [R.F, R.always(t`Mail or telephone`)],
       [R.T, R.always(t`Mail or telephone`)],
+    ]),
+  )(state);
+
+  const placeholderNameStyle = R.pipe(
+    R.path(['email']),
+    R.defaultTo(''),
+    x => (x.length === 0 ? email : x),
+    isCheckElement,
+    R.cond([
+      [R.whereEq({phone: true}), R.always(colors.gray_200)],
+      [R.whereEq({email: true}), R.always(colors.gray_200)],
+      [R.F, R.always(colors.bodyText)],
+      [R.T, R.always(colors.bodyText)],
     ]),
   )(state);
 
@@ -172,6 +190,7 @@ export const useHookUserProfile = () => {
         placeholderName: placeHolderName,
         onEndEditing: onChangeEmail,
         blurOnSubmit: true,
+        placeholderNameStyle: placeholderNameStyle,
         onChangeText: (email: IUserProfile['email']) => {
           setState({...state, email});
         },

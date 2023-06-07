@@ -3,6 +3,11 @@ import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
 import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import Animated, {
+  Layout as RNRLayout,
+  ZoomInLeft,
+  ZoomOutRight,
+} from 'react-native-reanimated';
 import ROUTER_PATH from '../../../config/page';
 import {useHookUserProfile} from '../../../hooks/useHookUserProfile';
 import {Stack} from '../../../styleApp/Spacing';
@@ -29,7 +34,10 @@ export function Register({onFocus}: {onFocus: () => void}) {
   };
 
   return (
-    <>
+    <Animated.View
+      entering={ZoomInLeft}
+      exiting={ZoomOutRight}
+      layout={RNRLayout.duration(1400).delay(1400)}>
       <View
         onTouchEnd={() => {
           scrollRef.current?.scrollToEnd();
@@ -60,7 +68,7 @@ export function Register({onFocus}: {onFocus: () => void}) {
         </TouchableOpacity>
       </View>
       <Stack size="s32" />
-    </>
+    </Animated.View>
   );
 }
 

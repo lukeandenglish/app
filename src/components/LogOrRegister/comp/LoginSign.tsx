@@ -9,6 +9,11 @@ import {Stack} from '../../../styleApp/Spacing';
 import {AnimateIInput} from '../../../styleApp/UI/AnimatedUIInput';
 import {Border, FontSize, Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
+import Animated, {
+  ZoomInLeft,
+  ZoomOutRight,
+  Layout as RNRLayout,
+} from 'react-native-reanimated';
 
 export function LoginSign({onFocus}: {onFocus: () => void}) {
   const [state, {handleCheckboxAgree}] = useHookUserProfile();
@@ -27,7 +32,10 @@ export function LoginSign({onFocus}: {onFocus: () => void}) {
   };
 
   return (
-    <>
+    <Animated.View
+      entering={ZoomInLeft}
+      exiting={ZoomOutRight}
+      layout={RNRLayout.duration(1400).delay(1400)}>
       <View
         onTouchEnd={() => {
           scrollRef.current?.scrollToEnd();
@@ -72,7 +80,7 @@ export function LoginSign({onFocus}: {onFocus: () => void}) {
         </View>
       </View>
       <Stack size="s16" />
-    </>
+    </Animated.View>
   );
 }
 

@@ -12,6 +12,7 @@ import {LabelText} from '../../../styleApp/UI/LabelText';
 import colors from '../../../styleApp/colors';
 import {useNavigation} from '@react-navigation/native';
 import ROUTER_PATH from '../../../config/page';
+import {isCalcSize} from '../../../styleApp/Units';
 
 export default (): React.ReactNode => {
   const insets = useSafeAreaInsets();
@@ -124,8 +125,8 @@ export default (): React.ReactNode => {
 
 export const styles = StyleSheet.create({
   borderIcon: {
-    width: 20,
-    height: 20,
+    width: isCalcSize(20),
+    height: isCalcSize(20),
     alignItems: 'center',
     justifyContent: 'center',
   },

@@ -1,54 +1,61 @@
-/* eslint-disable @typescript-eslint/no-shadow */
 /* eslint-disable react-native/no-inline-styles */
 import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import * as React from 'react';
-import {StyleSheet, TextInput, View} from 'react-native';
-import {ScrollView} from 'react-native';
+import {
+  Keyboard,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useDispatch, useSelector} from 'react-redux';
+import {useSelector} from 'react-redux';
 import REDUCER_PATH from '../../config/reducer';
 import {useHookUserProfile} from '../../hooks/useHookUserProfile';
 import {IUserProfile} from '../../redux/action/register';
-import {registerApi} from '../../redux/api/registerApi';
-import {Inset, Stack} from '../../styleApp/Spacing';
+import {Inset, Queue, Stack} from '../../styleApp/Spacing';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
 import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
-import {default as Color, default as colors} from '../../styleApp/colors';
+import colors from '../../styleApp/colors';
 import {BlockSelect} from './comp/BlockSelect';
 import {LoginSign} from './comp/LoginSign';
 import {Register} from './comp/Register';
-import {RV} from '../../styleApp/Utils';
+import {useButtonRegister} from './useButtonRegister';
 
-//TODO: SVG ADDED CLOSE
+const useIsVisibleKeyboard = () => {
+  const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
 
-const useButtonRegister = () => {
-  const signUpQuery = registerApi.endpoints.signUpQuery as any;
-  const loginQuery = registerApi.endpoints.signUpQuery as any;
+  React.useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener(
+      'keyboardDidShow',
+      () => {
+        setKeyboardVisible(true); // or some other action
+      },
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      'keyboardDidHide',
+      () => {
+        setKeyboardVisible(false); // or some other action
+      },
+    );
 
-  const dispatchRedux = useDispatch();
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
-  const [mode, setMode] = React.useState(false);
-
-  const BtnProps = mode
-    ? {
-        title: t`Login`,
-        onPress: () =>
-          dispatchRedux(loginQuery.initiate({})).catch(console.info),
-      }
-    : {
-        title: t`Register`,
-        onPress: () =>
-          dispatchRedux(signUpQuery.initiate({})).catch(console.info),
-      };
-
-  return {BtnProps};
+  return {isKeyboardVisible};
 };
 
-const LogInOrRegisterScreen = ({disabled}) => {
-  const {BtnProps} = useButtonRegister();
+const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
+  const {BtnProps, isRegister, changeRegister} = useButtonRegister();
+  const {isKeyboardVisible} = useIsVisibleKeyboard();
   const [state] = useHookUserProfile();
   let [email, password, agreements, RLoading] = useSelector(
     R.pipe(
@@ -62,6 +69,7 @@ const LogInOrRegisterScreen = ({disabled}) => {
     IUserProfile['agreements'],
     IUserProfile['loading'],
   ];
+
   const insets = useSafeAreaInsets();
   const scrollRef = React.useRef<ScrollView | null>(null);
   const emailRef = React.useRef<TextInput | null>(null);
@@ -70,8 +78,6 @@ const LogInOrRegisterScreen = ({disabled}) => {
     disabled = true;
   }
 
-  const isRegister = false;
-
   const registerEnabled = React.useMemo(() => {
     if (password?.length > 3 && email?.length > 3 && agreements) {
       return false;
@@ -79,77 +85,62 @@ const LogInOrRegisterScreen = ({disabled}) => {
     return true;
   }, [email, password, agreements]);
 
+  const moveToButton = () => {
+    setTimeout(() => {
+      scrollRef.current?.scrollToEnd();
+    });
+  };
+
   return (
-    <View
-      style={[
-        {
-          flex: 1,
-          backgroundColor: Color.transparent,
-        },
-      ]}>
+    <View style={[styles.wrapper]}>
       <View
-        style={{
-          flex: 1,
-          borderTopRightRadius: Border.br_base,
-          backgroundColor: colors.lightPrimary,
-          borderTopLeftRadius: Border.br_base,
-          paddingBottom: insets.bottom,
-        }}>
+        style={[
+          styles.blc,
+          {
+            paddingBottom: insets.bottom,
+          },
+        ]}>
         <ScrollView
           bounces={false}
           ref={scrollRef}
-          contentContainerStyle={{flexGrow: 1}}>
+          contentContainerStyle={styles.cnt}>
           <View>
-            <Inset
-              horizontal="s16"
-              layout={{
-                flex: 1,
-              }}>
+            <Inset horizontal="s16" layout={styles.insctx}>
               <BlockSelect disabled={disabled} />
-              <Stack size="s16" _debug />
-              <View
-                style={{
-                  height: 1,
-                  borderBottomWidth: 1,
-                  borderColor: colors.stroke,
-                }}
-              />
+              <Stack size="s16" />
+              <View style={styles.line} />
               <Stack size="s32" />
               <View
-                onTouchStart={() => {
-                  setTimeout(() => {
-                    scrollRef.current?.scrollToEnd();
-                  });
+                style={{
+                  position: 'relative',
                 }}>
+                <TouchableOpacity onPress={changeRegister} style={styles.swm}>
+                  <Text style={{color: colors.beige}}>
+                    {isRegister
+                      ? t`I want register account`
+                      : t`I have account and want login!`}
+                  </Text>
+                  <Queue size="s10" />
+                  <View
+                    style={[
+                      styles.btnswn,
+                      {
+                        backgroundColor: isRegister ? 'red' : 'green',
+                      },
+                    ]}
+                  />
+                </TouchableOpacity>
+              </View>
+
+              <View onTouchStart={moveToButton}>
                 <AnimateIInput
                   ref={emailRef}
                   keyboardType="email-address"
-                  onScrollRef={() => {
-                    setTimeout(() => {
-                      scrollRef.current?.scrollToEnd();
-                    });
-                  }}
+                  onScrollRef={moveToButton}
                   {...state.email}
                 />
-                {isRegister && (
-                  <Register
-                    onFocus={() => {
-                      setTimeout(() => {
-                        scrollRef.current?.scrollToEnd();
-                      });
-                    }}
-                  />
-                )}
-
-                {!isRegister && (
-                  <LoginSign
-                    onFocus={() => {
-                      setTimeout(() => {
-                        scrollRef.current?.scrollToEnd();
-                      });
-                    }}
-                  />
-                )}
+                {!isRegister && <Register onFocus={moveToButton} />}
+                {isRegister && <LoginSign onFocus={moveToButton} />}
               </View>
             </Inset>
           </View>
@@ -158,16 +149,21 @@ const LogInOrRegisterScreen = ({disabled}) => {
         <Inset
           horizontal="s16"
           bottom="s6"
-          _debug
-          layout={StyleSheet.flatten({bottom: 0})}>
+          layout={StyleSheet.flatten(
+            Object.assign([
+              styles.btnMode,
+              isKeyboardVisible && {display: 'none'},
+            ]),
+          )}>
           <Button
             disabled={registerEnabled}
             {...BtnProps}
-            styleText={{color: colors.lightPrimary}}
+            styleText={styles.btnclr}
             style={Object.assign([
               {
                 backgroundColor: colors.actionColor,
               },
+              isKeyboardVisible && {display: 'none'},
             ])}
           />
         </Inset>
@@ -176,7 +172,38 @@ const LogInOrRegisterScreen = ({disabled}) => {
   );
 };
 
-export const styles = StyleSheet.create({
+const styles = StyleSheet.create({
+  btnMode: {bottom: 0},
+  btnclr: {color: colors.lightPrimary},
+  insctx: {
+    flex: 1,
+  },
+  btnswn: {
+    width: isCalcSize(20),
+    height: isCalcSize(20),
+  },
+  swm: {
+    position: 'absolute',
+    right: 0,
+    top: -isCalcSize(30),
+    flexDirection: 'row',
+  },
+  line: {
+    height: 1,
+    borderBottomWidth: 1,
+    borderColor: colors.stroke,
+  },
+  cnt: {flexGrow: 1},
+  wrapper: {
+    flex: 1,
+    backgroundColor: colors.transparent,
+  },
+  blc: {
+    flex: 1,
+    borderTopRightRadius: Border.br_base,
+    backgroundColor: colors.lightPrimary,
+    borderTopLeftRadius: Border.br_base,
+  },
   checkboxChildLayout: {
     height: isCalcSize(24),
     width: isCalcSize(24),
@@ -187,7 +214,7 @@ export const styles = StyleSheet.create({
   text: {
     fontSize: FontSize.heading1_size,
     lineHeight: isCalcSize(40),
-    color: Color.lightInk,
+    color: colors.lightInk,
   },
   button: {
     top: isCalcSize(332),
@@ -199,23 +226,22 @@ export const styles = StyleSheet.create({
   fdfdfdf: {
     textAlign: 'left',
     fontSize: FontSize.subheading3_size,
-    color: Color.lightInk,
+    color: colors.lightInk,
   },
   fdfdfdfWrapper: {
     top: 22,
     right: '0%',
     left: '0%',
     borderRadius: Border.br_81xl,
-    backgroundColor: Color.whitesmoke_100,
+    backgroundColor: colors.whitesmoke_100,
     padding: Units.p_xl,
     width: '100%',
   },
   logInOr: {
     display: 'flex',
     width: isCalcSize(243),
-    // fontFamily: FontFamily.graphikMedium,
     fontWeight: '500',
-    color: Color.lightPrimary,
+    color: colors.lightPrimary,
     height: isCalcSize(16),
     justifyContent: 'center',
     alignItems: 'center',
@@ -223,7 +249,7 @@ export const styles = StyleSheet.create({
   },
   checkboxChild: {
     borderRadius: Border.br_5xs,
-    backgroundColor: Color.whitesmoke_200,
+    backgroundColor: colors.whitesmoke_200,
     position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
@@ -232,7 +258,7 @@ export const styles = StyleSheet.create({
     marginLeft: isCalcSize(12),
     textAlign: 'left',
     fontSize: FontSize.subheading3_size,
-    color: Color.lightInk,
+    color: colors.lightInk,
   },
   checkbox: {},
   logInOrRegister: {

@@ -5,14 +5,14 @@ import {StyleSheet, View} from 'react-native';
 import {SvgXml} from 'react-native-svg';
 import {two} from '../../../../assets/info';
 import {PalletColor} from '../../../../assets/info/index';
+import {iListItem} from '../../../../redux/api/deckCard/helper';
+import {Layout} from '../../../../styleApp/Layout';
 import {Inset, Stack} from '../../../../styleApp/Spacing';
 import {FontFamily, Typography} from '../../../../styleApp/Typografy';
 import {Button} from '../../../../styleApp/UI/Button';
 import {LabelText} from '../../../../styleApp/UI/LabelText';
-import {RV} from '../../../../styleApp/Utils';
+import {isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
-import {WIDTH} from '../screen';
-import {iListItem} from '../../../../redux/api/deckCard/helper';
 
 export default ({cardLength, title}: iListItem) => {
   return (
@@ -20,8 +20,8 @@ export default ({cardLength, title}: iListItem) => {
       horizontal="s16"
       vertical="s24"
       layout={StyleSheet.flatten({
-        height: RV(264),
-        width: WIDTH,
+        height: isCalcSize(264),
+        width: Layout.window.width,
         position: 'relative',
         backgroundColor: colors.lightPrimary,
       })}>
@@ -58,7 +58,11 @@ export default ({cardLength, title}: iListItem) => {
             />
           </View>
           <View style={styles.btn}>
-            <SvgXml xml={two} width={130} height={130} />
+            <SvgXml
+              xml={two}
+              width={isCalcSize(130)}
+              height={isCalcSize(130)}
+            />
           </View>
         </Inset>
         <Inset horizontal="s16" vertical="s16">
@@ -84,6 +88,6 @@ const styles = StyleSheet.create({
   insets: {
     width: '100%',
     height: '100%',
-    borderRadius: RV(20),
+    borderRadius: isCalcSize(20),
   },
 });

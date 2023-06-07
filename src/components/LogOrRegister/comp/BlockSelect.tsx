@@ -1,6 +1,6 @@
 import {t} from '@lingui/macro';
 import * as React from 'react';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {registerApi} from '../../../redux/api/registerApi';
 import {Stack} from '../../../styleApp/Spacing';
@@ -18,7 +18,7 @@ export function BlockSelect({disabled}: {disabled: boolean}) {
 
   return (
     <>
-      <Stack size="s32" _debug />
+      <Stack size="s32" />
       <LabelText
         title={t`Войдите или зарегистрируйтесь`}
         style={Object.assign([styles.text, styles.textPosition])}

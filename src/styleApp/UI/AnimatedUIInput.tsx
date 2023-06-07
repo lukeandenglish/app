@@ -174,6 +174,7 @@ export const AnimateIInput = React.forwardRef(
                 Platform.OS === 'ios' ? Typography.text14 : Typography.text12,
                 styles.placeholder,
                 FontFamily['300'],
+                props?.placeholderNameStyle ?? {},
               ]}>
               {props?.placeholderName ?? ''}
             </Text>

@@ -13,18 +13,18 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
+import {useDispatch} from 'react-redux';
 import goBack from '../../assets/svg/goBack';
+import settings from '../../assets/svg/settings';
 import ROUTER_PATH from '../../config/page';
 import {useHookUserProfile} from '../../hooks/useHookUserProfile';
+import {registerApi} from '../../redux/api/registerApi';
 import {Inset, Queue, Stack} from '../../styleApp/Spacing';
 import {Typography} from '../../styleApp/Typografy';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
-import {Units} from '../../styleApp/Units';
+import {Units, isCalcSize} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
-import settings from '../../assets/svg/settings';
-import {registerApi} from '../../redux/api/registerApi';
-import {useDispatch} from 'react-redux';
 
 export const BlockHeader = ({small = false}: {small: boolean}) => {
   const [state, {onChangeEmail, onChangePassword, onChangeName}] =
@@ -88,7 +88,6 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
         <React.Fragment>
           <Inset
             horizontal="s16"
-            vertical="s16"
             layout={StyleSheet.flatten([
               styles.block,
               {
@@ -99,23 +98,26 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
             ])}>
             <RNTouchableOpacity
               onPress={navigation.goBack}
-              style={[
-                styles.rnTouchStyle,
-                {
-                  top: insets.top + Units.s8,
-                },
-              ]}>
+              style={[styles.rnTouchStyle]}>
               <SvgXml xml={goBack} />
             </RNTouchableOpacity>
-            <TouchableOpacity onPress={state.image?.onPress}>
-              <ImageBackground
-                {...state.image}
-                resizeMode="cover"
-                imageStyle={styles.ImageStyle}
-                style={[styles.customImage, state.image.style]}>
-                {state.image?.children()}
-              </ImageBackground>
-            </TouchableOpacity>
+            <Inset top="s32">
+              <TouchableOpacity onPress={state.image?.onPress}>
+                <ImageBackground
+                  {...state.image}
+                  resizeMode="cover"
+                  imageStyle={styles.ImageStyle}
+                  style={[
+                    styles.customImage,
+                    state.image.style,
+                    {
+                      marginTop: insets.top,
+                    },
+                  ]}>
+                  {state.image?.children()}
+                </ImageBackground>
+              </TouchableOpacity>
+            </Inset>
           </Inset>
           <Inset horizontal="s12" bottom="s24" top="s40">
             <AnimateIInput
@@ -169,10 +171,10 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
 
 export const styles = StyleSheet.create({
   rnTouchStyle: {
-    width: 50,
-    height: 50,
+    width: isCalcSize(50),
+    height: isCalcSize(50),
     position: 'absolute',
-    left: Units.s8,
+    left: Units.s4,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -181,7 +183,7 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
-  settingBtn: {width: 24, height: 24},
+  settingBtn: {width: isCalcSize(24), height: isCalcSize(24)},
   ImageStyle: {borderRadius: Units.s16, overflow: 'hidden'},
   deleteBtnTxt: {color: colors.alert},
   btnLogOutTxt: {color: colors.lightPrimary},
@@ -193,21 +195,21 @@ export const styles = StyleSheet.create({
   },
   block: {
     backgroundColor: colors.pink,
-    height: 151,
+    height: isCalcSize(151),
     alignItems: 'center',
     justifyContent: 'space-between',
   },
   customImage: {
-    width: 75,
-    height: 75,
+    width: isCalcSize(75),
+    height: isCalcSize(75),
     borderRadius: Units.s16,
     backgroundColor: colors.transparent,
   },
   textStyle: {
     textAlign: 'left',
     fontWeight: '500',
-    lineHeight: 24,
-    color: colors.black,
+    lineHeight: isCalcSize(24),
+    color: colors.lightInk,
   },
   scrolView: {
     flexGrow: 1,

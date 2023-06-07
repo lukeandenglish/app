@@ -2,12 +2,12 @@ import lodash from 'lodash';
 import React from 'react';
 import {StyleSheet, View} from 'react-native';
 import {PalletColor} from '../../../../assets/info/index';
+import {iListItem} from '../../../../redux/api/deckCard/helper';
 import {Inset} from '../../../../styleApp/Spacing';
 import {FontFamily, Typography} from '../../../../styleApp/Typografy';
 import {LabelText} from '../../../../styleApp/UI/LabelText';
-import {RV} from '../../../../styleApp/Utils';
+import {isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
-import {iListItem} from '../../../../redux/api/deckCard/helper';
 
 export default ({cardLength, title}: iListItem) => {
   return (
@@ -56,8 +56,8 @@ export default ({cardLength, title}: iListItem) => {
 const styles = StyleSheet.create({
   row: {flex: 1, justifyContent: 'center', alignItems: 'center'},
   padding: {
-    height: RV(344),
-    width: 200,
+    height: isCalcSize(344),
+    width: isCalcSize(200),
     position: 'relative',
     backgroundColor: colors.lightPrimary,
   },
@@ -70,6 +70,6 @@ const styles = StyleSheet.create({
   card: {
     justifyContent: 'space-between',
     flex: 1,
-    borderRadius: RV(20),
+    borderRadius: isCalcSize(20),
   },
 });

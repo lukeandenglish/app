@@ -1,23 +1,30 @@
 /* eslint-disable @typescript-eslint/no-shadow */
-import {t} from '@lingui/macro';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query';
 import * as R from 'ramda';
 import {Alert} from 'react-native';
+import {GOOGLE_ID} from '../../../../cred';
 import {registerCallbackEndpoints} from '../../../api/store';
 import REDUCER_PATH from '../../../config/reducer';
-import {GOOGLE_ID} from '../../../../cred';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import {isCheckElement} from '../../../helper';
 import {actionSignOut, iGmailToken} from '../../action/register';
-import auth from '@react-native-firebase/auth';
-import {appleAuth} from '@invertase/react-native-apple-authentication';
 
 export interface iSignUpEmail {
   email: string;
   password: string;
 }
+export interface iCurrentUserId {
+  user_id: number;
+}
+export interface iCurrentToken {
+  token: string;
+}
 export interface iSignUpPhone {
   phone: string;
   password: string;
+  å;
 }
 
 export const registerApi = createApi({
@@ -25,7 +32,7 @@ export const registerApi = createApi({
 
   baseQuery: fetchBaseQuery({
     baseUrl: 'https://api.lukeandenglish.com/',
-    prepareHeaders: (headers, props) => {
+    prepareHeaders: headers => {
       headers.set(
         'x-api-key',
         'a5de976afb69939cd1e0bfc0da797ca5ab10047ecc0a54301dcc01f2bc2a7142',
@@ -36,6 +43,43 @@ export const registerApi = createApi({
     },
   }),
   endpoints: builder => ({
+    emailToken: builder.query<iCurrentUserId, any>({
+      query: ({user_id}: iCurrentUserId) => ({
+        url: 'email-token',
+        method: 'POST',
+        body: {user_id},
+      }),
+    }),
+    phoneToken: builder.query<iCurrentUserId, any>({
+      query: ({user_id}: iCurrentUserId) => ({
+        url: 'phone-token',
+        method: 'POST',
+        body: {user_id},
+      }),
+    }),
+
+    phoneVerify: builder.query<iCurrentToken, any>({
+      query: ({token}: iCurrentToken) => ({
+        url: 'phone-verify',
+        method: 'POST',
+        body: {token},
+      }),
+    }),
+    passwordReset: builder.query<{email: iSignUpEmail['email']}, any>({
+      query: ({email}: {email: iSignUpEmail['email']}) => ({
+        url: 'password-reset',
+        method: 'POST',
+        body: {email},
+      }),
+    }),
+    smsPassword: builder.query<{phone: iSignUpPhone['phone']}, any>({
+      query: ({phone}: {phone: iSignUpPhone['phone']}) => ({
+        url: 'password-reset',
+        method: 'POST',
+        body: {phone},
+      }),
+    }),
+
     emailSignUp: builder.query<iSignUpEmail, any>({
       query: ({email, password}: iSignUpEmail) => ({
         url: 'email-signup',
@@ -156,7 +200,6 @@ export const registerApi = createApi({
         }
       },
     }),
-
     signUpQuery: builder.query<iSignUpEmail, any>({
       async queryFn(_args, queryApi) {
         const emailEndpoints = registerApi.endpoints.emailSignUp;
@@ -173,16 +216,51 @@ export const registerApi = createApi({
           ]),
         )(queryApi.getState());
 
-        Alert.alert('success');
         if (!agreements) {
-          return {data: null, error: t`error.agreements.not.select`};
+          return {
+            data: null,
+            error: {
+              msg: 'error',
+              args: {data, password, agreements},
+              extra: {
+                data: {error: false, value: ''},
+                password: {error: false, value: ''},
+                agreements: {error: true, value: ''},
+              },
+            },
+          };
         }
-        const responce = await registerCallbackEndpoints({
-          endpoints: Number(data) ? phoneEndpoints : emailEndpoints,
-          args: {phone: data, email: data, password},
-          dispatch: queryApi.dispatch,
-        });
-        return responce;
+
+        const {args, phone, email} = isCheckElement(data);
+        if (phone) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: phoneEndpoints,
+            args: {phone: args, email: null, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
+          return responce;
+        }
+        if (email) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: emailEndpoints,
+            args: {phone: null, email: args, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
+          return responce;
+        }
+
+        return {
+          data: null,
+          error: {
+            msg: 'error',
+            args: {data, password, agreements},
+            extra: {
+              data: {error: true, value: ''},
+              password: {error: true, value: ''},
+              agreements: {error: false, value: ''},
+            },
+          },
+        };
       },
     }),
     loginQuery: builder.query<iSignUpEmail, any>({
@@ -201,16 +279,36 @@ export const registerApi = createApi({
           ]),
         )(queryApi.getState());
 
-        Alert.alert('success');
-        if (!agreements) {
-          return {data: null, error: t`error.agreements.not.select`};
+        const {args, phone, email} = isCheckElement(data);
+        if (phone) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: phoneEndpoints,
+            args: {phone: args, email: null, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
+          return responce;
         }
-        const responce = await registerCallbackEndpoints({
-          endpoints: Number(data) ? phoneEndpoints : emailEndpoints,
-          args: {phone: data, email: data, password},
-          dispatch: queryApi.dispatch,
-        });
-        return responce;
+        if (email) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: emailEndpoints,
+            args: {phone: null, email: args, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
+          return responce;
+        }
+
+        return {
+          data: null,
+          error: {
+            msg: 'error',
+            args: {data, password, agreements},
+            extra: {
+              data: {error: true, value: ''},
+              password: {error: true, value: ''},
+              agreements: {error: false, value: ''},
+            },
+          },
+        };
       },
     }),
   }),

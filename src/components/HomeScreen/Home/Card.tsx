@@ -28,7 +28,13 @@ export const Card = React.memo(
       case ChangeMode[0]:
         return (
           <AnimatedViewBlock>
-            <CardScene cardLength={cardLength} title={title} />
+            <CardScene
+              cardLength={cardLength}
+              title={title}
+              mode={'fullCard'}
+              scene={'preview'}
+              id={undefined}
+            />
           </AnimatedViewBlock>
         );
       case ChangeMode[1]:
@@ -36,13 +42,25 @@ export const Card = React.memo(
           case ChangeScene[0]:
             return (
               <AnimatedViewBlock>
-                <Preview cardLength={cardLength} title={title} />
+                <Preview
+                  cardLength={cardLength}
+                  title={title}
+                  mode={'fullCard'}
+                  scene={'preview'}
+                  id={undefined}
+                />
               </AnimatedViewBlock>
             );
           case ChangeScene[1]:
             return (
               <AnimatedViewBlock>
-                <CardSmallScene cardLength={cardLength} title={title} />
+                <CardSmallScene
+                  cardLength={cardLength}
+                  title={title}
+                  mode={'fullCard'}
+                  scene={'preview'}
+                  id={undefined}
+                />
               </AnimatedViewBlock>
             );
           default:

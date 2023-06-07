@@ -64,10 +64,22 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
         state.password = action.payload;
       },
     )
+    .addCase(
+      actionChangePasswordRepeat,
+      (
+        state: IUserProfile,
+        action: {payload: IUserProfile['passwordRepeat']},
+      ) => {
+        state.passwordRepeat = action.payload;
+      },
+    )
 
-    .addCase(actionChangeAgreements, (state: IUserProfile) => {
-      state.agreements = !state?.agreements;
-    })
+    .addCase(
+      actionChangeAgreements,
+      (state: IUserProfile, action: {payload?: boolean}) => {
+        state.agreements = action?.payload ?? !state?.agreements;
+      },
+    )
 
     .addCase(
       actionChangeApperance,

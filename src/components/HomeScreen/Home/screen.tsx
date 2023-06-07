@@ -19,7 +19,7 @@ import {iListDeckCatalog, iListItem} from '../../../redux/api/deckCard/helper';
 import {Inset} from '../../../styleApp/Spacing';
 import {FontFamily, Typography} from '../../../styleApp/Typografy';
 import {LabelText} from '../../../styleApp/UI/LabelText';
-import {Units} from '../../../styleApp/Units';
+import {Units, isCalcSize} from '../../../styleApp/Units';
 import {AnimatedViewBlock} from '../../../styleApp/animate/AnimatedViewBlock';
 import colors from '../../../styleApp/colors';
 import {Card, getCurrentMode, getCurrentScene} from './Card';
@@ -171,9 +171,11 @@ const App = () => {
             horizontal="s16"
             bottom="s6"
             top="s12"
-            layout={StyleSheet.flatten({
-              backgroundColor: colors.lightPrimary,
-            })}>
+            layout={StyleSheet.flatten([
+              {
+                backgroundColor: colors.lightPrimary,
+              },
+            ])}>
             <TouchableOpacity onPress={onChangeList(idx)}>
               <LabelText
                 title={title}
@@ -212,7 +214,7 @@ const styles = StyleSheet.create({
   errorText: {color: colors.bodyText, backgroundColor: colors.additional},
   header: {
     textAlign: 'left',
-    letterSpacing: 1.2,
+    letterSpacing: isCalcSize(1.2),
     color: colors.lightInk,
     fontWeight: '300',
   },
