@@ -7,10 +7,13 @@ import {
   actionChangePasswordRepeat,
 } from '../../redux/action/register';
 import {registerApi} from '../../redux/api/registerApi';
+import {useNavigation} from '@react-navigation/native';
 
 export const useButtonRegister = () => {
   const signUpQuery = registerApi.endpoints.signUpQuery as any;
   const loginQuery = registerApi.endpoints.loginQuery as any;
+  const receiveQuery = registerApi.endpoints.receiveQuery as any;
+  const navigation = useNavigation();
 
   const dispatchRedux = useDispatch();
 
@@ -35,7 +38,16 @@ export const useButtonRegister = () => {
     setChangeRegister(!isRegister);
   };
 
+  const ReceiveEmail = {
+    title: t`Восстановить пароль`,
+    onPress: () =>
+      dispatchRedux(receiveQuery.initiate({}))
+        .then(navigation.goBack)
+        .catch(console.info),
+  };
+
   return {
+    ReceiveEmail,
     BtnProps,
     isRegister,
     changeRegister,

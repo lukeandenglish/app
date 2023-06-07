@@ -92,16 +92,21 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
               styles.block,
               {
                 backgroundColor: colors.transparent,
-                paddingTop: insets.top,
                 position: 'relative',
               },
             ])}>
             <RNTouchableOpacity
               onPress={navigation.goBack}
-              style={[styles.rnTouchStyle]}>
+              style={[
+                styles.rnTouchStyle,
+                {
+                  paddingTop: insets.top,
+                },
+              ]}>
+              <Stack size="s10" />
               <SvgXml xml={goBack} />
             </RNTouchableOpacity>
-            <Inset top="s32">
+            <Inset top="s16">
               <TouchableOpacity onPress={state.image?.onPress}>
                 <ImageBackground
                   {...state.image}
@@ -183,6 +188,7 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
+  
   settingBtn: {width: isCalcSize(24), height: isCalcSize(24)},
   ImageStyle: {borderRadius: Units.s16, overflow: 'hidden'},
   deleteBtnTxt: {color: colors.alert},

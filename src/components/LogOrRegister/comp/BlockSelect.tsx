@@ -9,6 +9,7 @@ import {LabelText} from '../../../styleApp/UI/LabelText';
 import {Border, FontSize, Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
 import LogInOrRegisterScreen from '../screen';
+import {FontFamily} from '../../../styleApp/Typografy';
 
 export function BlockSelect({disabled}: {disabled: boolean}) {
   const dispatchRedux = useDispatch();
@@ -21,12 +22,20 @@ export function BlockSelect({disabled}: {disabled: boolean}) {
       <Stack size="s32" />
       <LabelText
         title={t`Войдите или зарегистрируйтесь`}
-        style={Object.assign([styles.text, styles.textPosition])}
+        style={Object.assign([
+          styles.text,
+          styles.textPosition,
+          FontFamily.wermut,
+        ])}
       />
       <Stack size="s16" />
       <LabelText
         title={t`Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве`}
-        style={Object.assign([styles.text1, styles.text1Typo])}
+        style={Object.assign([
+          styles.text1,
+          styles.text1Typo,
+          FontFamily.wermut,
+        ])}
       />
       <Stack size="s24" />
       <Button
@@ -61,6 +70,7 @@ export const styles = StyleSheet.create({
   text1Typo: {
     fontSize: FontSize.subheading3_size,
     color: colors.lightInk,
+    fontWeight: '300',
   },
   buttonFlexBox: {
     justifyContent: 'center',

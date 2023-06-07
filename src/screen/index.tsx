@@ -8,6 +8,7 @@ import {useDispatch, useSelector} from 'react-redux';
 import HomeScreen from '../components/HomeScreen/Home/screen';
 import IntroOnBording from '../components/IntroOnBording/screen';
 import LogInOrRegister from '../components/LogOrRegister';
+import ForgotPassword from '../components/ForgotPassword';
 import ApperanceProfile from '../components/Profile/Apperance/screen';
 import EditProfile from '../components/Profile/Edit/screen';
 import MainProfile from '../components/Profile/Main/screen';
@@ -87,6 +88,11 @@ const App = () => {
               name={ROUTER_PAGE.UNAUTH.IntroOnBording}
               component={IntroOnBording}
               options={SlideRightFunc(false)}
+            />
+            <Stack.Screen
+              name={ROUTER_PAGE.UNAUTH.ForgotPassword}
+              component={ForgotPassword}
+              options={ModalSlideFunc(false)}
             />
             <Stack.Screen
               name={ROUTER_PAGE.UNAUTH.LogInOrRegister}

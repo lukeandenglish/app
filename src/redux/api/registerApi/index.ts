@@ -200,6 +200,69 @@ export const registerApi = createApi({
         }
       },
     }),
+    receiveQuery: builder.query<iSignUpEmail, any>({
+      async queryFn(_args, queryApi) {
+        const emailEndpoints = registerApi.endpoints.emailSignUp;
+        const phoneEndpoints = registerApi.endpoints.phoneSignUp;
+
+        const [data, password, agreements] = R.pipe(
+          R.path([REDUCER_PATH.USER]),
+          R.paths([
+            ['email'],
+            ['password'],
+            ['agreements'],
+            ['name'],
+            ['image'],
+          ]),
+        )(queryApi.getState());
+
+        if (!agreements) {
+          return {
+            data: null,
+            error: {
+              msg: 'error',
+              args: {data, password, agreements},
+              extra: {
+                data: {error: false, value: ''},
+                password: {error: false, value: ''},
+                agreements: {error: true, value: ''},
+              },
+            },
+          };
+        }
+
+        const {args, phone, email} = isCheckElement(data);
+        if (phone) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: phoneEndpoints,
+            args: {phone: args, email: null, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
+          return responce;
+        }
+        if (email) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: emailEndpoints,
+            args: {phone: null, email: args, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
+          return responce;
+        }
+
+        return {
+          data: null,
+          error: {
+            msg: 'error',
+            args: {data, password, agreements},
+            extra: {
+              data: {error: true, value: ''},
+              password: {error: true, value: ''},
+              agreements: {error: false, value: ''},
+            },
+          },
+        };
+      },
+    }),
     signUpQuery: builder.query<iSignUpEmail, any>({
       async queryFn(_args, queryApi) {
         const emailEndpoints = registerApi.endpoints.emailSignUp;
