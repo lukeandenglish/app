@@ -17,7 +17,7 @@ import {FontSize} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
 
 export function Register({onFocus}: {onFocus: () => void}) {
-  const [state] = useHookUserProfile();
+  const [input] = useHookUserProfile();
   const navigation = useNavigation();
 
   const scrollRef = React.useRef<ScrollView | null>(null);
@@ -48,7 +48,7 @@ export function Register({onFocus}: {onFocus: () => void}) {
           secureTextEntry
           keyboardType="default"
           onScrollRef={funcMoveInput(1)}
-          {...state.password}
+          {...input.password}
         />
       </View>
 

@@ -16,7 +16,7 @@ import Animated, {
 } from 'react-native-reanimated';
 
 export function LoginSign({onFocus}: {onFocus: () => void}) {
-  const [state, {handleCheckboxAgree}] = useHookUserProfile();
+  const [input, {handleCheckboxAgree}] = useHookUserProfile();
   const scrollRef = React.useRef<ScrollView | null>(null);
   const passwordRef = React.useRef<TextInput | null>(null);
   const passwordRepeatRef = React.useRef<TextInput | null>(null);
@@ -46,7 +46,7 @@ export function LoginSign({onFocus}: {onFocus: () => void}) {
           // secureTextEntry
           keyboardType="default"
           onScrollRef={funcMoveInput(1)}
-          {...state.password}
+          {...input.password}
         />
         <Stack size="s16" />
         <AnimateIInput
@@ -54,21 +54,21 @@ export function LoginSign({onFocus}: {onFocus: () => void}) {
           // secureTextEntry
           keyboardType="default"
           onScrollRef={funcMoveInput(2)}
-          {...state.passwordRepeat}
+          {...input.passwordRepeat}
         />
         <Stack size="s16" />
         <View style={[styles.checkbox, styles.checkboxFlexBox]}>
           <TouchableOpacity
-            disabled={state.agreements.editable}
+            disabled={input.agreements.editable}
             onPress={handleCheckboxAgree}
             style={[
               styles.checkboxChild,
               styles.checkboxChildLayout,
-              state.agreements.value && {
+              input.agreements.value && {
                 backgroundColor: colors.actionColor,
               },
             ]}>
-            {state.agreements.value ? (
+            {input.agreements.value ? (
               <SvgXml xml={Switch} width={15} height={15} />
             ) : (
               <View />

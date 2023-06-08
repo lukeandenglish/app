@@ -1,68 +1,31 @@
 /* eslint-disable react-native/no-inline-styles */
 import {t} from '@lingui/macro';
+import {useNavigation} from '@react-navigation/native';
 import * as R from 'ramda';
 import * as React from 'react';
-import {
-  Keyboard,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {Pressable, ScrollView, StyleSheet, TextInput, View} from 'react-native';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useSelector} from 'react-redux';
 import REDUCER_PATH from '../../config/reducer';
+import {useButtonRegister} from '../../hooks/useButtonRegister';
 import {useHookUserProfile} from '../../hooks/useHookUserProfile';
-import {IUserProfile} from '../../redux/action/register';
-import {Inset, Queue, Stack} from '../../styleApp/Spacing';
+import {useIsVisibleKeyboard} from '../../hooks/useIsVisibleKeyboard';
+import {IUserProfile} from '../../redux/api/registerApi/type';
+import {Inset, Stack} from '../../styleApp/Spacing';
+import {FontFamily, Styles} from '../../styleApp/Typografy';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
+import {LabelText} from '../../styleApp/UI/LabelText';
 import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
-import {BlockSelect} from './comp/BlockSelect';
-import {LoginSign} from './comp/LoginSign';
-import {Register} from './comp/Register';
-import {LabelText} from '../../styleApp/UI/LabelText';
-import {useButtonRegister} from '../LogOrRegister/useButtonRegister';
-import {FontFamily, Styles} from '../../styleApp/Typografy';
-import {useNavigation} from '@react-navigation/native';
-
-const useIsVisibleKeyboard = () => {
-  const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true); // or some other action
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false); // or some other action
-      },
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
-
-  return {isKeyboardVisible};
-};
 
 const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
   const {ReceiveEmail} = useButtonRegister();
   const {isKeyboardVisible} = useIsVisibleKeyboard();
   const [state] = useHookUserProfile();
   const navigation = useNavigation();
-  let [email, password, agreements, RLoading] = useSelector(
+  let [email, password, agreements] = useSelector(
     R.pipe(
       R.path([REDUCER_PATH.USER]),
       R.paths([['email'], ['password'], ['agreements'], ['loading']]),
@@ -78,10 +41,6 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
   const insets = useSafeAreaInsets();
   const scrollRef = React.useRef<ScrollView | null>(null);
   const emailRef = React.useRef<TextInput | null>(null);
-
-  if (RLoading) {
-    disabled = true;
-  }
 
   const registerEnabled = React.useMemo(() => {
     if (password?.length > 3 && email?.length > 3 && agreements) {

@@ -1,5 +1,5 @@
-import {iGmailToken} from '../action/register';
 import * as R from 'ramda';
+import {iGmailToken} from '../api/registerApi/type';
 
 export const MODERATE_STYLE = state => ({
   IS_LOADING: () => {

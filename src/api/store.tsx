@@ -9,13 +9,11 @@ import thunkMiddleware from 'redux-thunk';
 import Reactotron from '../../ReactotronConfig';
 import {reducerBranch} from '../redux/action/register';
 import REDUCER_PATH from '../config/reducer';
-import * as R from 'ramda';
 // import { createLogger } from 'redux-logger';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {registerApi} from '../redux/api/registerApi';
 import {deckCard} from '../redux/api/deckCard';
-import {Notifier, NotifierComponents} from 'react-native-notifier';
 
 export const PERSIST_STORAGE = {
   auth: {
@@ -58,45 +56,3 @@ export const persistor = persistStore(store);
 export {store};
 export type {AppDispatch, RootState};
 setupListeners(store.dispatch);
-
-export const registerCallbackEndpoints = async ({
-  endpoints,
-  args,
-  dispatch,
-}: {
-  endpoints: any;
-  args: any;
-  dispatch: AppDispatch;
-}) => {
-  try {
-    const customDispatch = dispatch ?? store.dispatch;
-    const result = await customDispatch(
-      endpoints.initiate(args, {forceRefetch: true}),
-    );
-    if (result.isError) {
-      Notifier.showNotification({
-        title: 'The request was failed',
-        description: result.error.data?.error,
-        Component: NotifierComponents.Alert,
-        componentProps: {
-          alertType: 'error',
-        },
-      });
-    }
-
-    return R.pickAll(['data', 'error'])(result);
-  } catch (e) {
-    Notifier.showNotification({
-      title: 'The request was failed',
-      description: e.message,
-      Component: NotifierComponents.Alert,
-      componentProps: {
-        alertType: 'error',
-      },
-    });
-    return {
-      data: null,
-      error: JSON.stringify(e.message),
-    };
-  }
-};

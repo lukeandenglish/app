@@ -13,7 +13,7 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {registerCallbackEndpoints} from '../../../api/store';
+import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
 import {deckCard} from '../../../redux/api/deckCard';
 import {iListDeckCatalog, iListItem} from '../../../redux/api/deckCard/helper';
 import {Inset} from '../../../styleApp/Spacing';

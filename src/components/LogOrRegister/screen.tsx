@@ -1,23 +1,12 @@
 /* eslint-disable react-native/no-inline-styles */
-import {t} from '@lingui/macro';
-import * as R from 'ramda';
 import * as React from 'react';
-import {
-  Keyboard,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {ScrollView, StyleSheet, TextInput, View} from 'react-native';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useSelector} from 'react-redux';
-import REDUCER_PATH from '../../config/reducer';
+import {useButtonRegister} from '../../hooks/useButtonRegister';
 import {useHookUserProfile} from '../../hooks/useHookUserProfile';
-import {IUserProfile} from '../../redux/action/register';
-import {Inset, Queue, Stack} from '../../styleApp/Spacing';
+import {useIsVisibleKeyboard} from '../../hooks/useIsVisibleKeyboard';
+import {Inset, Stack} from '../../styleApp/Spacing';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
 import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
@@ -25,65 +14,14 @@ import colors from '../../styleApp/colors';
 import {BlockSelect} from './comp/BlockSelect';
 import {LoginSign} from './comp/LoginSign';
 import {Register} from './comp/Register';
-import {useButtonRegister} from './useButtonRegister';
-
-const useIsVisibleKeyboard = () => {
-  const [isKeyboardVisible, setKeyboardVisible] = React.useState(false);
-
-  React.useEffect(() => {
-    const keyboardDidShowListener = Keyboard.addListener(
-      'keyboardDidShow',
-      () => {
-        setKeyboardVisible(true); // or some other action
-      },
-    );
-    const keyboardDidHideListener = Keyboard.addListener(
-      'keyboardDidHide',
-      () => {
-        setKeyboardVisible(false); // or some other action
-      },
-    );
-
-    return () => {
-      keyboardDidHideListener.remove();
-      keyboardDidShowListener.remove();
-    };
-  }, []);
-
-  return {isKeyboardVisible};
-};
 
 const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
-  const {BtnProps, isRegister, changeRegister} = useButtonRegister();
+  const {BtnProps, isRegister} = useButtonRegister();
   const {isKeyboardVisible} = useIsVisibleKeyboard();
-  const [state] = useHookUserProfile();
-  let [email, password, agreements, RLoading] = useSelector(
-    R.pipe(
-      R.path([REDUCER_PATH.USER]),
-      R.paths([['email'], ['password'], ['agreements'], ['loading']]),
-      R.defaultTo(['', '', false, false]),
-    ),
-  ) as [
-    IUserProfile['email'],
-    IUserProfile['password'],
-    IUserProfile['agreements'],
-    IUserProfile['loading'],
-  ];
-
+  const [input] = useHookUserProfile();
   const insets = useSafeAreaInsets();
   const scrollRef = React.useRef<ScrollView | null>(null);
   const emailRef = React.useRef<TextInput | null>(null);
-
-  if (RLoading) {
-    disabled = true;
-  }
-
-  const registerEnabled = React.useMemo(() => {
-    if (password?.length > 3 && email?.length > 3 && agreements) {
-      return false;
-    }
-    return true;
-  }, [email, password, agreements]);
 
   const moveToButton = () => {
     setTimeout(() => {
@@ -113,31 +51,14 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
               <View
                 style={{
                   position: 'relative',
-                }}>
-                <TouchableOpacity onPress={changeRegister} style={styles.swm}>
-                  <Text style={{color: colors.beige}}>
-                    {isRegister
-                      ? t`I want register account`
-                      : t`I have account and want login!`}
-                  </Text>
-                  <Queue size="s10" />
-                  <View
-                    style={[
-                      styles.btnswn,
-                      {
-                        backgroundColor: isRegister ? 'red' : 'green',
-                      },
-                    ]}
-                  />
-                </TouchableOpacity>
-              </View>
-
+                }}
+              />
               <View onTouchStart={moveToButton}>
                 <AnimateIInput
                   ref={emailRef}
                   keyboardType="email-address"
                   onScrollRef={moveToButton}
-                  {...state.email}
+                  {...input.email}
                 />
                 {!isRegister && <Register onFocus={moveToButton} />}
                 {isRegister && <LoginSign onFocus={moveToButton} />}
@@ -156,7 +77,6 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
             ]),
           )}>
           <Button
-            disabled={registerEnabled}
             {...BtnProps}
             styleText={styles.btnclr}
             style={Object.assign([
