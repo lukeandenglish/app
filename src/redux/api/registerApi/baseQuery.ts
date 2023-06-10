@@ -1,12 +1,10 @@
 import {fetchBaseQuery} from '@reduxjs/toolkit/query';
+import cred from '../../../../cred';
 
 export const baseQuery = fetchBaseQuery({
-  baseUrl: 'https://api.lukeandenglish.com/',
+  baseUrl: cred.URI,
   prepareHeaders: headers => {
-    headers.set(
-      'x-api-key',
-      'a5de976afb69939cd1e0bfc0da797ca5ab10047ecc0a54301dcc01f2bc2a7142',
-    );
+    headers.set('x-api-key', cred.URI);
     headers.set('Access-Control-Allow-Origin', '*');
 
     return headers;

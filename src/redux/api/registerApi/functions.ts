@@ -14,10 +14,17 @@ import REDUCER_PATH from '../../../config/reducer';
 import {isCheckElement} from '../../../helper';
 import {iGmailToken} from './type';
 
-const selectorUserProfile = (store: RootState) => {
+export const selectorUserProfile = (store: RootState) => {
   const [data, password, agreements] = R.pipe(
     R.path([REDUCER_PATH.USER]),
-    R.paths([['email'], ['password'], ['agreements'], ['name'], ['image']]),
+    R.paths([
+      ['email'],
+      ['password'],
+      ['agreements'],
+      ['name'],
+      ['image'],
+      ['passwordRepeat'],
+    ]),
   )(store);
   return [data, password, agreements];
 };
@@ -77,16 +84,9 @@ export const FUNCTION = {
       );
       const emailEndpoints = registerApi.endpoints.emailSignUp;
       const phoneEndpoints = registerApi.endpoints.phoneSignUp;
-      if (!agreements) {
-        return errorBuilderMessage({
-          args: {data, password, agreements},
-          extra: {
-            data: {error: false, value: ''},
-            password: {error: false, value: ''},
-            agreements: {error: true, value: ''},
-          },
-        });
-      }
+
+      const phoneTokenEndpoints = registerApi.endpoints.phoneToken;
+      const emailTokenEndpoints = registerApi.endpoints.emailToken;
 
       const {args, phone, email} = isCheckElement(data);
       if (phone) {
@@ -95,6 +95,15 @@ export const FUNCTION = {
           args: {phone: args, email: null, password: password.trim()},
           dispatch: queryApi.dispatch,
         });
+
+        const responceToken = await registerCallbackEndpoints({
+          endpoints: phoneTokenEndpoints,
+          args: {user_id: responce.data?.id},
+          dispatch: queryApi.dispatch,
+        });
+
+        console.log(responceToken);
+
         return responce;
       }
       if (email) {
@@ -103,6 +112,15 @@ export const FUNCTION = {
           args: {phone: null, email: args, password: password.trim()},
           dispatch: queryApi.dispatch,
         });
+
+        const responceToken = await registerCallbackEndpoints({
+          endpoints: emailTokenEndpoints,
+          args: {user_id: responce.data?.id},
+          dispatch: queryApi.dispatch,
+        });
+
+        console.log(responceToken);
+
         return responce;
       }
 

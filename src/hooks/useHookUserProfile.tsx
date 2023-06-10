@@ -7,8 +7,9 @@ import {CameraOptions, launchImageLibrary} from 'react-native-image-picker';
 import {SvgXml} from 'react-native-svg';
 import {useDispatch, useSelector} from 'react-redux';
 import validator from 'validator';
+import {registerCallbackEndpoints} from '../api/registerCallbackEndpoints';
 import photo from '../assets/svg/photo';
-import REDUCER_PATH from '../config/reducer';
+import {isCheckElement, isEmptyString} from '../helper';
 import {
   IUserProfile,
   actionChangeAgreements,
@@ -18,12 +19,12 @@ import {
   actionChangePassword,
   actionChangePasswordRepeat,
 } from '../redux/action/register';
+import {registerApi} from '../redux/api/registerApi';
+import {selectorUserProfile} from '../redux/api/registerApi/functions';
+import {iAnimateInput} from '../styleApp/UI/AnimatedUIInput';
 import {Units} from '../styleApp/Units';
 import colors from '../styleApp/colors';
-import {isCheckElement} from '../helper';
-
-const IMAGE =
-  'https://searchengineland.com/wp-content/seloads/2015/12/google-amp-fast-speed-travel-ss-1920-1536x864.jpg';
+import cred from '../../cred';
 
 interface iUserHookState {
   name: string;
@@ -50,19 +51,7 @@ export const useHookUserProfile = () => {
   const dispatch = useDispatch();
   const [state, setState] = React.useState<iUserHookState>(INITIAL_STATE);
   const [email, password, agreements, name, image, passwordRepeat] =
-    useSelector(
-      R.pipe(
-        R.path([REDUCER_PATH.USER]),
-        R.paths([
-          ['email'],
-          ['password'],
-          ['agreements'],
-          ['name'],
-          ['image'],
-          ['passwordRepeat'],
-        ]),
-      ),
-    ) as [
+    useSelector(selectorUserProfile) as [
       IUserProfile['email'],
       IUserProfile['password'],
       IUserProfile['agreements'],
@@ -71,8 +60,10 @@ export const useHookUserProfile = () => {
       IUserProfile['passwordRepeat'],
     ];
 
+  console.log(state, email);
+
   const onChangeEmail = () => {
-    const EMAIL = state.email?.trim() as IUserProfile['email'];
+    const EMAIL = state.email as unknown as IUserProfile['email'];
     if (EMAIL.length > 3 && validator.isEmail(EMAIL)) {
       dispatch(actionChangeEmail(EMAIL));
       setState(INITIAL_STATE);
@@ -81,17 +72,23 @@ export const useHookUserProfile = () => {
 
   const onChangepasswordRepeat = () => {
     const PASSWORD_REPEAT =
-      state.passwordRepeat.trim() as IUserProfile['passwordRepeat'];
+      state.passwordRepeat.trim() as unknown as IUserProfile['passwordRepeat'];
     if (PASSWORD_REPEAT.length > 3) {
       dispatch(actionChangePasswordRepeat(PASSWORD_REPEAT));
       setState(INITIAL_STATE);
     }
   };
 
-  const onChangePassword = () => {
-    const PASSWORD = state.password.trim() as IUserProfile['password'];
+  const onChangePassword = async () => {
+    const PASSWORD =
+      state.password.trim() as unknown as IUserProfile['password'];
     if (PASSWORD.length > 3) {
       dispatch(actionChangePassword(PASSWORD));
+      await registerCallbackEndpoints({
+        endpoints: registerApi.endpoints.signUpQuery,
+        args: {},
+        dispatch,
+      });
       setState(INITIAL_STATE);
     }
   };
@@ -108,26 +105,10 @@ export const useHookUserProfile = () => {
 
   const loading = false;
 
-  const placeHolderName = R.pipe(
-    R.path(['email']),
-    R.defaultTo(''),
-    x => (x.length === 0 ? email : x),
-    isCheckElement,
-    R.cond([
-      [
-        R.whereEq({phone: true}),
-        R.always(t`Register or login with telephone number`),
-      ],
-      [R.whereEq({email: true}), R.always(t`Register or login with email`)],
-      [R.F, R.always(t`Mail or telephone`)],
-      [R.T, R.always(t`Mail or telephone`)],
-    ]),
-  )(state);
-
   const placeholderNameStyle = R.pipe(
     R.path(['email']),
     R.defaultTo(''),
-    x => (x.length === 0 ? email : x),
+    x => (isEmptyString(x) ? email : x),
     isCheckElement,
     R.cond([
       [R.whereEq({phone: true}), R.always(colors.gray_200)],
@@ -169,7 +150,7 @@ export const useHookUserProfile = () => {
           }
         },
         source: {
-          uri: image ?? IMAGE,
+          uri: image ?? cred.EMPTY_IMAGE,
         },
         style: {
           // backgroundColor: 'rgba(255, 87, 87, 0.4)',
@@ -186,13 +167,32 @@ export const useHookUserProfile = () => {
       email: {
         editable: !loading,
         value: state.email,
-        placeholder: email,
-        placeholderName: placeHolderName,
+        placeholder: isEmptyString(state.email) ? email : state.email,
+        placeholderName: '',
         onEndEditing: onChangeEmail,
-        blurOnSubmit: true,
+        onBlur: onChangeEmail,
         placeholderNameStyle: placeholderNameStyle,
-        onChangeText: (email: IUserProfile['email']) => {
-          setState({...state, email});
+        loading,
+        errorMsg: '',
+        onChangeText: (email: string) => {
+          const value = isCheckElement(
+            [email].join('').toLowerCase(),
+            true,
+          ) as {args: IUserProfile['email']};
+          setState({...state, email: value.args});
+        },
+        returnTypeKey: 'next',
+      } as unknown as iAnimateInput,
+      passwordLogin: {
+        editable: !loading,
+        value: state.password,
+        placeholder: password,
+        onEndEditing: onChangePassword,
+        placeholderName: t`Password`,
+        blurOnSubmit: true,
+        loading,
+        onChangeText: (password: IUserProfile['password']) => {
+          setState({...state, password});
         },
         returnTypeKey: 'next',
       },
@@ -200,7 +200,8 @@ export const useHookUserProfile = () => {
         editable: !loading,
         value: state.password,
         placeholder: password,
-        onEndEditing: onChangePassword,
+        onEndEditing: () => null,
+        loading,
         placeholderName: t`Password`,
         blurOnSubmit: true,
         onChangeText: (password: IUserProfile['password']) => {
@@ -212,6 +213,7 @@ export const useHookUserProfile = () => {
         editable: !loading,
         value: state.passwordRepeat,
         placeholder: passwordRepeat,
+        loading,
         onEndEditing: onChangepasswordRepeat,
         placeholderName: t`Repeat password`,
         blurOnSubmit: true,

@@ -2,18 +2,28 @@
 import * as R from 'ramda';
 import React from 'react';
 import {
+  Keyboard,
   Platform,
-  Pressable,
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
+  TextInputProps,
+  TextStyle,
   View,
+  ViewStyle,
 } from 'react-native';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+import Animated, {
+  Layout as RNRLayout,
+  ZoomInLeft,
+  ZoomOutRight,
+} from 'react-native-reanimated';
+import {refTextInput, refTimerType} from '../../helper/type';
 import {Inset, Stack} from '../Spacing';
 import {FontFamily, Typography} from '../Typografy';
 import {Units, isCalcSize} from '../Units';
 import colors from '../colors';
+import {isEmptyString} from '../../helper';
 
 const InitialStyte = {
   placeholderName: {
@@ -107,146 +117,181 @@ const styleInput = mode => {
   }
 };
 
-export const AnimateIInput = React.forwardRef(
-  (props: iRestCustom & any, ref) => {
-    const inputRef = React.useRef<refTextInput>(null);
-    const [state, setState] = React.useState<boolean>(false);
-    const refTimer = React.useRef<refTimerType>(null);
-    const [secure, setSecure] = React.useState<boolean>(true);
+export type iAnimateInput = TextInputProps & {
+  onScrollRef: () => void;
+  errorMsg?: string;
+  loading?: boolean;
+  onEndEditing?: () => void;
+  customPlaceholderColor?: TextStyle;
+  placeholderNameStyle?: TextStyle;
+  styleContainer?: ViewStyle;
+  styleInput?: ViewStyle | TextStyle;
+  style?: ViewStyle;
+  container?: React.ReactNode;
+  placeholderName?: string;
+  modalChildren?: React.ReactNode;
+  onNextFocus: () => void;
+};
 
-    const focus = () => {
-      if (!props.editable) {
-        return;
-      }
-      refTimer?.current && clearTimeout(refTimer?.current);
-      refTimer.current = setTimeout(() => {
-        props?.onScrollRef && props?.onScrollRef();
-        refTimer?.current && clearTimeout(refTimer.current);
-      }, 750);
-      inputRef?.current && inputRef.current?.focus();
-      setState(true);
-    };
-    React.useImperativeHandle(ref, () => ({
-      focus,
-    }));
+export const AnimateIInput = React.forwardRef((props: iAnimateInput, ref) => {
+  const inputRef = React.useRef<refTextInput>(null);
+  const [state, setState] = React.useState<boolean>(false);
+  const refTimer = React.useRef<refTimerType>(null);
 
-    const Container = props?.container ?? TextInput;
+  const handleEndEditing = e => {
+    inputRef?.current && inputRef.current?.blur();
+    props?.onEndEditing && props?.onEndEditing(e?.nativeEvent.text);
+    setState(false);
+    props.onNextFocus && props.onNextFocus();
+  };
 
-    let customStyle = styleInput('Loading');
+  const handleFocus = () => {
     if (!props.editable) {
-      customStyle = styleInput('Disabled');
+      return;
     }
-    if (props.editable) {
-      customStyle = styleInput('Unfocus');
-      if (state) {
-        customStyle = styleInput('Hover');
-      }
-      if (state && props.error) {
-        customStyle = styleInput('ErrorFilled');
-      }
-      if (props.loading) {
-        props = R.assocPath(['editable'], false)(props);
-        customStyle = styleInput('Loading');
-      }
-    }
+    refTimer?.current && clearTimeout(refTimer?.current);
+    refTimer.current = setTimeout(() => {
+      inputRef?.current && inputRef.current?.focus();
+      props?.onScrollRef && props?.onScrollRef();
+    }, 300);
+    setState(true);
+  };
 
-    let placeholderTextColor = customStyle.placeholderName;
-    if (props.value === '') {
-      placeholderTextColor = customStyle.textField.style.color;
-    }
+  const handleBlur = () => {
+    inputRef?.current && inputRef.current?.blur();
+    props?.onEndEditing && props.onEndEditing();
+    setState(false);
+    Keyboard.dismiss();
+  };
 
+  React.useImperativeHandle(ref, () => ({
+    focus: handleFocus,
+    blur: handleBlur,
+  }));
+
+  let customStyle = styleInput('Loading');
+  if (!props.editable) {
+    customStyle = styleInput('Disabled');
+  }
+  if (props.editable) {
+    customStyle = styleInput('Unfocus');
     if (state) {
-      placeholderTextColor = colors.transparent;
+      customStyle = styleInput('Hover');
     }
-    if (!state && props.customPlaceholderColor) {
-      placeholderTextColor = customStyle.textField.style.color;
+    if (state && props.errorMsg) {
+      customStyle = styleInput('ErrorFilled');
     }
+    if (props.loading) {
+      props = R.assocPath(['editable'], false)(props);
+      customStyle = styleInput('Loading');
+    }
+  }
 
-    return (
-      <Pressable
+  let placeholderTextColor = customStyle.placeholderName;
+  if (props.value === '') {
+    placeholderTextColor = customStyle.textField.style.color;
+  }
+
+  if (state) {
+    placeholderTextColor = colors.transparent;
+  }
+  if (!state && props.customPlaceholderColor) {
+    placeholderTextColor = customStyle.textField.style.color;
+  }
+
+  const [Container] = [props?.container ?? TextInput] as React.ReactNode[];
+
+  return (
+    <>
+      <TouchableWithoutFeedback
         accessibilityRole="button"
-        onPress={focus}
-        style={[props.style ? props.style : {}]}>
-        {props?.placeholderName && (
+        onPress={handleFocus}
+        style={[props.style ? props.style : {}, styles.containerStyle]}>
+        {props?.placeholderName ? (
           <Inset horizontal="s16" vertical="s1">
-            <Text
-              style={[
-                Platform.OS === 'ios' ? Typography.text14 : Typography.text12,
-                styles.placeholder,
-                FontFamily['300'],
-                props?.placeholderNameStyle ?? {},
-              ]}>
-              {props?.placeholderName ?? ''}
-            </Text>
+            <Animated.View
+              entering={ZoomInLeft}
+              exiting={ZoomOutRight}
+              layout={RNRLayout.duration(1400).delay(1400)}>
+              <Text
+                style={[
+                  Platform.OS === 'ios' ? Typography.text14 : Typography.text12,
+                  styles.placeholder,
+                  FontFamily['300'],
+                  props?.placeholderNameStyle ?? {},
+                ]}>
+                {props?.placeholderName ?? ''}
+              </Text>
+            </Animated.View>
           </Inset>
+        ) : (
+          <View />
         )}
         <Stack size="s4" />
-        <Pressable
-          accessibilityRole="button"
-          onPress={focus}
-          style={[
-            {
-              borderWidth: 1,
-              borderRadius: isCalcSize(100),
-              backgroundColor: colors.whitesmoke_100,
-              borderColor: colors.whitesmoke_100,
-            },
-            props?.styleContainer ?? {},
-          ]}>
-          <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+        <View style={[styles.pressableStyle, props?.styleContainer ?? {}]}>
+          <View style={styles.customRows}>
             <Container
-              {...props}
+              returnKeyType="next"
+              underlineColorAndroid="transparent"
               ref={inputRef}
+              {...props}
               placeholderTextColor={placeholderTextColor}
-              returnKeyType="done"
-              onFocus={focus}
-              onBlur={() => setState(false)}
-              secureTextEntry={props?.secureTextEntry ? secure : false}
+              onFocus={handleFocus}
+              // onBlur={handleBlur}
+              onEndEditing={handleEndEditing}
               style={StyleSheet.flatten([
                 Platform.OS === 'ios' ? Typography.text14 : Typography.text14,
-                {
-                  color: colors.lightInk,
-                  minWidth: isCalcSize(200),
-                  width: '100%',
-                  lineHeight: Platform.OS === 'ios' ? Units.s16 : Units.s14,
-                  marginTop: 0,
-                  marginBottom: 0,
-                },
                 FontFamily['500'],
-                {
-                  paddingVertical:
-                    Platform.OS === 'ios' ? Units.s16 : Units.s14,
-                },
-                {
-                  paddingHorizontal:
-                    Platform.OS === 'ios' ? Units.s16 : Units.s14,
-                },
+                styles.styleInput,
                 props?.styleInput ?? {},
               ])}
             />
-            {props.secureTextEntry && (
-              <TouchableOpacity
-                onPress={() => setSecure(!secure)}
-                style={{
-                  width: isCalcSize(30),
-                  height: isCalcSize(30),
-                  position: 'absolute',
-                  zIndex: 1000,
-                  backgroundColor: 'red',
-                  right: isCalcSize(10),
-                  top: isCalcSize(15),
-                  bottom: isCalcSize(15),
-                }}
-              />
-            )}
           </View>
-        </Pressable>
-      </Pressable>
-    );
-  },
-);
+          {props.modalChildren ? props.modalChildren : <View />}
+        </View>
+        {!isEmptyString(props.errorMsg) && (
+          <Inset horizontal="s16" top="s4" bottom="s10">
+            <Text style={[styles.styleTextError, Typography.text12]}>
+              {props.errorMsg}
+            </Text>
+          </Inset>
+        )}
+      </TouchableWithoutFeedback>
+    </>
+  );
+});
 
 export const styles = StyleSheet.create({
+  containerStyle: {flex: 1, position: 'relative'},
+  customRows: {flexDirection: 'row', justifyContent: 'space-between'},
+  styleTextError: {color: colors.alert},
+  styleInput: {
+    color: colors.lightInk,
+    minWidth: isCalcSize(200),
+    letterSpacing: 1.01,
+    width: '100%',
+    lineHeight: Platform.OS === 'ios' ? Units.s16 : Units.s14,
+    marginTop: 0,
+    marginBottom: 0,
+    paddingVertical: Platform.OS === 'ios' ? Units.s16 : Units.s14,
+    paddingHorizontal: Platform.OS === 'ios' ? Units.s16 : Units.s14,
+  },
+  textSecureStyle: {
+    width: isCalcSize(30),
+    height: isCalcSize(30),
+    position: 'absolute',
+    zIndex: 1000,
+    backgroundColor: 'red',
+    right: isCalcSize(10),
+    top: isCalcSize(15),
+    bottom: isCalcSize(15),
+  },
+  pressableStyle: {
+    borderWidth: 1,
+    borderRadius: isCalcSize(100),
+    backgroundColor: colors.whitesmoke_100,
+    borderColor: colors.whitesmoke_100,
+  },
   placeholder: {
     color: colors.dimgray,
     fontWeight: '400',

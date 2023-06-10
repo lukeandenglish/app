@@ -14,6 +14,7 @@ import {
 } from '../../../redux/action/register';
 import REDUCER_PATH from '../../../config/reducer';
 import * as R from 'ramda';
+import {isCalcSize} from '../../../styleApp/Units';
 
 export default (): React.ReactNode => {
   const insets = useSafeAreaInsets();
@@ -90,8 +91,8 @@ export default (): React.ReactNode => {
 
 export const styles = StyleSheet.create({
   borderIcon: {
-    width: 20,
-    height: 20,
+    width: isCalcSize(20),
+    height: isCalcSize(20),
     alignItems: 'center',
     justifyContent: 'center',
   },

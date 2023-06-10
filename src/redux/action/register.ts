@@ -97,3 +97,5 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
       ),
   );
 });
+
+export {IUserProfile};

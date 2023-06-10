@@ -6,36 +6,175 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
 "Language: ru\n"
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Plural-Forms: \n"
 
-#: src/components/LogOrRegister/screen.tsx:22
+#: src/components/ForgotPassword/screen.tsx:92
+msgid "Введите вашу почту и мы вышлем инструкция по восстановлению пароля"
+msgstr ""
+
+#: src/components/Profile/Main/screen.tsx:24
+msgid "Внешний вид"
+msgstr ""
+
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:24
 msgid "Войдите или зарегистрируйтесь"
 msgstr ""
 
-#: src/components/LogOrRegister/screen.tsx:25
+#: src/hooks/useButtonRegister.tsx:44
+msgid "Восстановить пароль"
+msgstr ""
+
+#: src/components/ForgotPassword/screen.tsx:82
+msgid "Забыли пароль?"
+msgstr ""
+
+#: src/styleApp/animate/MyTabBar.tsx:90
+msgid "Исследовать"
+msgstr ""
+
+#: src/styleApp/animate/MyTabBar.tsx:89
+msgid "Мои колоды"
+msgstr ""
+
+#: src/components/Profile/Main/screen.tsx:67
+msgid "Основные"
+msgstr ""
+
+#: src/components/HomeScreen/Home/renderItem/CardScene.tsx:70
+msgid "Продолжить учить колоду"
+msgstr ""
+
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:33
 msgid "Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве"
 msgstr ""
 
-#: src/components/LogOrRegister/screen.tsx:29
-#: src/components/LogOrRegister/screen.tsx:37
+#: src/styleApp/animate/MyTabBar.tsx:91
+#: src/styleApp/animate/MyTabBar.tsx:92
+msgid "Создать"
+msgstr ""
+
+#: src/components/Profile/Main/screen.tsx:98
+msgid "Additional"
+msgstr ""
+
+#: src/components/Profile/Main/screen.tsx:40
+msgid "Appearance"
+msgstr ""
+
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:46
 msgid "Continue with Apple"
 msgstr ""
 
-#: src/components/LogOrRegister/screen.tsx:61
+#: src/components/Profile/Apperance/screen.tsx:35
+msgid "Dark"
+msgstr ""
+
+#: src/block/profile/BlockHeader.tsx:167
+msgid "Delete account"
+msgstr ""
+
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:13
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:27
+msgid "Email"
+msgstr ""
+
+#: src/components/Profile/Main/screen.tsx:32
+msgid "Enable notifications to receive reminders to study cards"
+msgstr ""
+
+#: src/components/LogOrRegister/comp/Login.tsx:62
+msgid "Forget password?"
+msgstr ""
+
+#: src/hooks/useHookUserProfile.tsx:125
+msgid "Full name (optional)"
+msgstr ""
+
+#: src/components/LogOrRegister/comp/Register.tsx:76
 msgid "I agree with all that"
 msgstr ""
 
-#: src/components/LogOrRegister/screen.tsx:45
+#: src/components/Profile/Main/screen.tsx:29
+#: src/components/Profile/Main/screen.tsx:46
+msgid "Language"
+msgstr ""
+
+#: src/components/IntroOnBording/screen.tsx:179
+msgid "Let’s go"
+msgstr ""
+
+#: src/components/Profile/Apperance/screen.tsx:29
+msgid "Light"
+msgstr ""
+
+#: src/components/IntroOnBording/screen.tsx:171
+msgid "Log in or register"
+msgstr ""
+
+#: src/block/profile/BlockHeader.tsx:159
+msgid "Log out"
+msgstr ""
+
+#: src/hooks/useButtonRegister.tsx:29
+msgid "Login"
+msgstr ""
+
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:14
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:15
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:28
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:29
 msgid "Mail or telephone"
 msgstr ""
 
-#: src/components/LogOrRegister/screen.tsx:53
+#: src/hooks/useHookUserProfile.tsx:189
+#: src/hooks/useHookUserProfile.tsx:203
 msgid "Password"
 msgstr ""
 
-#: src/components/LogOrRegister/screen.tsx:56
+#: src/hooks/useButtonRegister.tsx:36
 msgid "Register"
 msgstr ""
 
-#: src/components/LogOrRegister/screen.tsx:28
+#: src/components/Profile/Main/screen.tsx:31
+msgid "Reminders"
+msgstr ""
+
+#: src/hooks/useHookUserProfile.tsx:216
+msgid "Repeat password"
+msgstr ""
+
+#: src/components/IntroOnBording/screen.tsx:41
+#: src/components/IntroOnBording/screen.tsx:47
+#: src/components/IntroOnBording/screen.tsx:53
+#: src/components/IntroOnBording/screen.tsx:59
+msgid "Revolutinary way of learning English"
+msgstr ""
+
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:54
 msgid "Sign up with Google"
+msgstr ""
+
+#: src/components/Profile/Apperance/screen.tsx:41
+msgid "System"
+msgstr ""
+
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:12
+#: src/components/LogOrRegister/placeHolderNameRegister.tsx:26
+msgid "Telephone"
+msgstr ""
+
+#: src/components/IntroOnBording/screen.tsx:42
+#: src/components/IntroOnBording/screen.tsx:48
+#: src/components/IntroOnBording/screen.tsx:54
+#: src/components/IntroOnBording/screen.tsx:60
+msgid "With the help of interval trainings that you design by yourself"
+msgstr ""
+
+#: src/components/HomeScreen/Home/renderItem/CardScene.tsx:51
+msgid "words"
 msgstr ""

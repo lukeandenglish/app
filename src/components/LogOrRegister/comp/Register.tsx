@@ -1,36 +1,37 @@
 import {t} from '@lingui/macro';
-import {useNavigation} from '@react-navigation/native';
 import * as React from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+} from 'react-native-gesture-handler';
 import Animated, {
   Layout as RNRLayout,
   ZoomInLeft,
   ZoomOutRight,
 } from 'react-native-reanimated';
-import ROUTER_PATH from '../../../config/page';
+import {SvgXml} from 'react-native-svg';
+import {Switch} from '../../../assets/svg/switch';
 import {useHookUserProfile} from '../../../hooks/useHookUserProfile';
 import {Stack} from '../../../styleApp/Spacing';
-import {FontFamily, Typography} from '../../../styleApp/Typografy';
 import {AnimateIInput} from '../../../styleApp/UI/AnimatedUIInput';
-import {FontSize} from '../../../styleApp/Units';
+import {Border, Units, isCalcSize} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
+import {ScrollContext} from '../screen';
 
-export function Register({onFocus}: {onFocus: () => void}) {
-  const [input] = useHookUserProfile();
-  const navigation = useNavigation();
-
-  const scrollRef = React.useRef<ScrollView | null>(null);
+function LoginSign() {
+  const [input, {handleCheckboxAgree}] = useHookUserProfile();
   const passwordRef = React.useRef<TextInput | null>(null);
+  const passwordRepeatRef = React.useRef<TextInput | null>(null);
+  const {onScroll} = React.useContext(ScrollContext);
 
-  const onForgotPassword = () =>
-    navigation.navigate(ROUTER_PATH.UNAUTH.ForgotPassword);
-
-  const funcMoveInput = pos => () => {
+  const funcMoveNext = pos => () => {
     if (pos === 1) {
-      passwordRef.current?.focus();
+      input.password?.onEndEditing();
     }
-    onFocus();
+    if (pos === 2) {
+      input.passwordRepeat?.onEndEditing();
+    }
   };
 
   return (
@@ -38,41 +39,60 @@ export function Register({onFocus}: {onFocus: () => void}) {
       entering={ZoomInLeft}
       exiting={ZoomOutRight}
       layout={RNRLayout.duration(1400).delay(1400)}>
-      <View
-        onTouchEnd={() => {
-          scrollRef.current?.scrollToEnd();
-        }}>
+      <TouchableWithoutFeedback onPress={onScroll}>
         <Stack size="s16" />
         <AnimateIInput
           ref={passwordRef}
-          secureTextEntry
           keyboardType="default"
-          onScrollRef={funcMoveInput(1)}
           {...input.password}
+          onEndEditing={funcMoveNext(1)}
+          onNextFocus={() => {
+            console.log('Next focus');
+            passwordRepeatRef.current?.focus();
+          }}
         />
-      </View>
-
-      <Stack size="s16" />
-      <View style={[styles.checkboxFlexBox]}>
-        <TouchableOpacity disabled={false} onPress={onForgotPassword}>
-          <Text
+        <Stack size="s16" />
+        <AnimateIInput
+          ref={passwordRepeatRef}
+          keyboardType="default"
+          {...input.passwordRepeat}
+          onEndEditing={funcMoveNext(2)}
+        />
+        <Stack size="s16" />
+        <View style={[styles.checkboxFlexBox]}>
+          <TouchableOpacity
+            disabled={input.agreements.editable}
+            onPress={handleCheckboxAgree}
             style={[
-              styles.iAgreeWith,
-              styles.fdfdfdfTypo,
-              {color: colors.actionColor},
-              FontFamily['500'],
-              Typography.text14,
+              styles.checkboxChild,
+              styles.checkboxChildLayout,
+              input.agreements.value && {
+                backgroundColor: colors.actionColor,
+              },
             ]}>
-            {t`Forget password?`}
+            {input.agreements.value ? (
+              <SvgXml xml={Switch} width={15} height={15} />
+            ) : (
+              <View />
+            )}
+          </TouchableOpacity>
+          <Text style={[styles.iAgreeWith, styles.fdfdfdfTypo]}>
+            {t`I agree with all that`}
           </Text>
-        </TouchableOpacity>
-      </View>
-      <Stack size="s32" />
+        </View>
+      </TouchableWithoutFeedback>
+      <Stack size="s16" />
     </Animated.View>
   );
 }
 
+export default LoginSign;
+
 const styles = StyleSheet.create({
+  checkboxChildLayout: {
+    height: isCalcSize(24),
+    width: isCalcSize(24),
+  },
   checkboxFlexBox: {
     alignItems: 'center',
     flexDirection: 'row',
@@ -81,19 +101,17 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
 
-  text: {
-    fontSize: FontSize.heading1_size,
-    lineHeight: 40,
-    color: colors.lightInk,
-  },
-  text1: {
-    lineHeight: 22,
-    textAlign: 'center',
+  checkboxChild: {
+    borderRadius: Border.br_5xs,
+    backgroundColor: colors.whitesmoke_200,
+    position: 'relative',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iAgreeWith: {
-    marginLeft: 12,
+    marginLeft: isCalcSize(12),
     textAlign: 'left',
-    fontSize: FontSize.subheading3_size,
+    fontSize: Units.s14,
     color: colors.lightInk,
   },
 });

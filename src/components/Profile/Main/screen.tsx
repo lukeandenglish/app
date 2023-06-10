@@ -13,6 +13,7 @@ import colors from '../../../styleApp/colors';
 import {useNavigation} from '@react-navigation/native';
 import ROUTER_PATH from '../../../config/page';
 import {isCalcSize} from '../../../styleApp/Units';
+import {Styles} from '../../../styleApp/Typografy';
 
 export default (): React.ReactNode => {
   const insets = useSafeAreaInsets();
@@ -62,21 +63,23 @@ export default (): React.ReactNode => {
       ]}>
       <BlockHeader small={true} />
       <Inset horizontal="s16" top="s24">
-        <Inset vertical="s16" layout={StyleSheet.flatten({flex: 1})}>
+        <Inset vertical="s16" layout={StyleSheet.flatten(Styles.flex1)}>
           <LabelText title={t`Основные`} mode="title" />
         </Inset>
         {MAINER.map((item, index) => (
           <View key={[index, 'first'].join('_')}>
             <Inset
               vertical="s16"
-              layout={StyleSheet.flatten([
-                styles.itemBlock,
-                item.noBottom && {borderBottomWidth: 0},
-              ])}>
+              layout={StyleSheet.flatten(
+                Object.assign([
+                  styles.itemBlock,
+                  item.noBottom && {borderBottomWidth: 0},
+                ]),
+              )}>
               <View style={styles.row}>
                 <SvgXml xml={item.svg} />
                 <Queue size="s8" />
-                <View style={{flex: 1}}>
+                <View style={Styles.flex1}>
                   <LabelText mode="desc" title={item.title} />
                   {item.value && <LabelText mode="notify" title={item.value} />}
                 </View>
@@ -91,21 +94,23 @@ export default (): React.ReactNode => {
         ))}
       </Inset>
       <Inset horizontal="s16" top="s24">
-        <Inset vertical="s16" layout={StyleSheet.flatten({flex: 1})}>
+        <Inset vertical="s16" layout={StyleSheet.flatten(Styles.flex1)}>
           <LabelText title={t`Additional`} mode="title" />
         </Inset>
         {SECONDARY.map((item, index) => (
-          <View key={[index, 'first'].join('_')} onPress={item.onPress}>
+          <View key={[index, 'first'].join('_')}>
             <Inset
               vertical="s16"
-              layout={StyleSheet.flatten([
-                styles.itemBlock,
-                item.noBottom && {borderBottomWidth: 0},
-              ])}>
+              layout={StyleSheet.flatten(
+                Object.assign([
+                  styles.itemBlock,
+                  item.noBottom && {borderBottomWidth: 0},
+                ]),
+              )}>
               <View style={styles.row}>
                 <SvgXml xml={item.svg} />
                 <Queue size="s8" />
-                <View style={{flex: 1}}>
+                <View style={Styles.flex1}>
                   <LabelText mode="desc" title={item.title} />
                   {item.value && <LabelText mode="notify" title={item.value} />}
                 </View>
