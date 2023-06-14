@@ -17,7 +17,7 @@ import {useDispatch} from 'react-redux';
 import goBack from '../../assets/svg/goBack';
 import settings from '../../assets/svg/settings';
 import ROUTER_PATH from '../../config/page';
-import {useHookUserProfile} from '../../hooks/useHookUserProfile';
+import {useHookChangeProfile} from '../../hooks/useHookChangeProfile';
 import {registerApi} from '../../redux/api/registerApi';
 import {Inset, Queue, Stack} from '../../styleApp/Spacing';
 import {Typography} from '../../styleApp/Typografy';
@@ -27,13 +27,13 @@ import {Units, isCalcSize} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
 
 export const BlockHeader = ({small = false}: {small: boolean}) => {
-  const [state, {onChangeEmail, onChangePassword, onChangeName}] =
-    useHookUserProfile();
+  const [state, {onChangeEmail, onChangePhone, onChangeName}] =
+    useHookChangeProfile();
   const navigation = useNavigation();
   const disabled = false;
   const insets = useSafeAreaInsets();
   const emailRef = React.useRef<TextInput | null>(null);
-  const passwordRef = React.useRef<TextInput | null>(null);
+  const phoneRef = React.useRef<TextInput | null>(null);
   const nameRef = React.useRef<TextInput | null>(null);
   const dispatchRedux = useDispatch();
   const logOutUser = registerApi.endpoints.logOutUser as any;
@@ -136,13 +136,13 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
             />
             <Stack size="s16" />
             <AnimateIInput
-              ref={passwordRef}
-              testID="password"
+              ref={phoneRef}
+              testID="phone"
               editable
               blurOnSubmit
               keyboardType="default"
-              onEndEditing={onChangePassword}
-              {...state.password}
+              onEndEditing={onChangePhone}
+              {...state.phone}
             />
             <Stack size="s16" />
             <AnimateIInput

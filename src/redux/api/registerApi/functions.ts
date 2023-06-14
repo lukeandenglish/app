@@ -22,12 +22,20 @@ export const selectorUserProfile = (store: RootState) => {
       ['email'],
       ['password'],
       ['agreements'],
-      ['name'],
+      ['username'],
       ['image'],
       ['passwordRepeat'],
     ]),
   )(store);
   return [email, password, agreements, name, image, passwordRepeat];
+};
+
+export const selectorAuthUserProfile = (store: RootState) => {
+  const [email, phone, name, image] = R.pipe(
+    R.path([REDUCER_PATH.USER, 'userProfile', 'user']),
+    R.paths([['email'], ['phone'], ['username'], ['image']]),
+  )(store);
+  return [email, phone, name, image];
 };
 
 export const FUNCTION = {

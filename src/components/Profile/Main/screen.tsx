@@ -10,14 +10,28 @@ import {BlockHeader} from '../../../block/profile/BlockHeader';
 import {Inset, Queue} from '../../../styleApp/Spacing';
 import {LabelText} from '../../../styleApp/UI/LabelText';
 import colors from '../../../styleApp/colors';
-import {useNavigation} from '@react-navigation/native';
+import {useFocusEffect, useNavigation} from '@react-navigation/native';
 import ROUTER_PATH from '../../../config/page';
 import {isCalcSize} from '../../../styleApp/Units';
 import {Styles} from '../../../styleApp/Typografy';
+import {deckCard} from '../../../redux/api/deckCard';
+import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
+import {useDispatch} from 'react-redux';
 
 export default (): React.ReactNode => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  useFocusEffect(
+    React.useCallback(() => {
+      registerCallbackEndpoints({
+        endpoints: deckCard.endpoints.myProfile,
+        args: {},
+        dispatch,
+      });
+    }, []),
+  );
 
   const MAINER = [
     {

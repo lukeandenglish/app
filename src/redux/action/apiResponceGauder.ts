@@ -34,36 +34,4 @@ export const apiResponceGauder = builder =>
           responce,
         );
       },
-    )
-    .addMatcher(
-      registerApi.endpoints.emailLogin.matchRejected,
-      (state, responce) => {
-        return MODERATE_STYLE(MODERATE_STYLE(state).DIS_LOADING()).EMAIL_LOGIN(
-          responce,
-        );
-      },
-    )
-    .addMatcher(
-      registerApi.endpoints.emailSignUp.matchRejected,
-      (state, responce) => {
-        return MODERATE_STYLE(
-          MODERATE_STYLE(state).DIS_LOADING(),
-        ).EMAIL_SIGNUP_REJECT(responce);
-      },
-    )
-    .addMatcher(
-      registerApi.endpoints.phoneSignUp.matchRejected,
-      (state, responce) => {
-        return MODERATE_STYLE(
-          MODERATE_STYLE(state).DIS_LOADING(),
-        ).PHONE_SIGNUP_REJECT(responce);
-      },
-    )
-    .addMatcher(
-      registerApi.endpoints.phoneLogin.matchRejected,
-      (state, responce) => {
-        return MODERATE_STYLE(
-          MODERATE_STYLE(state).DIS_LOADING(),
-        ).PHONE_LOGIN_REJECT(responce);
-      },
     );

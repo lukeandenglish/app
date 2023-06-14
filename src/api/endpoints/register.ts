@@ -10,6 +10,8 @@ EMAIL_SIGNUP: email-signup
 EMAIL_LOGIN: email-login
 PHONE_SIGNUP: phone-signup
 PHONE_LOGIN: phone-login
+ME: me
+USERS: users
 `;
 
 export const ENPOINTS = yaml.parse(yamlString);

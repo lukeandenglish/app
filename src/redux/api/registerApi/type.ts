@@ -14,6 +14,7 @@ export interface iSignUpPhone {
 }
 export interface IUserProfile {
   email: string;
+  phone: string;
   password: string;
   passwordRepeat: string;
   agreements: boolean;

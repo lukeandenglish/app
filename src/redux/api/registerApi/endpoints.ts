@@ -6,7 +6,11 @@ import {
 } from './type';
 import {ENPOINTS} from '../../../api/endpoints/register';
 import {actionSignOut} from '../../action/register';
-import {errorBuilderMessage} from '../../../api/registerCallbackEndpoints';
+import {
+  errorBuilderMessage,
+  registerCallbackEndpoints,
+} from '../../../api/registerCallbackEndpoints';
+import {deckCard} from '../deckCard';
 
 export const REGISTER_ENDPOINTS = {
   emailToken: {
@@ -57,6 +61,15 @@ export const REGISTER_ENDPOINTS = {
       method: ENPOINTS.POST,
       body: {email, password},
     }),
+    async onQueryStarted(args, {dispatch, queryFulfilled}) {
+      queryFulfilled.then(() => {
+        registerCallbackEndpoints({
+          dispatch,
+          endpoints: deckCard.endpoints.myProfile,
+          args: {},
+        });
+      });
+    },
   },
   phoneSignUp: {
     query: ({phone, password}: iSignUpPhone) => ({
