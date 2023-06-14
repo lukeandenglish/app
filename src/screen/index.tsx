@@ -17,6 +17,7 @@ import REDUCER_PATH from '../config/reducer/index';
 import {registerApi} from '../redux/api/registerApi';
 import {MyTabBar} from '../styleApp/animate/MyTabBar';
 import {ModalSlideFunc, SlideRightFunc} from './helper';
+import {TestFlow} from '../components/TestFlow/screen';
 
 const Stack = createNativeStackNavigator();
 
@@ -72,12 +73,17 @@ const App = () => {
             />
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_EDIT}
-              component={EditProfile}
+              getComponent={EditProfile}
               options={SlideRightFunc(false)}
             />
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_APPERANCE}
-              component={ApperanceProfile}
+              getComponent={ApperanceProfile}
+              options={SlideRightFunc(true)}
+            />
+            <Stack.Screen
+              name={ROUTER_PAGE.AUTH.PROFILE_TEST}
+              component={TestFlow}
               options={SlideRightFunc(true)}
             />
           </Stack.Group>

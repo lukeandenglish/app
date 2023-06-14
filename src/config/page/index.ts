@@ -15,5 +15,6 @@ export default {
     PROFILE_MAIN: 'ProfileMain',
     PROFILE_APPERANCE: 'ProfileApperance',
     PROFILE_EDIT: 'ProfileEdit',
+    PROFILE_TEST: 'ProfileTest',
   },
 };
