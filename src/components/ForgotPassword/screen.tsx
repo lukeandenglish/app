@@ -19,6 +19,9 @@ import {Button} from '../../styleApp/UI/Button';
 import {LabelText} from '../../styleApp/UI/LabelText';
 import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
+import {SvgXml} from 'react-native-svg';
+import {closeSvg} from '../../assets/close';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
   const {ReceiveEmail} = useButtonRegister();
@@ -68,12 +71,18 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
           bounces={false}
           ref={scrollRef}
           contentContainerStyle={styles.cnt}>
-          <Inset horizontal="s16" top="s16">
-            <Pressable
+          <Inset
+            horizontal="s16"
+            top="s16"
+            layout={StyleSheet.flatten({width: 70})}>
+            <TouchableOpacity
               onPress={navigation.goBack}
-              style={[Styles.iconClose, {borderWidth: 1}]}>
-              <View />
-            </Pressable>
+              style={[
+                Styles.iconClose,
+                {alignItems: 'center', justifyContent: 'center'},
+              ]}>
+              <SvgXml xml={closeSvg} width="30" height="30" />
+            </TouchableOpacity>
           </Inset>
           <View>
             <Inset horizontal="s16" layout={styles.insctx}>
@@ -102,6 +111,7 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
               <View onTouchStart={moveToButton}>
                 <AnimateIInput
                   ref={emailRef}
+                  testID="email"
                   keyboardType="email-address"
                   onScrollRef={moveToButton}
                   {...state.email}

@@ -1,0 +1,9 @@
+appId: com.lukeeng.io
+---
+- runFlow: subflows/onboarding-ios1.yaml
+# - runFlow: subflows/google-ios.yaml
+# - runFlow: subflows/onboarding-ios2.yaml
+# - runFlow: subflows/apple-ios.yaml
+- runFlow: subflows/login-email.yaml
+- runFlow: subflows/register-email.yaml
+

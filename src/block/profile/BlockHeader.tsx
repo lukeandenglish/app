@@ -127,6 +127,7 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
           <Inset horizontal="s12" bottom="s24" top="s40">
             <AnimateIInput
               ref={emailRef}
+              testID="email"
               editable
               blurOnSubmit
               keyboardType="email-address"
@@ -136,6 +137,7 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
             <Stack size="s16" />
             <AnimateIInput
               ref={passwordRef}
+              testID="password"
               editable
               blurOnSubmit
               keyboardType="default"
@@ -145,6 +147,7 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
             <Stack size="s16" />
             <AnimateIInput
               ref={nameRef}
+              testID="name"
               editable
               blurOnSubmit
               keyboardType="default"
@@ -188,7 +191,7 @@ export const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'center',
   },
-  
+
   settingBtn: {width: isCalcSize(24), height: isCalcSize(24)},
   ImageStyle: {borderRadius: Units.s16, overflow: 'hidden'},
   deleteBtnTxt: {color: colors.alert},

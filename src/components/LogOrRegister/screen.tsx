@@ -1,12 +1,18 @@
 /* eslint-disable react-native/no-inline-styles */
+import {useNavigation} from '@react-navigation/native';
 import * as R from 'ramda';
 import * as React from 'react';
 import {ScrollView, StyleSheet, TextInput, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {SvgXml} from 'react-native-svg';
+import {closeSvg} from '../../assets/close';
 import {useButtonRegister} from '../../hooks/useButtonRegister';
 import {useHookUserProfile} from '../../hooks/useHookUserProfile';
 import {useIsVisibleKeyboard} from '../../hooks/useIsVisibleKeyboard';
 import {Inset, Stack} from '../../styleApp/Spacing';
+import {Styles} from '../../styleApp/Typografy';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
 import {Border} from '../../styleApp/Units';
@@ -14,7 +20,6 @@ import colors from '../../styleApp/colors';
 import {BlockSelect} from './comp/BlockSelect';
 import Login from './comp/Login';
 import Register from './comp/Register';
-import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {
   placeHolderNameLogin,
   placeHolderNameRegister,
@@ -25,10 +30,11 @@ export const ScrollContext = React.createContext(null);
 const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
   const {BtnProps, isRegister} = useButtonRegister();
   const {isKeyboardVisible} = useIsVisibleKeyboard();
-  const [input] = useHookUserProfile();
+  const [input, action, BtnCreateUser] = useHookUserProfile();
   const insets = useSafeAreaInsets();
   const scrollRef = React.useRef<ScrollView | null>(null);
   const emailRef = React.useRef<TextInput | null>(null);
+  const navigation = useNavigation();
 
   const moveToButton = () => {
     setTimeout(() => {
@@ -46,6 +52,19 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
               paddingBottom: insets.bottom,
             },
           ]}>
+          <Inset
+            horizontal="s16"
+            top="s16"
+            layout={StyleSheet.flatten({width: 70})}>
+            <TouchableOpacity
+              onPress={navigation.goBack}
+              style={[
+                Styles.iconClose,
+                {alignItems: 'center', justifyContent: 'center'},
+              ]}>
+              <SvgXml xml={closeSvg} width="30" height="30" />
+            </TouchableOpacity>
+          </Inset>
           <ScrollView
             bounces={false}
             ref={scrollRef}
@@ -64,6 +83,7 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
                 <View onTouchStart={moveToButton}>
                   <AnimateIInput
                     ref={emailRef}
+                    testID="email"
                     keyboardType="email-address"
                     onScrollRef={moveToButton}
                     {...input.email}
@@ -91,6 +111,20 @@ const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
                 isKeyboardVisible && {display: 'none'},
               ]),
             )}>
+            {isRegister && (
+              <>
+                <Button
+                  {...BtnCreateUser}
+                  styleText={styles.btnclr}
+                  style={Object.assign([
+                    {
+                      backgroundColor: colors.actionColor,
+                    },
+                  ])}
+                />
+                <Stack size="s10" />
+              </>
+            )}
             <Button
               {...BtnProps}
               styleText={styles.btnclr}

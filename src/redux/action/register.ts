@@ -30,6 +30,8 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
         actionChangeEmail,
         (state: IUserProfile, action: {payload: IUserProfile['email']}) => {
           state.email = action.payload;
+          console.log(state);
+          return state;
         },
       )
       .addCase(actionSignOut, () => {
@@ -39,12 +41,14 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
         actionChangeImage,
         (state: IUserProfile, action: {payload: IUserProfile['image']}) => {
           state.image = action.payload;
+          return state;
         },
       )
       .addCase(
         actionChangePassword,
         (state: IUserProfile, action: {payload: IUserProfile['password']}) => {
           state.password = action.payload;
+          return state;
         },
       )
       .addCase(
@@ -54,6 +58,7 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
           action: {payload: IUserProfile['passwordRepeat']},
         ) => {
           state.passwordRepeat = action.payload;
+          return state;
         },
       )
 
@@ -61,6 +66,7 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
         actionChangeAgreements,
         (state: IUserProfile, action: {payload?: boolean}) => {
           state.agreements = action?.payload ?? !state?.agreements;
+          return state;
         },
       )
 
@@ -68,12 +74,14 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
         actionChangeApperance,
         (state: IUserProfile, action: {payload: IUserProfile['apperance']}) => {
           state.apperance = action.payload;
+          return state;
         },
       )
       .addCase(
         actionChangeName,
         (state: IUserProfile, action: {payload: IUserProfile['name']}) => {
           state.name = action.payload;
+          return state;
         },
       )
       .addCase(actionChangeReset, (state: IUserProfile) => {
@@ -81,6 +89,7 @@ export const reducerBranch = createReducer(initialState, (builder: any) => {
         state.password = initialState.password;
         state.agreements = initialState.agreements;
         state.name = initialState.name;
+        return state;
       })
       .addMatcher(
         registerApi.endpoints.handleSignGoogle.matchFulfilled,

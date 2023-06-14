@@ -60,22 +60,27 @@ export const useHookUserProfile = () => {
       IUserProfile['passwordRepeat'],
     ];
 
-  console.log(state, email);
-
   const onChangeEmail = () => {
     const EMAIL = state.email as unknown as IUserProfile['email'];
     if (EMAIL.length > 3 && validator.isEmail(EMAIL)) {
       dispatch(actionChangeEmail(EMAIL));
-      setState(INITIAL_STATE);
     }
+    if (EMAIL.length > 3 && validator.isMobilePhone(EMAIL)) {
+      dispatch(actionChangeEmail(EMAIL));
+    }
+    setState(INITIAL_STATE);
   };
 
-  const onChangepasswordRepeat = () => {
+  const onChangepasswordRepeat = async () => {
     const PASSWORD_REPEAT =
       state.passwordRepeat.trim() as unknown as IUserProfile['passwordRepeat'];
     if (PASSWORD_REPEAT.length > 3) {
       dispatch(actionChangePasswordRepeat(PASSWORD_REPEAT));
-      setState(INITIAL_STATE);
+      await registerCallbackEndpoints({
+        endpoints: registerApi.endpoints.signUpQuery,
+        args: {},
+        dispatch,
+      });
     }
   };
 
@@ -84,12 +89,19 @@ export const useHookUserProfile = () => {
       state.password.trim() as unknown as IUserProfile['password'];
     if (PASSWORD.length > 3) {
       dispatch(actionChangePassword(PASSWORD));
+    }
+  };
+
+  const onChangePasswordLogin = async () => {
+    const PASSWORD =
+      state.password.trim() as unknown as IUserProfile['password'];
+    if (PASSWORD.length > 3) {
+      dispatch(actionChangePassword(PASSWORD));
       await registerCallbackEndpoints({
-        endpoints: registerApi.endpoints.signUpQuery,
+        endpoints: registerApi.endpoints.loginQuery,
         args: {},
         dispatch,
       });
-      setState(INITIAL_STATE);
     }
   };
 
@@ -101,6 +113,16 @@ export const useHookUserProfile = () => {
 
   const handleCheckboxAgree = () => {
     dispatch(actionChangeAgreements());
+  };
+
+  const BtnCreateUser = {
+    title: t`Создать аккаунт`,
+    onPress: () =>
+      registerCallbackEndpoints({
+        endpoints: registerApi.endpoints.signUpQuery,
+        args: {},
+        dispatch,
+      }),
   };
 
   const loading = false;
@@ -153,7 +175,6 @@ export const useHookUserProfile = () => {
           uri: image ?? cred.EMPTY_IMAGE,
         },
         style: {
-          // backgroundColor: 'rgba(255, 87, 87, 0.4)',
           position: 'relative',
           alignItems: 'center',
           justifyContent: 'center',
@@ -174,20 +195,23 @@ export const useHookUserProfile = () => {
         placeholderNameStyle: placeholderNameStyle,
         loading,
         errorMsg: '',
-        onChangeText: (email: string) => {
-          const value = isCheckElement(
-            [email].join('').toLowerCase(),
-            true,
-          ) as {args: IUserProfile['email']};
-          setState({...state, email: value.args});
-        },
+        onChangeText: React.useCallback(
+          (email: string) => {
+            const value = isCheckElement(
+              [email].join('').toLowerCase(),
+              true,
+            ) as {args: IUserProfile['email']};
+            setState({...state, email: value.args});
+          },
+          [state.email],
+        ),
         returnTypeKey: 'next',
       } as unknown as iAnimateInput,
       passwordLogin: {
         editable: !loading,
         value: state.password,
         placeholder: password,
-        onEndEditing: onChangePassword,
+        onEndEditing: onChangePasswordLogin,
         placeholderName: t`Password`,
         blurOnSubmit: true,
         loading,
@@ -200,7 +224,7 @@ export const useHookUserProfile = () => {
         editable: !loading,
         value: state.password,
         placeholder: password,
-        onEndEditing: () => null,
+        onEndEditing: onChangePassword,
         loading,
         placeholderName: t`Password`,
         blurOnSubmit: true,
@@ -217,6 +241,12 @@ export const useHookUserProfile = () => {
         onEndEditing: onChangepasswordRepeat,
         placeholderName: t`Repeat password`,
         blurOnSubmit: true,
+        correct: true,
+        errorMsg:
+          password.length > 0
+            ? !R.equals(password)(state?.passwordRepeat ?? passwordRepeat) &&
+              t`Passwords do not match`
+            : null,
         onChangeText: (passwordRepeat: IUserProfile['passwordRepeat']) => {
           setState({...state, passwordRepeat});
         },
@@ -235,6 +265,7 @@ export const useHookUserProfile = () => {
       handleCheckboxAgree,
       onChangeName,
     },
+    BtnCreateUser,
   ];
 };
 

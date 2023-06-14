@@ -18,12 +18,12 @@ import Animated, {
   ZoomInLeft,
   ZoomOutRight,
 } from 'react-native-reanimated';
+import {isEmptyString} from '../../helper';
 import {refTextInput, refTimerType} from '../../helper/type';
 import {Inset, Stack} from '../Spacing';
 import {FontFamily, Typography} from '../Typografy';
 import {Units, isCalcSize} from '../Units';
 import colors from '../colors';
-import {isEmptyString} from '../../helper';
 
 const InitialStyte = {
   placeholderName: {
@@ -58,18 +58,10 @@ const InitialStyte = {
     style: {
       fontWeight: '400',
       fontSize: Units.s14,
-      lineHeight: Units.s20,
-      minWidth: '50%',
+      // lineHeight: Units.s20,
       color: colors.lightInk,
       background: '#F9F9F9',
       borderRadius: isCalcSize(100),
-      margin: 0,
-      padding: 0,
-      borderWidth: 1,
-      marginTop: 0,
-      paddingTop: 0,
-      paddingBottom: 0,
-      marginBottom: 0,
     },
   },
   loading: {
@@ -101,6 +93,20 @@ const styleInput = mode => {
     case 'ErrorFilled':
       return R.pipe(
         R.assocPath(['container', 'style', 'borderColor'], colors.alert),
+        R.assocPath(['placeholderName', 'style', 'color'], colors.alert),
+        R.assocPath(['textField', 'style', 'color'], colors.alert),
+      )(InitialStyte);
+    case 'SuccessFilled':
+      return R.pipe(
+        R.assocPath(['container', 'style', 'borderColor'], colors.success50),
+        R.assocPath(
+          ['placeholderName', 'style', 'borderColor'],
+          colors.success50,
+        ),
+        R.assocPath(
+          ['textField', 'style', 'backgroundColor'],
+          colors.success50,
+        ),
       )(InitialStyte);
     case 'Hover':
       return R.pipe(
@@ -186,24 +192,33 @@ export const AnimateIInput = React.forwardRef((props: iAnimateInput, ref) => {
       customStyle = styleInput('Loading');
     }
   }
+  if (props.errorMsg) {
+    customStyle = styleInput('ErrorFilled');
+  }
+
+  if (!props.errorMsg && props.correct && props.length > 3) {
+    customStyle = styleInput('SuccessFilled');
+  }
 
   let placeholderTextColor = customStyle.placeholderName;
   if (props.value === '') {
     placeholderTextColor = customStyle.textField.style.color;
   }
 
-  if (state) {
-    placeholderTextColor = colors.transparent;
-  }
   if (!state && props.customPlaceholderColor) {
     placeholderTextColor = customStyle.textField.style.color;
   }
+  if (state || props.secureTextEntry) {
+    placeholderTextColor = colors.transparent;
+  }
 
-  const [Container] = [props?.container ?? TextInput] as React.ReactNode[];
+  const [Container] = [props?.container ?? TextInput] as (typeof TextInput)[];
+  [];
 
   return (
     <>
       <TouchableWithoutFeedback
+        testID={props.testID}
         accessibilityRole="button"
         onPress={handleFocus}
         style={[props.style ? props.style : {}, styles.containerStyle]}>
@@ -229,21 +244,25 @@ export const AnimateIInput = React.forwardRef((props: iAnimateInput, ref) => {
         )}
         <Stack size="s4" />
         <View style={[styles.pressableStyle, props?.styleContainer ?? {}]}>
-          <View style={styles.customRows}>
+          <View style={[styles.customRows, {position: 'relative'}]}>
             <Container
               returnKeyType="next"
               underlineColorAndroid="transparent"
               ref={inputRef}
-              {...props}
-              placeholderTextColor={placeholderTextColor}
+              {...R.omit(['testId'])(props)}
+              secureTextEntry={false}
+              placeholderTextColor={
+                state ? colors.transparent : placeholderTextColor
+              }
+              clearTextOnFocus
               onFocus={handleFocus}
-              // onBlur={handleBlur}
               onEndEditing={handleEndEditing}
               style={StyleSheet.flatten([
                 Platform.OS === 'ios' ? Typography.text14 : Typography.text14,
                 FontFamily['500'],
                 styles.styleInput,
                 props?.styleInput ?? {},
+                customStyle.textField.style,
               ])}
             />
           </View>

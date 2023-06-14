@@ -1,0 +1,18 @@
+appId: com.lukeeng.io
+---
+- launchApp
+- swipe:
+    direction: LEFT
+    duration: 400
+- swipe:
+    direction: LEFT
+    duration: 400
+- swipe:
+    direction: LEFT
+    duration: 400
+- tapOn: Log in or register
+- swipe:
+    direction: DOWN
+    duration: 400
+- tapOn: Let’s go
+

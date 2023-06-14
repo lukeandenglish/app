@@ -1,0 +1,12 @@
+appId: com.lukeeng.io
+---
+
+- tapOn:
+    id: "email"
+- inputText: "danielworkworld@gmail.com"
+- tapOn: "next"
+- tapOn: 
+    id: "passwordLogin"
+- inputText: "zaqmlp123"
+- tapOn: "next"
+- hideKeyboard

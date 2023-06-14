@@ -13,9 +13,10 @@ import {RootState} from '../../../api/store';
 import REDUCER_PATH from '../../../config/reducer';
 import {isCheckElement} from '../../../helper';
 import {iGmailToken} from './type';
+import Reactron from '../../../../ReactotronConfig';
 
 export const selectorUserProfile = (store: RootState) => {
-  const [data, password, agreements] = R.pipe(
+  const [email, password, agreements, name, image, passwordRepeat] = R.pipe(
     R.path([REDUCER_PATH.USER]),
     R.paths([
       ['email'],
@@ -26,7 +27,7 @@ export const selectorUserProfile = (store: RootState) => {
       ['passwordRepeat'],
     ]),
   )(store);
-  return [data, password, agreements];
+  return [email, password, agreements, name, image, passwordRepeat];
 };
 
 export const FUNCTION = {
@@ -79,49 +80,48 @@ export const FUNCTION = {
   },
   signUpQuery: {
     async queryFn(_args, queryApi) {
-      const [data, password, agreements] = selectorUserProfile(
-        queryApi.getState(),
-      );
+      const [data, password, agreements, name, image, passwordRepeat] =
+        selectorUserProfile(queryApi.getState());
       const emailEndpoints = registerApi.endpoints.emailSignUp;
       const phoneEndpoints = registerApi.endpoints.phoneSignUp;
 
       const phoneTokenEndpoints = registerApi.endpoints.phoneToken;
       const emailTokenEndpoints = registerApi.endpoints.emailToken;
-
+      Reactron.log('data', data);
       const {args, phone, email} = isCheckElement(data);
-      if (phone) {
-        const responce = await registerCallbackEndpoints({
-          endpoints: phoneEndpoints,
-          args: {phone: args, email: null, password: password.trim()},
-          dispatch: queryApi.dispatch,
-        });
+      Reactron.log({args, phone, email});
 
-        const responceToken = await registerCallbackEndpoints({
-          endpoints: phoneTokenEndpoints,
-          args: {user_id: responce.data?.id},
-          dispatch: queryApi.dispatch,
-        });
+      if (R.equals(passwordRepeat)(password)) {
+        if (phone) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: phoneEndpoints,
+            args: {phone: args, email: null, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
 
-        console.log(responceToken);
+          await registerCallbackEndpoints({
+            endpoints: phoneTokenEndpoints,
+            args: {user_id: responce.data?.id},
+            dispatch: queryApi.dispatch,
+          });
 
-        return responce;
-      }
-      if (email) {
-        const responce = await registerCallbackEndpoints({
-          endpoints: emailEndpoints,
-          args: {phone: null, email: args, password: password.trim()},
-          dispatch: queryApi.dispatch,
-        });
+          return responce;
+        }
+        if (email) {
+          const responce = await registerCallbackEndpoints({
+            endpoints: emailEndpoints,
+            args: {phone: null, email: args, password: password.trim()},
+            dispatch: queryApi.dispatch,
+          });
 
-        const responceToken = await registerCallbackEndpoints({
-          endpoints: emailTokenEndpoints,
-          args: {user_id: responce.data?.id},
-          dispatch: queryApi.dispatch,
-        });
+          await registerCallbackEndpoints({
+            endpoints: emailTokenEndpoints,
+            args: {user_id: responce.data?.id},
+            dispatch: queryApi.dispatch,
+          });
 
-        console.log(responceToken);
-
-        return responce;
+          return responce;
+        }
       }
 
       return errorBuilderMessage({
@@ -143,7 +143,9 @@ export const FUNCTION = {
       const emailEndpoints = registerApi.endpoints.emailLogin;
       const phoneEndpoints = registerApi.endpoints.phoneLogin;
 
+      Reactron.log('data', data);
       const {args, phone, email} = isCheckElement(data);
+      Reactron.log({args, phone, email});
       if (phone) {
         const responce = await registerCallbackEndpoints({
           endpoints: phoneEndpoints,
@@ -225,6 +227,7 @@ export const FUNCTION = {
         await auth().signOut().catch(console.log);
         await GoogleSignin.hasPlayServices();
         const userProfile = await GoogleSignin.signIn();
+
         const [tokens] = [await GoogleSignin.getTokens()] as [iGmailToken];
         return new Promise((res, reject) => {
           try {

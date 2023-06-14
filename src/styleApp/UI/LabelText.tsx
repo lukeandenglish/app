@@ -50,11 +50,10 @@ export const LabelText = ({
   };
 
   return (
-    <View style={{flexDirection: 'row', flexShrink: 1}}>
+    <View style={{flexDirection: 'row', flexShrink: 1, position: 'relative'}}>
       <Text
         style={[
           {
-            flex: 1,
             flexWrap: 'wrap',
           },
           styleCustom(),

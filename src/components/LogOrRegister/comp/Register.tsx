@@ -1,10 +1,7 @@
 import {t} from '@lingui/macro';
 import * as React from 'react';
 import {StyleSheet, Text, TextInput, View} from 'react-native';
-import {
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-} from 'react-native-gesture-handler';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import Animated, {
   Layout as RNRLayout,
   ZoomInLeft,
@@ -42,6 +39,7 @@ function LoginSign() {
       <TouchableWithoutFeedback onPress={onScroll}>
         <Stack size="s16" />
         <AnimateIInput
+          testID="password"
           ref={passwordRef}
           keyboardType="default"
           {...input.password}
@@ -53,6 +51,7 @@ function LoginSign() {
         />
         <Stack size="s16" />
         <AnimateIInput
+          testID="passwordRepeat"
           ref={passwordRepeatRef}
           keyboardType="default"
           {...input.passwordRepeat}
@@ -60,25 +59,28 @@ function LoginSign() {
         />
         <Stack size="s16" />
         <View style={[styles.checkboxFlexBox]}>
-          <TouchableOpacity
+          <TouchableWithoutFeedback
             disabled={input.agreements.editable}
             onPress={handleCheckboxAgree}
-            style={[
-              styles.checkboxChild,
-              styles.checkboxChildLayout,
-              input.agreements.value && {
-                backgroundColor: colors.actionColor,
-              },
-            ]}>
-            {input.agreements.value ? (
-              <SvgXml xml={Switch} width={15} height={15} />
-            ) : (
-              <View />
-            )}
-          </TouchableOpacity>
-          <Text style={[styles.iAgreeWith, styles.fdfdfdfTypo]}>
-            {t`I agree with all that`}
-          </Text>
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View
+              style={[
+                styles.checkboxChild,
+                styles.checkboxChildLayout,
+                input.agreements.value && {
+                  backgroundColor: colors.actionColor,
+                },
+              ]}>
+              {input.agreements.value ? (
+                <SvgXml xml={Switch} width={15} height={15} />
+              ) : (
+                <View />
+              )}
+            </View>
+            <Text style={[styles.iAgreeWith, styles.fdfdfdfTypo]}>
+              {t`I agree with all that`}
+            </Text>
+          </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
       <Stack size="s16" />

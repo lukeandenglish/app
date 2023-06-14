@@ -1,0 +1,20 @@
+appId: com.lukeeng.io
+---
+- tapOn: "Register"
+- tapOn:
+    id: "email"
+- inputText: "danielworkworld@gmail.com"
+- tapOn: "next"
+- tapOn: 
+    id: "password"
+- inputText: "zaqmlp123"
+- tapOn: "next"
+- tapOn: 
+    id: "passwordRepeat"
+- inputText: "zaqmlp123"
+- tapOn: "next"
+- tapOn: "Создать аккаунт"
+- hideKeyboard
+- tapOn: "Login"
+- tapOn: "Forget password?"
+

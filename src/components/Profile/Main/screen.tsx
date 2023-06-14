@@ -81,7 +81,13 @@ export default (): React.ReactNode => {
                 <Queue size="s8" />
                 <View style={Styles.flex1}>
                   <LabelText mode="desc" title={item.title} />
-                  {item.value && <LabelText mode="notify" title={item.value} />}
+                  {item.value && (
+                    <LabelText
+                      mode="notify"
+                      title={item.value}
+                      style={{width: '90%'}}
+                    />
+                  )}
                 </View>
               </View>
               <TouchableOpacity

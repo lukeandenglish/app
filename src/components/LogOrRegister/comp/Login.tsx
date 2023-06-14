@@ -15,24 +15,15 @@ import {FontFamily, Typography} from '../../../styleApp/Typografy';
 import {AnimateIInput} from '../../../styleApp/UI/AnimatedUIInput';
 import {FontSize} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
-import {ScrollContext} from '../screen';
 
 function Login() {
   const [input] = useHookUserProfile();
   const navigation = useNavigation();
-  const {onScroll} = React.useContext(ScrollContext);
 
   const passwordRef = React.useRef<TextInput | null>(null);
 
   const onForgotPassword = () =>
     navigation.navigate(ROUTER_PATH.UNAUTH.ForgotPassword);
-
-  const funcMoveInput = pos => () => {
-    onScroll();
-    if (pos === 1) {
-      passwordRef.current?.focus();
-    }
-  };
 
   return (
     <Animated.View
@@ -42,12 +33,12 @@ function Login() {
       <View>
         <Stack size="s16" />
         <AnimateIInput
+          testID="passwordLogin"
           ref={passwordRef}
           secureTextEntry
           keyboardType="default"
           {...input.passwordLogin}
           onNextFocus={Keyboard.dismiss}
-          // onScrollRef={funcMoveInput(1)}
         />
       </View>
 

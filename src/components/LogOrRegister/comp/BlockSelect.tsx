@@ -19,7 +19,6 @@ export function BlockSelect({disabled}: {disabled: boolean}) {
 
   return (
     <>
-      <Stack size="s32" />
       <LabelText
         title={t`Войдите или зарегистрируйтесь`}
         style={Object.assign([

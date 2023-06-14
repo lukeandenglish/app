@@ -31,6 +31,7 @@ type Colors =
   | 'beige'
   | 'greenyellow'
   | 'dot'
+  | 'success50'
   | 'transparent'
   | 'lightsteelblue';
 
@@ -56,6 +57,7 @@ export default {
   gainsboro_200: '#e4e4e4',
   thistle: '#d6c7ff',
   sucess: '#51b800',
+  success50: ' rgba(81, 184, 0, 0.3)',
   linen: '#f4f0e6',
   alert: '#d42b2b',
   coral: '#ee6f3a',
