@@ -5,12 +5,6 @@ import {useFocusEffect} from '@react-navigation/native';
 export const link =
   'https://audio-ssl.itunes.apple.com/itunes-assets/AudioPreview126/v4/13/47/cd/1347cd11-b760-153b-54b8-40bcaeeebd7e/mzaf_944068220625687074.plus.aac.ep.m4a';
 
-export type iPlayState = {
-  index: number | null;
-  play: boolean;
-  table: string | null;
-};
-
 export const initialStatePlay = {
   table: null,
   index: null,
@@ -29,6 +23,9 @@ export const usePlaySound = () => {
   useFocusEffect(
     React.useCallback(() => {
       ref.current = SoundPlayer;
+      ref.current.onFinishedPlaying(() => {
+        setPlay(initialStatePlay);
+      });
       return () => unmount();
     }, []),
   );
@@ -47,12 +44,24 @@ export const usePlaySound = () => {
         ref.current.play();
         return;
       }
-      setPlay({index, play: true, table});
-      ref.current.playUrl(playUrl ?? link ?? 'https://example.com/music.mp3');
+
+      const linkPlay = playUrl ?? link ?? 'https://example.com/music.mp3';
+      ref.current.loadUrl(linkPlay);
+      ref.current.onFinishedLoading(() => {
+        setPlay({index, play: true, table});
+      });
+      ref.current.playUrl(linkPlay);
     };
 
   return [play, handlePlayMusic, unmount];
 };
+
+export type iPlayState = {
+  index: number | null;
+  play: boolean;
+  table: string | null;
+};
+
 export const isCheck = (
   index: iPlayState['index'],
   play: iPlayState,

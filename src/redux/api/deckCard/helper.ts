@@ -1,10 +1,4 @@
 import lodash from 'lodash';
-import {
-  iChangeMode,
-  iChangeSmallCard,
-  ChangeMode,
-  ChangeScene,
-} from '../../../components/HomeScreen/Home/Card';
 
 export type iListItem = {
   mode: iChangeMode;
