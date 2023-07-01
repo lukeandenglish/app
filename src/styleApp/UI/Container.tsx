@@ -1,7 +1,7 @@
 import React from 'react';
 import {StatusBar, View, StyleSheet, ViewStyle} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import colors from '../../../styleApp/colors';
+import colors from '../colors';
 
 export const Container = props => {
   const insets = useSafeAreaInsets();

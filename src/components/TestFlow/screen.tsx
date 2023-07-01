@@ -6,11 +6,11 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Button} from '../../styleApp/UI/Button';
 import {Units} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
-import {Container} from '../HomeScreen/Home/Container';
 import {Component} from './Component';
 import {Loading} from './Loading';
 import {FlatListStick} from './FlatListStick';
 import {FlatPreviewStick} from './FlatPreviewStick';
+import {Container} from '../../styleApp/UI/Container';
 
 export const DATA = [
   {
