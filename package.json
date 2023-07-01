@@ -31,6 +31,7 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@shopify/flash-list": "^1.4.3",
     "@tsconfig/react-native": "^2.0.2",
+    "add": "^2.0.6",
     "lodash": "^4.17.21",
     "ramda": "^0.29.0",
     "react": "18.1.0",
@@ -47,9 +48,11 @@
     "react-native-safe-area-context": "^3.3.2",
     "react-native-screens": "^3.8.0",
     "react-native-size-matters": "^0.4.0",
+    "react-native-sound-player": "^0.13.2",
     "react-native-spacing-system": "^2.0.0-rc.0",
     "react-native-splash-screen": "^3.3.0",
     "react-native-svg": "^13.6.0",
+    "react-native-video": "^5.2.1",
     "react-native-viewport-units": "^0.0.5",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
@@ -59,7 +62,8 @@
     "redux-promise-middleware": "^6.1.2",
     "redux-thunk": "^2.3.0",
     "validator": "^13.9.0",
-    "yaml": "^2.2.1"
+    "yaml": "^2.2.1",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",

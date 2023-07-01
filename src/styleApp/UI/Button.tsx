@@ -28,12 +28,12 @@ export function Button({
       onPress={onPress}
       style={Object.assign([
         styles.buttonContainer,
-        style,
         disabled && {backgroundColor: colors.lightSecondary},
+        style,
       ])}>
       <Inset
         horizontal={notHorizontal ? 's2' : 's14'}
-        vertical={notVertical ? 's2' : 's10'}
+        vertical={notVertical ? 's2' : 's14'}
         layout={StyleSheet.flatten({
           alignItems: 'center',
           flexDirection: 'row',
@@ -47,8 +47,8 @@ export function Button({
             disabled && {
               color: colors.gray_200,
             },
-            styleText,
             FontFamily['500'],
+            styleText,
           ])}>
           {title}
         </Text>

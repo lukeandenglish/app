@@ -9,6 +9,7 @@ pod 'Firebase', :modular_headers => true
 pod 'FirebaseCore', :modular_headers => true
 pod 'GoogleUtilities', :modular_headers => true
 pod 'react-native-splash-screen', :path => '../node_modules/react-native-splash-screen'
+pod 'react-native-video/VideoCaching', :path => '../node_modules/react-native-video/react-native-video.podspec'
 
 target 'LukeEng' do
   config = use_native_modules!

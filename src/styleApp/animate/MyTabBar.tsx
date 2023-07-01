@@ -1,16 +1,25 @@
+/* eslint-disable react-native/no-inline-styles */
 import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {card, create} from '../../assets/svg/bottom-tabs';
-import {Inset, Stack as InsetStack} from '../../styleApp/Spacing';
+import {card, create, profile} from '../../assets/svg/bottom-tabs';
+import {Inset} from '../../styleApp/Spacing';
 import {FontFamily, Typography} from '../../styleApp/Typografy';
 import {LabelText} from '../../styleApp/UI/LabelText';
 import colors from '../../styleApp/colors';
+import {Units} from '../Units';
 
 export const styles = StyleSheet.create({
+  twr: {alignItems: 'center', justifyContent: 'center'},
+  twp: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.lightInk,
+  },
   blockTab: {
     flexDirection: 'row',
     position: 'relative',
@@ -55,46 +64,34 @@ export function MyTabBar({state, descriptors, navigation}) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              paddingBottom: insets.bottom,
-            }}>
-            <Inset
-              vertical="s4"
-              layout={StyleSheet.flatten([
-                {
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                },
-              ])}>
-              <View
-                style={[
-                  {height: 20, alignItems: 'center', justifyContent: 'center'},
-                ]}>
-                <View style={[index === 1 && {top: -30, position: 'absolute'}]}>
-                  <SvgXml
-                    xml={R.cond([
-                      [R.equals(1), R.always(create)],
-                      [R.T, R.always(card)],
-                      [R.F, R.always(card)],
-                    ])(index)}
-                  />
-                </View>
+            style={[
+              styles.twp,
+              {
+                paddingBottom: insets.bottom - Units.s20,
+              },
+            ]}>
+            <Inset top="s4" layout={StyleSheet.flatten(styles.twr)}>
+              <View style={styles.twr}>
+                <SvgXml
+                  xml={R.cond([
+                    [R.equals(1), R.always(create)],
+                    [R.equals(0), R.always(card)],
+                    [R.T, R.always(profile)],
+                    [R.F, R.always(profile)],
+                  ])(index)}
+                />
               </View>
-              <InsetStack size="s8" />
               <LabelText
                 title={R.cond([
-                  [R.equals(0), R.always(t`Мои колоды`)],
-                  [R.equals(2), R.always(t`Исследовать`)],
-                  [R.T, R.always(t`Создать`)],
-                  [R.F, R.always(t`Создать`)],
+                  [R.equals(0), R.always(t`Подборки`)],
+                  [R.equals(2), R.always(t`Профиль`)],
+                  [R.T, R.always(t`Учить`)],
+                  [R.F, R.always(t`Учить`)],
                 ])(index)}
                 style={Object.assign([
                   Typography.text12,
-                  {textAlign: 'center'},
                   FontFamily[400],
+                  styles.twr,
                   {color: colors.bodySecondary},
                 ])}
               />
