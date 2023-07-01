@@ -1,13 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {Dimensions, SectionList} from 'react-native';
+import {Dimensions, SectionList, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Container} from '../../../styleApp/UI/Container';
-import {Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
 import {GroupPlayComponent} from './Component/GroupPlayComponent';
 import {useGetCurrentStack} from './hooks';
 import {renderItem} from './renderItem';
+import {Units, isCalcSize} from '../../../styleApp/Units';
 
 export const WIDTH = Dimensions.get('screen').width;
 
@@ -26,11 +26,11 @@ const App = () => {
         keyExtractor={(item, index) => [item, index].join('_')}
         renderItem={renderItem}
         contentContainerStyle={{
-          flexGrow: 1,
-          paddingBottom: insets.bottom + Units.s10 * 10,
           backgroundColor: colors.lightPrimary,
+          paddingBottom: insets.bottom + Units.s20,
         }}
       />
+      <View style={{height: isCalcSize(140) + insets.bottom}} />
       <GroupPlayComponent />
     </Container>
   );

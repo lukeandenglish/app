@@ -1,49 +1,23 @@
 import auth from '@react-native-firebase/auth';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import * as R from 'ramda';
 import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
+import ForgotPassword from '../components/ForgotPassword';
 import HomeScreen from '../components/HomeScreen/Home/screen';
 import IntroOnBording from '../components/IntroOnBording/screen';
 import LogInOrRegister from '../components/LogOrRegister';
-import ForgotPassword from '../components/ForgotPassword';
 import ApperanceProfile from '../components/Profile/Apperance/screen';
 import EditProfile from '../components/Profile/Edit/screen';
 import MainProfile from '../components/Profile/Main/screen';
+import {TestFlow} from '../components/TestFlow/screen';
 import ROUTER_PAGE from '../config/page';
 import REDUCER_PATH from '../config/reducer/index';
 import {registerApi} from '../redux/api/registerApi';
-import {MyTabBar} from '../styleApp/animate/MyTabBar';
 import {ModalSlideFunc, SlideRightFunc} from './helper';
-import {TestFlow} from '../components/TestFlow/screen';
 
 const Stack = createNativeStackNavigator();
-
-const Tab = createBottomTabNavigator();
-
-function MyTabs() {
-  return (
-    <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
-      <Tab.Screen
-        name={ROUTER_PAGE.TAB.HOME}
-        component={HomeScreen}
-        options={SlideRightFunc(false)}
-      />
-      <Tab.Screen
-        name={ROUTER_PAGE.TAB.CREATE}
-        component={MainProfile}
-        options={SlideRightFunc(false)}
-      />
-      <Tab.Screen
-        name={ROUTER_PAGE.TAB.SETTINGS}
-        component={MainProfile}
-        options={SlideRightFunc(false)}
-      />
-    </Tab.Navigator>
-  );
-}
 
 const App = () => {
   const dispatchRedux = useDispatch();
@@ -68,7 +42,12 @@ const App = () => {
           <Stack.Group>
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_MAIN}
-              component={MyTabs}
+              component={HomeScreen}
+              options={SlideRightFunc(false)}
+            />
+            <Stack.Screen
+              name={ROUTER_PAGE.TAB.SETTINGS}
+              component={MainProfile}
               options={SlideRightFunc(false)}
             />
             <Stack.Screen

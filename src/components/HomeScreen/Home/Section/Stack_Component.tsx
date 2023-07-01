@@ -6,16 +6,16 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SvgXml} from 'react-native-svg';
+import {playSvg, plusSvg} from '../../../../assets/close';
+import {ArtSvg, reverseSvg} from '../../../../assets/collection';
+import {iPlayState, isCheck} from '../../../../hooks/usePlaySound';
+import {Layout} from '../../../../styleApp/Layout';
+import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
 import {Styles, Typography} from '../../../../styleApp/Typografy';
-import {plusSvg, closeSvg, playSvg} from '../../../../assets/close';
-import {isCheck, iPlayState} from '../../../../hooks/usePlaySound';
-import {isCalcSize, Units} from '../../../../styleApp/Units';
+import {Button} from '../../../../styleApp/UI/Button';
+import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
 import {HeaderStack, iHeaderStack} from '../Component/HeaderStack';
-import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
-import {Button} from '../../../../styleApp/UI/Button';
-import {ArtSvg} from '../../../../assets/collection';
-import {Layout} from '../../../../styleApp/Layout';
 
 export const debug = false;
 
@@ -85,7 +85,6 @@ export const Stack_Component: ({
             style={[
               styles.iwp,
               {
-                height: isCalcSize(317),
                 backgroundColor: props.item.background,
                 borderColor: props.item.background,
               },
@@ -128,7 +127,7 @@ export const Stack_Component: ({
                   <SvgXml
                     xml={
                       isCheck(props.index, play, props.item.name)
-                        ? closeSvg
+                        ? reverseSvg
                         : playSvg
                     }
                     width={isCalcSize(36)}
