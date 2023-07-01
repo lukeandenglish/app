@@ -12,7 +12,7 @@ export const apiResponceGauder = builder =>
       },
     )
     .addMatcher(
-      registerApi.endpoints.emailSignUp.matchFulfilled,
+      registerApi.endpoints.emailSignUp.matchRejected,
       (state, responce) => {
         return MODERATE_STYLE(MODERATE_STYLE(state).DIS_LOADING()).EMAIL_SIGNUP(
           responce,

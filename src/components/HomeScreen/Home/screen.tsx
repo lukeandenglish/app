@@ -1,158 +1,160 @@
 /* eslint-disable react-native/no-inline-styles */
-import {useFocusEffect} from '@react-navigation/native';
-import {FlashList} from '@shopify/flash-list';
+import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import React from 'react';
-import {
-  Dimensions,
-  ListRenderItemInfo,
-  SectionList,
-  StyleSheet,
-  View,
-} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Dimensions, ListRenderItemInfo, SectionList, View} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useDispatch} from 'react-redux';
-import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
-import {deckCard} from '../../../redux/api/deckCard';
-import {iListDeckCatalog, iListItem} from '../../../redux/api/deckCard/helper';
-import {Inset} from '../../../styleApp/Spacing';
-import {FontFamily, Typography} from '../../../styleApp/Typografy';
-import {LabelText} from '../../../styleApp/UI/LabelText';
-import {Units, isCalcSize} from '../../../styleApp/Units';
-import {AnimatedViewBlock} from '../../../styleApp/animate/AnimatedViewBlock';
+import SECTION from '../../../config/section';
+import {usePlaySound} from '../../../hooks/usePlaySound';
+import {iListDeckCatalog} from '../../../redux/api/deckCard/helper';
+import {Stack} from '../../../styleApp/Spacing';
+import {Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
-import {Card, getCurrentMode, getCurrentScene} from './Card';
 import {Container} from './Container';
+import {Stack_Component} from './Stack_Component';
+import {Stack_Video_Component} from './Stack_Video_Component';
+import {WLC_Component} from './WLC_Component';
+import {GroupPlayComponent} from './GroupPlayComponent';
 
 export const WIDTH = Dimensions.get('screen').width;
-
-const initialData = {data: [], refresh: true, error: null};
-const actionLocalInit = 'ACTION_LOCAL_INIT';
-const actionLocalError = 'ACTION_LOCAL_ERROR';
-const actionLocalRefresh = 'ACTION_LOCAL_REFRESH';
-const actionLocalTouchError = 'ACTION_LOCAL_TOUCH_ERROR';
 
 const ListEmptyDeck = () => {
   return <View style={{flex: 1, backgroundColor: colors.greenyellow}} />;
 };
+const useGetCurrentStack = () => {
+  const ExtraData = {
+    onPressAdd: () => null,
+    title: t`Мои стэки`,
+    handlePlayMusic: () => null,
+    data: [
+      {
+        name: 'Talking contemporary art',
+        count: 50,
+        countLearn: 23,
+        background: '#FFD0D0',
+      },
+      {
+        name: 'High society vocabulary',
+        count: 50,
+        countLearn: 23,
+        background: '#EAE6C8',
+      },
+    ],
+    emptyIcon: false,
+  };
+  const ExtraPositionData = {
+    title: t`Мои стэки`,
+    data: [
+      {
+        name: 'Vocabulary for being a plumber',
+        count: 50,
+        countLearn: 23,
+        background: '#E4F6BE',
+      },
+      {
+        name: 'Talking english to the French',
+        count: 50,
+        countLearn: 23,
+        background: '#92A0BC',
+      },
+    ],
+    emptyIcon: false,
+  };
+  const ExtraPositionVideoData = {
+    title: t`Мои стэки`,
+    data: [
+      {
+        name: 'Let’s speak with australian accent',
+        data: '3 дня назад',
+        count: 50,
+        countLearn: 23,
+        background: '#92A0BC',
+      },
+      {
+        name: 'Listen how old people speak',
+        data: '3 дня назад',
+        count: 50,
+        countLearn: 23,
+        background: '#92A0BC',
+      },
+    ],
+    emptyIcon: false,
+  };
+
+  const data = [
+    {
+      title: SECTION.HOME.WLC_STACK,
+      data: [{}],
+    },
+    {
+      title: SECTION.HOME.MY_STACK,
+      data: [ExtraData],
+    },
+    {
+      title: SECTION.HOME.APPEND_STACK,
+      data: [ExtraPositionData],
+    },
+    {
+      title: SECTION.HOME.VIDEO_STACK,
+      data: [ExtraPositionVideoData],
+    },
+  ];
+  return [data];
+};
+
+const renderItem =
+  (play, handlePlayMusic) =>
+  (render: ListRenderItemInfo<iListDeckCatalog[]>) => {
+    console.log(render);
+    switch (R.path(['section', 'title'])(render)) {
+      case SECTION.HOME.WLC_STACK:
+        return <WLC_Component />;
+      case SECTION.HOME.MY_STACK:
+        return (
+          <Stack_Component
+            {...render.item}
+            emptyIcon={true}
+            play={play}
+            handlePlayMusic={handlePlayMusic}
+          />
+        );
+      case SECTION.HOME.APPEND_STACK:
+        return (
+          <View>
+            <Stack size="s10" />
+            <Stack_Component
+              {...render.item}
+              play={play}
+              handlePlayMusic={handlePlayMusic}
+              title={t`Подборка с Люком`}
+            />
+          </View>
+        );
+      case SECTION.HOME.VIDEO_STACK:
+        return (
+          <View>
+            <Stack size="s10" />
+            <Stack_Video_Component
+              {...render.item}
+              play={play}
+              handlePlayMusic={handlePlayMusic}
+              title={t`Видео с Люком`}
+            />
+          </View>
+        );
+      default:
+        return <View />;
+    }
+  };
 
 const App = () => {
   const insets = useSafeAreaInsets();
   const sectionListRef = React.useRef<SectionList | null>(null);
-  const dispatch = useDispatch();
-  const [{data, refresh, error}, dispatchLocal] = React.useReducer(
-    (state = initialData, action) => {
-      switch (action.type) {
-        case actionLocalInit:
-          return action.payload;
-        case actionLocalError:
-          state.error = action.payload;
-          return state;
-        case actionLocalTouchError:
-          state.error = null;
-          return state;
-        case actionLocalRefresh:
-          state.refresh = true;
-          return state;
-        default:
-          return state;
-      }
-    },
-    initialData,
-  );
-
-  const dataLength = data.length - 1;
-
-  useFocusEffect(
-    React.useCallback(() => {
-      onSendRequest({})(actionLocalInit);
-    }, []),
-  );
-
-  // const onRefresh = React.useCallback(() => {
-  //   dispatchLocal({type: actionLocalRefresh});
-  //   onSendRequest({})(actionLocalInit);
-  // }, []);
-
-  const onSendRequest =
-    (args = {}) =>
-    type => {
-      registerCallbackEndpoints({
-        endpoints: deckCard.endpoints.deckCardHome,
-        args,
-        dispatch,
-      })
-        .then(payload => dispatchLocal({type, payload}))
-        .catch(payload =>
-          dispatchLocal({type: actionLocalError, payload: [payload].join('')}),
-        );
-    };
-
-  const renderItem = React.useCallback(
-    (render: ListRenderItemInfo<iListDeckCatalog[]>) => {
-      return (
-        <View
-          style={{
-            flex: 1,
-            minHeight: 2,
-            paddingHorizontal: render?.item?.[0]?.scene ? Units.s14 : Units.s4,
-          }}>
-          <FlashList
-            horizontal
-            estimatedItemSize={WIDTH}
-            bounces={false}
-            showsHorizontalScrollIndicator={false}
-            contentContainerStyle={{
-              backgroundColor: colors.lightPrimary,
-            }}
-            renderItem={(
-              props: ListRenderItemInfo<iListDeckCatalog | null | undefined>,
-            ) => {
-              return (
-                <View style={{flex: 1, minHeight: 2}}>
-                  <Card
-                    mode={getCurrentMode(props)}
-                    scene={getCurrentScene(props)}
-                    title={R.path<iListItem['title']>(['item', 'title'])(props)}
-                    cardLength={R.path<iListItem['cardLength']>([
-                      'item',
-                      'cardLength',
-                    ])(props)}
-                  />
-                </View>
-              );
-            }}
-            getItemType={() => {
-              return Math.random().toString();
-            }}
-            data={render.item}
-          />
-        </View>
-      );
-    },
-    [],
-  );
-
-  const onChangeList = React.useCallback(
-    (idx: number) => () => {
-      if (R.equals(dataLength, idx)) {
-        sectionListRef.current?.scrollToLocation({
-          sectionIndex: dataLength,
-          itemIndex: 1,
-        });
-        return;
-      }
-      sectionListRef.current?.scrollToLocation({
-        sectionIndex: idx,
-        itemIndex: 1,
-      });
-    },
-    [dataLength],
-  );
+  const [data] = useGetCurrentStack();
+  const [play, handlePlayMusic] = usePlaySound();
 
   return (
-    <Container background={dataLength !== 0 ? null : colors.greenyellow}>
+    <Container notPaddingTop={false} background={colors.lightPrimary}>
       <SectionList
         ref={sectionListRef}
         sections={data}
@@ -160,62 +162,16 @@ const App = () => {
         bounces={false}
         ListEmptyComponent={ListEmptyDeck}
         keyExtractor={(item, index) => [item, index].join('_')}
-        renderItem={renderItem}
+        renderItem={renderItem(play, handlePlayMusic)}
         contentContainerStyle={{
           flexGrow: 1,
-          paddingBottom: insets.bottom,
+          paddingBottom: insets.bottom + Units.s10 * 10,
           backgroundColor: colors.lightPrimary,
         }}
-        renderSectionHeader={({section: {title, idx}}) => (
-          <Inset
-            horizontal="s16"
-            bottom="s6"
-            top="s12"
-            layout={StyleSheet.flatten([
-              {
-                backgroundColor: colors.lightPrimary,
-              },
-            ])}>
-            <TouchableOpacity onPress={onChangeList(idx)}>
-              <LabelText
-                title={title}
-                style={Object.assign([
-                  Typography.text38,
-                  styles.header,
-                  FontFamily.wermut,
-                ])}
-              />
-            </TouchableOpacity>
-          </Inset>
-        )}
       />
-      {error && (
-        <AnimatedViewBlock>
-          <TouchableOpacity
-            onPress={() => dispatchLocal({type: actionLocalTouchError})}>
-            <LabelText
-              title="Slava error fix me"
-              style={Object.assign([
-                FontFamily.wermut,
-                Typography.text10,
-                styles.errorText,
-              ])}
-            />
-          </TouchableOpacity>
-        </AnimatedViewBlock>
-      )}
+      <GroupPlayComponent />
     </Container>
   );
 };
 
 export default App;
-
-const styles = StyleSheet.create({
-  errorText: {color: colors.bodyText, backgroundColor: colors.additional},
-  header: {
-    textAlign: 'left',
-    letterSpacing: isCalcSize(1.2),
-    color: colors.lightInk,
-    fontWeight: '300',
-  },
-});

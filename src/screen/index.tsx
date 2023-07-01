@@ -73,12 +73,12 @@ const App = () => {
             />
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_EDIT}
-              getComponent={EditProfile}
+              component={EditProfile}
               options={SlideRightFunc(false)}
             />
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_APPERANCE}
-              getComponent={ApperanceProfile}
+              component={ApperanceProfile}
               options={SlideRightFunc(true)}
             />
             <Stack.Screen

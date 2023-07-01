@@ -13,7 +13,7 @@ export const Container = props => {
   return (
     <View
       style={[
-        {
+        props.notPaddingTop && {
           paddingTop: insets.top,
         },
         styles.container,
