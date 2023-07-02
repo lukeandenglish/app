@@ -38,6 +38,7 @@ export type FontSize =
   | 'text20'
   | 'text22'
   | 'text24'
+  | 'text30'
   | 'text38'
   | 'text52'
   | 'text72';
@@ -74,6 +75,10 @@ export const Typography: Record<FontSize, TextStyle> = {
   text24: {
     fontSize: RV(24),
     lineHeight: RV(28),
+  },
+  text30: {
+    fontSize: RV(30),
+    lineHeight: RV(38),
   },
   text38: {
     fontSize: RV(38),
@@ -198,7 +203,7 @@ export const Styles = {
     justifyContent: 'center',
     width: 40,
   },
-  inputSearchContainer: (state: boolean): ViewStyle | TextStyle => ({
+  inputSearchContainer: (): ViewStyle | TextStyle => ({
     // borderWidth: Units.s1,
     color: colors.lightInk,
     flex: 1,
