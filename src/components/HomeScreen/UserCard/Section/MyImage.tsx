@@ -21,6 +21,7 @@ export const MyImage = props => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const route = useRoute();
+  const isMy = route?.params?.isMy ?? false;
   return (
     <View style={Styles.flex1}>
       <View
@@ -48,7 +49,7 @@ export const MyImage = props => {
             />
           </TouchableOpacity>
         </View>
-        {route?.params?.isMy && (
+        {isMy && (
           <View
             style={[
               styles.rab,
@@ -80,7 +81,7 @@ export const MyImage = props => {
           </Text>
         </View>
         <Stack size="s18" />
-        {route?.params?.isMy === false ? (
+        {!isMy ? (
           <View style={styles.fr}>
             <Button
               title={'В закладки'}

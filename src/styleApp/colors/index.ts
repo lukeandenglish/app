@@ -36,6 +36,7 @@ type Colors =
   | 'transparent'
   | 'faded_flam'
   | 'gray_250'
+  | 'gray_350'
   | 'lightsteelblue';
 
 export default {
