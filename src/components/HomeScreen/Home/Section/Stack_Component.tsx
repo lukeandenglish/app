@@ -11,7 +11,7 @@ import {ArtSvg, reverseSvg} from '../../../../assets/collection';
 import {iPlayState, isCheck} from '../../../../hooks/usePlaySound';
 import {Layout} from '../../../../styleApp/Layout';
 import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
-import {Styles, Typography} from '../../../../styleApp/Typografy';
+import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
@@ -105,7 +105,7 @@ export const Stack_Component: ({
             <View style={[styles.cw, {backgroundColor: props.item.background}]}>
               <Stack size="s6" />
               <View style={styles.wt}>
-                <Text style={[Typography.text18, styles.wtt]}>
+                <Text style={[Typography.text18, styles.wtt, FontFamily[500]]}>
                   {props.item.name}
                 </Text>
               </View>
@@ -114,7 +114,8 @@ export const Stack_Component: ({
               <Stack _debug={debug} size="s12" />
               <View style={styles.wtd}>
                 <View>
-                  <Text style={[styles.wtd1, Typography.text14]}>
+                  <Text
+                    style={[styles.wtd1, Typography.text12, FontFamily[400]]}>
                     {[props.item?.countLearn, ' / ', props.item?.count].join(
                       '',
                     )}
@@ -122,7 +123,8 @@ export const Stack_Component: ({
                   <Text
                     style={[
                       styles.wtd2,
-                      Typography.text14,
+                      Typography.text12,
+                      FontFamily[400],
                     ]}>{t`Слов выучено`}</Text>
                 </View>
                 <TouchableOpacity

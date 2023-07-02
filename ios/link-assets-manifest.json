@@ -74,6 +74,42 @@
       "sha1": "f65ca25ce41bedeaeeee910333916a40fd4da36e"
     },
     {
+      "path": "assets/fonts/GraphikLCG-Black.ttf",
+      "sha1": "58f9cd1fe3f8bcc8b08a1c4c98c90f75ffc6e0e8"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Bold.ttf",
+      "sha1": "034e51b07acf75fc6f7d4ce99a1198764d384e57"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Extralight.ttf",
+      "sha1": "8f2bcf5c882f3d54efc9c40418077dca25d05e71"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Light.ttf",
+      "sha1": "707b63f2ba4e901617afd329e0797804201fdab7"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Medium.ttf",
+      "sha1": "1eee99280fd07ac36995610f3fc49ce7c89e9e9f"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Regular.ttf",
+      "sha1": "01d990a15909e8d102ec44004480db40003ba277"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Semibold.ttf",
+      "sha1": "9400714c4d23acc1d7c872beebb723a35c3bbfb9"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Super.ttf",
+      "sha1": "710bd8bf897421bf14854a83658035120191ed99"
+    },
+    {
+      "path": "assets/fonts/GraphikLCG-Thin.ttf",
+      "sha1": "bd565c367370651cd6f64702cd27475e46a73452"
+    },
+    {
       "path": "assets/fonts/Wermut-Italic.ttf",
       "sha1": "86c9a66758ec05639764106ed693010a0bf40f03"
     },

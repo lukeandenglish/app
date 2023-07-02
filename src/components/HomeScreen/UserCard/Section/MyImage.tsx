@@ -1,6 +1,6 @@
 import {useNavigation, useRoute} from '@react-navigation/native';
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, View, StyleSheet} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
@@ -69,7 +69,7 @@ export const MyImage = props => {
       <Stack size="s24" />
       <Inset horizontal="s24">
         <View style={Styles.flex1}>
-          <Text style={[Typography.text38, FontFamily['400']]}>
+          <Text style={[Typography.text38, FontFamily.wermut]}>
             {'Pet owner vocab'}
           </Text>
         </View>

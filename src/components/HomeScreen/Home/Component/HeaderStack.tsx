@@ -3,7 +3,7 @@ import {StyleSheet, Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SvgXml} from 'react-native-svg';
 import {plusSvg} from '../../../../assets/close';
-import {Typography} from '../../../../styleApp/Typografy';
+import {FontFamily, Typography} from '../../../../styleApp/Typografy';
 import {isCalcSize} from '../../../../styleApp/Units';
 import {Inset} from '../../../../styleApp/Spacing';
 
@@ -17,7 +17,9 @@ export const HeaderStack = ({title, onPress, emptyIcon}) => {
       bottom="s12"
       top="s36"
       layout={StyleSheet.flatten(styles.hiw)}>
-      <Text style={[Typography.text24, styles.hit]}>{title}</Text>
+      <Text style={[Typography.text24, styles.hit, FontFamily.wermut]}>
+        {title}
+      </Text>
       {emptyIcon && (
         <TouchableOpacity onPress={onPress}>
           <SvgXml

@@ -94,6 +94,15 @@
 		<string>Graphik-ThinItalic.ttf</string>
 		<string>Wermut-Italic.ttf</string>
 		<string>Wermut.ttf</string>
+		<string>GraphikLCG-Black.ttf</string>
+		<string>GraphikLCG-Bold.ttf</string>
+		<string>GraphikLCG-Extralight.ttf</string>
+		<string>GraphikLCG-Light.ttf</string>
+		<string>GraphikLCG-Medium.ttf</string>
+		<string>GraphikLCG-Regular.ttf</string>
+		<string>GraphikLCG-Semibold.ttf</string>
+		<string>GraphikLCG-Super.ttf</string>
+		<string>GraphikLCG-Thin.ttf</string>
 	</array>
 </dict>
 </plist>

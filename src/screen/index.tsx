@@ -39,7 +39,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={ROUTER_PAGE.UNAUTH.IntroOnBording}>
-        {hasTokenCreate && (
+        {!hasTokenCreate && (
           <Stack.Group>
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_MAIN}
@@ -73,7 +73,7 @@ const App = () => {
             />
           </Stack.Group>
         )}
-        {!hasTokenCreate && (
+        {hasTokenCreate && (
           <Stack.Group>
             <Stack.Screen
               name={ROUTER_PAGE.UNAUTH.IntroOnBording}
