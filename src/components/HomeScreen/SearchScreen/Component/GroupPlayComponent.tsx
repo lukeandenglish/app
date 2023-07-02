@@ -190,7 +190,6 @@ const styles = StyleSheet.create({
   },
   gpcw: {
     position: 'absolute',
-    // height: isCalcSize(72),
     borderTopWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.10)',
     backgroundColor: colors.lightPrimary,

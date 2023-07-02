@@ -17,5 +17,6 @@ export default {
     PROFILE_EDIT: 'ProfileEdit',
     PROFILE_TEST: 'ProfileTest',
     PROFILE_USER_CARD: 'ProfileUserCard',
+    PROFILE_SEARCH_CARD: 'ProfileSearchCard',
   },
 };
