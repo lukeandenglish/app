@@ -10,7 +10,7 @@ import {closeSvg, playVideoSvg, plusSvg} from '../../../../assets/close';
 import {ArtSvg} from '../../../../assets/collection';
 import {iPlayState, isCheck} from '../../../../hooks/usePlaySound';
 import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
-import {Styles, Typography} from '../../../../styleApp/Typografy';
+import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units/index';
 import colors from '../../../../styleApp/colors';
@@ -50,7 +50,7 @@ export const Stack_Video_Component: ({
           />
           <Stack _debug={debug} size="s16" />
           <View style={styles.etw}>
-            <Text style={styles.ett}>
+            <Text style={[styles.ett, FontFamily['400']]}>
               {t`Создайте свой первый стэк и добавьте слова`}
             </Text>
           </View>
@@ -108,12 +108,14 @@ export const Stack_Video_Component: ({
                 />
                 <Stack _debug={debug} size="s12" />
                 <View style={styles.wt}>
-                  <Text style={[Typography.text18, styles.wtt]}>
+                  <Text
+                    style={[Typography.text18, styles.wtt, FontFamily['500']]}>
                     {props.item.name}
                   </Text>
                 </View>
                 <Stack _debug={debug} size="s10" />
-                <Text style={[Typography.text12, styles.wtt]}>
+                <Text
+                  style={[Typography.text12, styles.wtt, FontFamily['400']]}>
                   {props.item.data}
                 </Text>
               </TouchableOpacity>

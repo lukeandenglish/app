@@ -4,6 +4,7 @@ import {TextStyle, View, Text} from 'react-native';
 import {Units} from '../Units';
 import colors from '../colors';
 import React from 'react';
+import {Typography} from '../Typografy';
 
 export const LabelText = ({
   title = '',
@@ -56,6 +57,7 @@ export const LabelText = ({
           {
             flexWrap: 'wrap',
           },
+          Typography.text14,
           styleCustom(),
         ]}>
         {title}

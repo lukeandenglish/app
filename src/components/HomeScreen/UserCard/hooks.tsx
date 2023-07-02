@@ -32,12 +32,12 @@ export const useGetCurrentStack = () => {
     description:
       "Sir Charles Spencer Chaplin KBE was an English comic actor, filmmaker, and composer who rose to fame in the era of silent film. He became a worldwide icon through his screen persona, the Tramp, and is considered one of the film industry's most important figures.",
     count: '49',
+    handlePlayMusic,
     data: R.reject(R.anyPass([R.isNil, R.isEmpty]))([
       route?.params?.isMy === true
         ? {
             card: false,
             play,
-            handlePlayMusic,
             component: () => <PortalHost name="AddedNewWord" />,
           }
         : null,
@@ -46,7 +46,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -54,7 +53,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -62,7 +60,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -70,7 +67,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -78,7 +74,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -86,7 +81,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -94,7 +88,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -102,7 +95,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -110,7 +102,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
 
@@ -119,7 +110,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -127,7 +117,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -135,7 +124,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -143,7 +131,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -151,7 +138,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
       {
@@ -159,7 +145,6 @@ export const useGetCurrentStack = () => {
         title: 'Harangue',
         translate: 'Разглагольство',
         play,
-        handlePlayMusic,
         onPressAdd: handleOnPressAdd,
       },
     ]),

@@ -10,7 +10,7 @@ export const Result = props => {
     <Inset horizontal="s24" top="s14">
       <View style={styles.fr}>
         <View style={styles.iwc}>
-          <Text style={[Typography.text30, FontFamily['400']]}>
+          <Text style={[Typography.text30, FontFamily.wermut]}>
             {props.learn.count}
           </Text>
           <Stack size="s8" />
@@ -20,7 +20,7 @@ export const Result = props => {
         </View>
         <Queue size="s18" />
         <View style={styles.iwc}>
-          <Text style={[Typography.text30, FontFamily['400']]}>
+          <Text style={[Typography.text30, FontFamily.wermut]}>
             {props.summary.count}
           </Text>
           <Stack size="s8" />

@@ -58,9 +58,13 @@ export const GroupPlayComponent = () => {
           <View style={styles.gpcwbl} />
           <Queue size="s16" />
           <View style={Styles.flex1}>
-            <Text style={FontFamily['500']}>High society vocabulary</Text>
+            <Text style={(Typography.text16, FontFamily['500'])}>
+              High society vocabulary
+            </Text>
             <Stack size="s6" />
-            <Text style={FontFamily['400']}>33 / 43 слов </Text>
+            <Text style={[Typography.text12, FontFamily['400']]}>
+              33 / 43 слов{' '}
+            </Text>
             <Stack size="s6" />
           </View>
           <Queue size="s16" />
@@ -86,19 +90,37 @@ export const GroupPlayComponent = () => {
             })}>
             <TouchableOpacity style={[Styles.flex1, styles.btnT]}>
               <SvgXml xml={card} />
-              <Text style={[styles.btntxt, Typography.text12]}>
+              <Text
+                style={[
+                  styles.btntxt,
+                  Typography.text12,
+                  FontFamily[400],
+                  {color: colors.gray_350},
+                ]}>
                 {t`Подборки`}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity style={[Styles.flex1, styles.btnT]}>
               <SvgXml xml={create} />
-              <Text style={[styles.btntxt, Typography.text12]}>{t`Учить`}</Text>
+              <Text
+                style={[
+                  styles.btntxt,
+                  Typography.text12,
+                  FontFamily[400],
+                  {color: colors.gray_350},
+                ]}>{t`Учить`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               onPress={handlePageNavigate}
               style={[Styles.flex1, styles.btnT]}>
               <SvgXml xml={profile} />
-              <Text style={[styles.btntxt, Typography.text12]}>
+              <Text
+                style={[
+                  styles.btntxt,
+                  Typography.text12,
+                  FontFamily[400],
+                  {color: colors.gray_350},
+                ]}>
                 {t`Профиль`}
               </Text>
             </TouchableOpacity>

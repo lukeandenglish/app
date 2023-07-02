@@ -20,6 +20,30 @@ import {NotifierWrapper} from 'react-native-notifier';
 import {enableScreens} from 'react-native-screens';
 import {PersistGate} from 'redux-persist/integration/react';
 
+import {setCustomText, setCustomTextInput} from 'react-native-global-props';
+import colors from './styleApp/colors';
+import {FontFamily} from './styleApp/Typografy';
+
+const customTextInputProps = {
+  underlineColorAndroid: 'rgba(0,0,0,0)',
+  style: {
+    ...FontFamily[400],
+    color: colors.lightInk,
+  },
+};
+
+// Setting default styles for all Text components.
+const customTextProps = {
+  style: {
+    fontSize: 16,
+    ...FontFamily[400],
+    color: colors.lightInk,
+  },
+};
+
+setCustomTextInput(customTextInputProps);
+setCustomText(customTextProps);
+
 const LOCALE = ['en', 'ru'] as string[];
 
 i18n.load({

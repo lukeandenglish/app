@@ -24,9 +24,11 @@ const SelectionCode = props => {
   return (
     <>
       <Inset horizontal="s24">
-        <Text style={Typography.text14}>{props.description}</Text>
+        <Text style={[Typography.text14, FontFamily['400']]}>
+          {props.description}
+        </Text>
         <Stack size="s20" />
-        <Text style={Typography.text30}>
+        <Text style={[Typography.text30, FontFamily.wermut]}>
           {[t`Слова`, ' (', props.count, ')'].join('')}
         </Text>
         <Stack size="s20" />
@@ -47,6 +49,7 @@ const SelectionCode = props => {
               </Button>
             );
           }
+          console.log(x.play);
           return (
             <Inset
               key={['key', el].join('_')}
@@ -55,20 +58,29 @@ const SelectionCode = props => {
               layout={StyleSheet.flatten(styles.iwp)}>
               <View style={styles.iwr}>
                 <View style={styles.iwc}>
-                  <Text style={[Typography.text18, FontFamily['600']]}>
+                  <Text style={[Typography.text18, FontFamily['500']]}>
                     {x.title}
                   </Text>
                   <Stack size="s4" />
-                  <Text style={[Typography.text14, FontFamily['400']]}>
+                  <Text
+                    style={[
+                      Typography.text14,
+                      FontFamily['400'],
+                      {color: colors.gray_250},
+                    ]}>
                     {x.translate}
                   </Text>
                 </View>
                 <Queue size="s24" />
                 <View style={styles.cntr}>
-                  <TouchableOpacity onPress={x.handlePlayMusic(x.key, x.title)}>
+                  <TouchableOpacity
+                    onPress={props.handlePlayMusic(
+                      el,
+                      [x.title, el].join('_'),
+                    )}>
                     <SvgXml
                       xml={
-                        isCheck(x.key, x.play, x.title)
+                        isCheck(el, x.play, [x.title, el].join('_'))
                           ? reverseSvg
                           : playSoundSvg
                       }

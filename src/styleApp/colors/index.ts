@@ -35,13 +35,16 @@ type Colors =
   | 'success50'
   | 'transparent'
   | 'faded_flam'
+  | 'gray_250'
   | 'lightsteelblue';
 
 export default {
   faded_flam: '#FAE0FB',
   gray_100: '#fafafa',
   gray_200: '#909090',
+  gray_250: '#92A0BC',
   gray_300: '#98907c',
+  gray_350: '#6A6A6A',
   bodySecondary: '#7c7c7c',
   bodyText: '#1d1d1d',
   gray_400: 'rgba(251, 251, 251, 0.92)',
