@@ -16,6 +16,8 @@ import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
 import {HeaderStack, iHeaderStack} from '../Component/HeaderStack';
+import {useNavigation} from '@react-navigation/native';
+import ROUTER_PAGE from '../../../../config/page';
 
 export const debug = false;
 
@@ -29,11 +31,12 @@ export const Stack_Component: ({
 }) => React.JSX.Element = ({
   onPressAdd,
   title,
-  handlePlayMusic,
   play,
   data,
   emptyIcon,
 }: iStackComponent) => {
+  const navigation = useNavigation();
+
   if (R.isEmpty(data)) {
     return (
       <View style={Styles.flex1}>
@@ -123,7 +126,11 @@ export const Stack_Component: ({
                     ]}>{t`Слов выучено`}</Text>
                 </View>
                 <TouchableOpacity
-                  onPress={handlePlayMusic(props.index, props.item.name)}>
+                  onPress={() =>
+                    navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_USER_CARD, {
+                      isMy: emptyIcon,
+                    })
+                  }>
                   <SvgXml
                     xml={
                       isCheck(props.index, play, props.item.name)
@@ -153,7 +160,6 @@ export interface iData {
 
 export interface iStackComponent extends iHeaderStack {
   data?: iData[];
-  handlePlayMusic: (e: number, table: string) => () => void;
   play: iPlayState;
   onPressAdd: () => void;
 }
