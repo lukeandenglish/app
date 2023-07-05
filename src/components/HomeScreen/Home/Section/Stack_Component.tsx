@@ -6,16 +6,18 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SvgXml} from 'react-native-svg';
-import {Styles, Typography} from '../../../../styleApp/Typografy';
-import {plusSvg, closeSvg, playSvg} from '../../../../assets/close';
-import {isCheck, iPlayState} from '../../../../hooks/usePlaySound';
-import {isCalcSize, Units} from '../../../../styleApp/Units';
+import {playSvg, plusSvg} from '../../../../assets/close';
+import {ArtSvg, reverseSvg} from '../../../../assets/collection';
+import {iPlayState, isCheck} from '../../../../hooks/usePlaySound';
+import {Layout} from '../../../../styleApp/Layout';
+import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
+import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
+import {Button} from '../../../../styleApp/UI/Button';
+import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
 import {HeaderStack, iHeaderStack} from '../Component/HeaderStack';
-import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
-import {Button} from '../../../../styleApp/UI/Button';
-import {ArtSvg} from '../../../../assets/collection';
-import {Layout} from '../../../../styleApp/Layout';
+import {useNavigation} from '@react-navigation/native';
+import ROUTER_PAGE from '../../../../config/page';
 
 export const debug = false;
 
@@ -29,11 +31,12 @@ export const Stack_Component: ({
 }) => React.JSX.Element = ({
   onPressAdd,
   title,
-  handlePlayMusic,
   play,
   data,
   emptyIcon,
 }: iStackComponent) => {
+  const navigation = useNavigation();
+
   if (R.isEmpty(data)) {
     return (
       <View style={Styles.flex1}>
@@ -85,7 +88,6 @@ export const Stack_Component: ({
             style={[
               styles.iwp,
               {
-                height: isCalcSize(317),
                 backgroundColor: props.item.background,
                 borderColor: props.item.background,
               },
@@ -103,7 +105,7 @@ export const Stack_Component: ({
             <View style={[styles.cw, {backgroundColor: props.item.background}]}>
               <Stack size="s6" />
               <View style={styles.wt}>
-                <Text style={[Typography.text18, styles.wtt]}>
+                <Text style={[Typography.text18, styles.wtt, FontFamily[500]]}>
                   {props.item.name}
                 </Text>
               </View>
@@ -112,7 +114,8 @@ export const Stack_Component: ({
               <Stack _debug={debug} size="s12" />
               <View style={styles.wtd}>
                 <View>
-                  <Text style={[styles.wtd1, Typography.text14]}>
+                  <Text
+                    style={[styles.wtd1, Typography.text12, FontFamily[400]]}>
                     {[props.item?.countLearn, ' / ', props.item?.count].join(
                       '',
                     )}
@@ -120,15 +123,20 @@ export const Stack_Component: ({
                   <Text
                     style={[
                       styles.wtd2,
-                      Typography.text14,
+                      Typography.text12,
+                      FontFamily[400],
                     ]}>{t`Слов выучено`}</Text>
                 </View>
                 <TouchableOpacity
-                  onPress={handlePlayMusic(props.index, props.item.name)}>
+                  onPress={() =>
+                    navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_USER_CARD, {
+                      isMy: emptyIcon,
+                    })
+                  }>
                   <SvgXml
                     xml={
                       isCheck(props.index, play, props.item.name)
-                        ? closeSvg
+                        ? reverseSvg
                         : playSvg
                     }
                     width={isCalcSize(36)}
@@ -154,7 +162,6 @@ export interface iData {
 
 export interface iStackComponent extends iHeaderStack {
   data?: iData[];
-  handlePlayMusic: (e: number, table: string) => () => void;
   play: iPlayState;
   onPressAdd: () => void;
 }

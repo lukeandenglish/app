@@ -18,6 +18,16 @@ export const SlideRightFunc = (header: boolean) => ({
   ...TransitionPresets.SlideFromRightIOS,
 });
 
+
+export const SlideToTop = (header: boolean) => ({
+  animationEnabled: false,
+  cardOverlayEnabled: true,
+  gestureEnabled: true,
+  headerShown: header || false,
+  ...TransitionPresets.BottomSheetAndroid,
+});
+
+
 export const ScaleSlideRightFunc = (
   header: boolean,
   gestureEnabled = true,

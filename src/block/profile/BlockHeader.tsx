@@ -20,7 +20,7 @@ import ROUTER_PATH from '../../config/page';
 import {useHookChangeProfile} from '../../hooks/useHookChangeProfile';
 import {registerApi} from '../../redux/api/registerApi';
 import {Inset, Queue, Stack} from '../../styleApp/Spacing';
-import {Typography} from '../../styleApp/Typografy';
+import {FontFamily, Typography} from '../../styleApp/Typografy';
 import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
 import {Button} from '../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../styleApp/Units';
@@ -66,10 +66,20 @@ export const BlockHeader = ({small = false}: {small: boolean}) => {
               </TouchableOpacity>
               <Queue size="s16" />
               <View style={styles.nameUser}>
-                <Text style={[styles.textStyle, Typography.text20]}>
+                <Text
+                  style={[
+                    styles.textStyle,
+                    Typography.text20,
+                    FontFamily['400'],
+                  ]}>
                   {state.name.name}
                 </Text>
-                <Text style={[styles.textStyle, Typography.text20]}>
+                <Text
+                  style={[
+                    styles.textStyle,
+                    Typography.text20,
+                    FontFamily['400'],
+                  ]}>
                   {state.name.surname}
                 </Text>
               </View>

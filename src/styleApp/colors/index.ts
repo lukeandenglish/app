@@ -21,6 +21,7 @@ type Colors =
   | 'sucess'
   | 'linen'
   | 'alert'
+  | 'lemon'
   | 'coral'
   | 'lightSecondary'
   | 'disabled'
@@ -33,12 +34,18 @@ type Colors =
   | 'dot'
   | 'success50'
   | 'transparent'
+  | 'faded_flam'
+  | 'gray_250'
+  | 'gray_350'
   | 'lightsteelblue';
 
 export default {
+  faded_flam: '#FAE0FB',
   gray_100: '#fafafa',
   gray_200: '#909090',
+  gray_250: '#92A0BC',
   gray_300: '#98907c',
+  gray_350: '#6A6A6A',
   bodySecondary: '#7c7c7c',
   bodyText: '#1d1d1d',
   gray_400: 'rgba(251, 251, 251, 0.92)',
@@ -69,6 +76,7 @@ export default {
   additional: '#e88baa',
   beige: '#eae6c8',
   greenyellow: '#ccff00',
+  lemon: '#E2F601',
   lightsteelblue: '#c0d4ff',
   transparent: 'transparent',
 } as Record<Colors, string>;

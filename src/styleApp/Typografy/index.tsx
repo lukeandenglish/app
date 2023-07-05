@@ -38,65 +38,82 @@ export type FontSize =
   | 'text20'
   | 'text22'
   | 'text24'
+  | 'text30'
   | 'text38'
   | 'text52'
   | 'text72';
+
+export const FontFamily = {
+  wermut: {fontFamily: 'Wermut'},
+  500: {fontFamily: 'GraphikLCG-Regular', fontWeight: '500'},
+  400: {fontFamily: 'GraphikLCG-Light', fontWeight: '400'},
+  300: {fontFamily: 'GraphikLCG-Thin', fontWeight: '300'},
+  600: {fontFamily: 'GraphikLCG-Medium', fontWeight: '600'},
+  700: {fontFamily: 'GraphikLCG-Bold', fontWeight: '700'},
+} as {[x: string]: TextStyle};
 
 export const Typography: Record<FontSize, TextStyle> = {
   text10: {
     fontSize: RV(10),
     lineHeight: RV(12),
+    ...FontFamily['500'],
   },
   text12: {
     fontSize: RV(12),
     lineHeight: RV(14),
+    ...FontFamily['500'],
   },
   text14: {
     fontSize: RV(14),
     lineHeight: RV(18),
+    ...FontFamily['500'],
   },
   text16: {
     fontSize: RV(16),
     lineHeight: RV(20),
+    ...FontFamily['500'],
   },
   text18: {
     fontSize: RV(18),
     lineHeight: RV(24),
+    ...FontFamily['500'],
   },
   text20: {
     fontSize: RV(20),
     lineHeight: RV(24),
+    ...FontFamily['500'],
   },
   text22: {
     fontSize: RV(22),
     lineHeight: RV(24),
+    ...FontFamily['500'],
   },
   text24: {
     fontSize: RV(24),
     lineHeight: RV(28),
+    ...FontFamily['500'],
+  },
+  text30: {
+    fontSize: RV(30),
+    lineHeight: RV(38),
+    ...FontFamily['500'],
   },
   text38: {
     fontSize: RV(38),
     lineHeight: RV(40),
+    ...FontFamily['500'],
   },
   text52: {
     fontSize: RV(52),
     lineHeight: RV(52),
+    ...FontFamily['500'],
   },
   text72: {
     fontSize: RV(72),
     lineHeight: RV(72),
+    ...FontFamily['500'],
   },
 };
-
-export const FontFamily = {
-  wermut: {fontfamily: 'Wermut'},
-  500: {fontfamily: 'Graphik-Regular', fontWeight: '500'},
-  400: {fontfamily: 'Graphik-Light', fontWeight: '400'},
-  300: {fontfamily: 'Graphik-Thin', fontWeight: '300'},
-  600: {fontfamily: 'Graphik-Medium', fontWeight: '600'},
-  700: {fontfamily: 'Graphik-Bold', fontWeight: '700'},
-} as {[x: string]: TextStyle};
 
 export const Styles = {
   animateInput: (state: boolean): ViewStyle | TextStyle => ({
@@ -134,6 +151,7 @@ export const Styles = {
   customDescriptionText: {
     color: colors.lightInk,
     lineHeight: 20,
+    fontFamily: 'Wermut',
     marginTop: 0,
     textTransform: 'none',
   },
@@ -198,7 +216,7 @@ export const Styles = {
     justifyContent: 'center',
     width: 40,
   },
-  inputSearchContainer: (state: boolean): ViewStyle | TextStyle => ({
+  inputSearchContainer: (): ViewStyle | TextStyle => ({
     // borderWidth: Units.s1,
     color: colors.lightInk,
     flex: 1,
