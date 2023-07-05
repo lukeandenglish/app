@@ -17,7 +17,7 @@ import {TestFlow} from '../components/TestFlow/screen';
 import ROUTER_PAGE from '../config/page';
 import REDUCER_PATH from '../config/reducer/index';
 import {registerApi} from '../redux/api/registerApi';
-import {ModalSlideFunc, SlideRightFunc} from './helper';
+import {ModalSlideFunc, SlideRightFunc, SlideToTop} from './helper';
 
 const Stack = createNativeStackNavigator();
 
@@ -55,7 +55,7 @@ const App = () => {
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_USER_CARD}
               component={UserCard}
-              options={SlideRightFunc(false)}
+              options={SlideToTop(false)}
             />
             <Stack.Screen
               name={ROUTER_PAGE.TAB.SETTINGS}
