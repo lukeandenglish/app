@@ -1,0 +1,5 @@
+app_identifier("com.lukeenglish.io") # The bundle identifier of your app
+apple_id("js-nanodegree@outlook.com") # Your Apple Developer Portal username
+
+itc_team_id("126476716") # App Store Connect Team ID
+team_id("QKJ94TLQ69") # Developer Portal Team ID

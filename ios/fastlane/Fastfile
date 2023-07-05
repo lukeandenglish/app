@@ -1,0 +1,29 @@
+update_fastlane
+
+default_platform(:ios)
+platform :ios do
+  desc "Push a new beta build to TestFlight"
+  lane :beta do
+    ENV['APP_NAME_FASTLANE_NAME_IPA']='LukeEng.ipa'
+    ENV['APP_SCHEMA_FASTLANE_SCHEMA_BUILDER']='LukeEng'
+    sigh
+    build_app(
+      workspace: "LukeEng.xcworkspace", 
+      clean:true,
+      scheme: "LukeEng",
+      output_name:ENV['APP_NAME_FASTLANE_NAME_IPA'],
+      output_directory:'./release/',
+      export_method: "app-store",
+      export_xcargs: "-allowProvisioningUpdates",
+      export_options: {
+        "method": "app-store",
+        "provisioningProfiles": {
+          "com.lukeenglish.io": "../AppStore_com.lukeenglish.io.mobileprovision",
+        },
+        "signingStyle": "manual"
+      }
+    )
+    # increment_version_number
+    increment_build_number
+  end
+end
