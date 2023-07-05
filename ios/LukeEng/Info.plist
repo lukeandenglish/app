@@ -34,7 +34,7 @@
 		</dict>
 	</array>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>5</string>
 	<key>GIDClientID</key>
 	<string>685639226330-hu2f846hgl4j99tag2bcq6hmn457kktv.apps.googleusercontent.com</string>
 	<key>LSRequiresIPhoneOS</key>
@@ -86,6 +86,12 @@
 	</array>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen.storyboard</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Camera Access Warning</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>This app requires access to the photo library.</string>
+	<key>NSPhotoLibraryUsageDescription</key> 
+	<string>We need access to photo library so that photos can be selected</string>
 	<key>UIRequiredDeviceCapabilities</key>
 	<array>
 		<string>armv7</string>
