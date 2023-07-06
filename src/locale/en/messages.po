@@ -1,11 +1,11 @@
 msgid ""
 msgstr ""
-"POT-Creation-Date: 2023-05-26 22:00+0500\n"
+"POT-Creation-Date: 2023-05-26 22:01+0500\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: @lingui/cli\n"
-"Language: en\n"
+"Language: ru\n"
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "PO-Revision-Date: \n"
@@ -13,168 +13,314 @@ msgstr ""
 "Language-Team: \n"
 "Plural-Forms: \n"
 
-#: src/components/ForgotPassword/screen.tsx:92
+#: src/components/TestFlow/Component.tsx:34
+msgid "А мы посоветуем с чего начать, чтобы было интересно"
+msgstr "А мы посоветуем с чего начать, чтобы было интересно"
+
+#: src/components/ForgotPassword/screen.tsx:101
 msgid "Введите вашу почту и мы вышлем инструкция по восстановлению пароля"
 msgstr ""
 
-#: src/components/Profile/Main/screen.tsx:24
-msgid "Внешний вид"
-msgstr ""
+#: src/components/HomeScreen/Home/hooks.tsx:132
+msgid "Видео с Люком"
+msgstr "Видео с Люком"
 
-#: src/components/LogOrRegister/comp/BlockSelect.tsx:24
+#: src/components/Profile/Main/screen.tsx:38
+msgid "Внешний вид"
+msgstr "Внешний вид"
+
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:23
 msgid "Войдите или зарегистрируйтесь"
-msgstr ""
+msgstr "Войдите или зарегистрируйтесь"
 
 #: src/hooks/useButtonRegister.tsx:44
 msgid "Восстановить пароль"
-msgstr ""
+msgstr "Восстановить пароль"
 
-#: src/components/ForgotPassword/screen.tsx:82
+#: src/components/TestFlow/screen.tsx:18
+#: src/components/TestFlow/screen.tsx:30
+#: src/components/TestFlow/screen.tsx:42
+#: src/components/TestFlow/screen.tsx:54
+#: src/components/TestFlow/screen.tsx:66
+msgid "Выберите несколько, если у вас действительно много целей"
+msgstr "Выберите несколько, если у вас действительно много целей"
+
+#: src/components/HomeScreen/Home/BottomSheet/MyPlayList.tsx:26
+#: src/components/HomeScreen/SearchScreen/BottomSheet/MyPlayList.tsx:26
+#: src/components/HomeScreen/UserCard/BottomSheet/MyPlayList.tsx:25
+msgid "Выберите стэк"
+msgstr "Выберите стэк"
+
+#: src/components/ForgotPassword/screen.tsx:91
 msgid "Забыли пароль?"
-msgstr ""
+msgstr "Забыли пароль?"
+
+#: src/components/TestFlow/screen.tsx:21
+#: src/components/TestFlow/screen.tsx:33
+#: src/components/TestFlow/screen.tsx:45
+#: src/components/TestFlow/screen.tsx:57
+#: src/components/TestFlow/screen.tsx:69
+msgid "Изучить новый язык"
+msgstr "Изучить новый язык"
 
 #: src/styleApp/animate/MyTabBar.tsx:90
-msgid "Исследовать"
-msgstr ""
+#~ msgid "Исследовать"
+#~ msgstr "Исследовать"
+
+#: src/components/TestFlow/screen.tsx:17
+#: src/components/TestFlow/screen.tsx:29
+#: src/components/TestFlow/screen.tsx:41
+#: src/components/TestFlow/screen.tsx:53
+#: src/components/TestFlow/screen.tsx:65
+msgid "Какая ваша цель?"
+msgstr "Какая ваша цель?"
+
+#: src/components/HomeScreen/SearchScreen/hooks.tsx:52
+#: src/components/HomeScreen/SearchScreen/Section/Stack_Component.tsx:94
+msgid "Люк подобрал"
+msgstr "Люк подобрал"
 
 #: src/styleApp/animate/MyTabBar.tsx:89
-msgid "Мои колоды"
-msgstr ""
+#~ msgid "Мои колоды"
+#~ msgstr "Мои колоды"
 
-#: src/components/Profile/Main/screen.tsx:67
+#: src/components/HomeScreen/Home/hooks.tsx:74
+msgid "Мои стэки"
+msgstr "Мои стэки"
+
+#: src/components/TestFlow/FlatPreviewStick.tsx:61
+msgid "Мы подобрали несколько коллекций основываясь на ваших ответах"
+msgstr "Мы подобрали несколько коллекций основываясь на ваших ответах"
+
+#: src/components/TestFlow/FlatPreviewStick.tsx:52
+msgid "Начните с этих подборок"
+msgstr "Начните с этих подборок"
+
+#: src/components/TestFlow/Loading.tsx:18
+msgid "Определяем с чего лучше начать"
+msgstr "Определяем с чего лучше начать"
+
+#: src/components/Profile/Main/screen.tsx:81
 msgid "Основные"
-msgstr ""
+msgstr "Основные"
+
+#: src/components/HomeScreen/Home/Component/GroupPlayComponent.tsx:131
+#: src/components/HomeScreen/SearchScreen/Component/GroupPlayComponent.tsx:147
+#: src/styleApp/animate/MyTabBar.tsx:86
+msgid "Подборки"
+msgstr "Подборки"
+
+#: src/components/HomeScreen/Home/hooks.tsx:103
+msgid "Подборки с Люком"
+msgstr "Подборки с Люком"
 
 #: src/components/HomeScreen/Home/renderItem/CardScene.tsx:70
-msgid "Продолжить учить колоду"
+#~ msgid "Продолжить учить колоду"
+#~ msgstr "Продолжить учить колоду"
+
+#: src/components/TestFlow/Component.tsx:16
+msgid ""
+"Пройдите тест\n"
+"на уровень\n"
+"английского"
 msgstr ""
 
-#: src/components/LogOrRegister/comp/BlockSelect.tsx:33
+#: src/components/HomeScreen/Home/Component/GroupPlayComponent.tsx:157
+#: src/components/HomeScreen/SearchScreen/Component/GroupPlayComponent.tsx:195
+#: src/styleApp/animate/MyTabBar.tsx:87
+msgid "Профиль"
+msgstr "Профиль"
+
+#: src/components/HomeScreen/UserCard/hooks.tsx:26
+msgid "Слов в стэке"
+msgstr "Слов в стэке"
+
+#: src/components/HomeScreen/Home/Section/Stack_Component.tsx:94
+msgid "Слов выучено"
+msgstr "Слов выучено"
+
+#: src/components/HomeScreen/UserCard/renderItem.tsx:32
+msgid "Слова"
+msgstr "Слова"
+
+#: src/components/TestFlow/screen.tsx:24
+#: src/components/TestFlow/screen.tsx:36
+#: src/components/TestFlow/screen.tsx:48
+#: src/components/TestFlow/screen.tsx:60
+#: src/components/TestFlow/screen.tsx:72
+msgid "Смотреть фильмы и читать книги"
+msgstr "Смотреть фильмы и читать книги"
+
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:32
 msgid "Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве"
-msgstr ""
+msgstr "Создайте аккаунт, чтобы не потерять свой прогресс на другом устройстве"
+
+#: src/components/HomeScreen/Home/Section/Stack_Component.tsx:137
+#: src/components/HomeScreen/Home/Section/Stack_Video_Component.tsx:61
+#: src/components/HomeScreen/SearchScreen/Section/Stack_Component.tsx:74
+msgid "Создайте свой первый стэк и добавьте слова"
+msgstr "Создайте свой первый стэк и добавьте слова"
 
 #: src/styleApp/animate/MyTabBar.tsx:91
 #: src/styleApp/animate/MyTabBar.tsx:92
-msgid "Создать"
-msgstr ""
+#~ msgid "Создать"
+#~ msgstr "Создать"
 
-#: src/components/Profile/Main/screen.tsx:98
+#: src/hooks/useHookUserProfile.tsx:119
+msgid "Создать аккаунт"
+msgstr "Создать аккаунт"
+
+#: src/components/HomeScreen/UserCard/hooks.tsx:22
+msgid "Стэка выучено"
+msgstr "Стэка выучено"
+
+#: src/components/HomeScreen/Home/Component/GroupPlayComponent.tsx:144
+#: src/components/HomeScreen/Home/Section/WLC_Component.tsx:16
+#: src/components/HomeScreen/SearchScreen/Component/GroupPlayComponent.tsx:182
+#: src/styleApp/animate/MyTabBar.tsx:88
+#: src/styleApp/animate/MyTabBar.tsx:89
+msgid "Учить"
+msgstr "Учить"
+
+#: src/components/HomeScreen/SearchScreen/Section/Stack_Component.tsx:51
+msgid "added in my playlist"
+msgstr "added in my playlist"
+
+#: src/components/Profile/Main/screen.tsx:118
 msgid "Additional"
-msgstr ""
+msgstr "Additional"
 
-#: src/components/Profile/Main/screen.tsx:40
+#: src/components/Profile/Main/screen.tsx:54
 msgid "Appearance"
-msgstr ""
+msgstr "Appearance"
 
-#: src/components/LogOrRegister/comp/BlockSelect.tsx:46
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:45
 msgid "Continue with Apple"
-msgstr ""
+msgstr "Continue with Apple""
 
 #: src/components/Profile/Apperance/screen.tsx:35
 msgid "Dark"
-msgstr ""
+msgstr "Dark"
 
-#: src/block/profile/BlockHeader.tsx:167
+#: src/block/profile/BlockHeader.tsx:180
 msgid "Delete account"
-msgstr ""
+msgstr "Delete account""
 
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:13
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:27
+#: src/hooks/useHookChangeProfile.tsx:161
 msgid "Email"
-msgstr ""
+msgstr "Email"
 
-#: src/components/Profile/Main/screen.tsx:32
-msgid "Enable notifications to receive reminders to study cards"
-msgstr ""
-
-#: src/components/LogOrRegister/comp/Login.tsx:62
-msgid "Forget password?"
-msgstr ""
-
-#: src/hooks/useHookUserProfile.tsx:125
-msgid "Full name (optional)"
-msgstr ""
-
-#: src/components/LogOrRegister/comp/Register.tsx:76
-msgid "I agree with all that"
-msgstr ""
-
-#: src/components/Profile/Main/screen.tsx:29
 #: src/components/Profile/Main/screen.tsx:46
+msgid "Enable notifications to receive reminders to study cards"
+msgstr "Enable notifications to receive reminders to study cards""
+
+#: src/components/LogOrRegister/comp/Login.tsx:56
+msgid "Forget password?"
+msgstr "Forget password?"
+
+#: src/hooks/useHookChangeProfile.tsx:118
+#: src/hooks/useHookUserProfile.tsx:149
+msgid "Full name (optional)"
+msgstr "Full name (optional)"
+
+#: src/components/LogOrRegister/comp/Register.tsx:81
+msgid "I agree with all that"
+msgstr "I agree with all that"
+
+#: src/components/Profile/Main/screen.tsx:43
+#: src/components/Profile/Main/screen.tsx:60
 msgid "Language"
-msgstr ""
+msgstr "Language"
 
 #: src/components/IntroOnBording/screen.tsx:179
 msgid "Let’s go"
-msgstr ""
+msgstr "Let’s go"
 
 #: src/components/Profile/Apperance/screen.tsx:29
 msgid "Light"
-msgstr ""
+msgstr "Light"
 
 #: src/components/IntroOnBording/screen.tsx:171
 msgid "Log in or register"
-msgstr ""
+msgstr "Log in or register"
 
-#: src/block/profile/BlockHeader.tsx:159
+#: src/block/profile/BlockHeader.tsx:172
 msgid "Log out"
-msgstr ""
+msgstr "Log out"
 
 #: src/hooks/useButtonRegister.tsx:29
 msgid "Login"
-msgstr ""
+msgstr "Login"
 
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:14
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:15
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:28
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:29
 msgid "Mail or telephone"
-msgstr ""
+msgstr "Mail or telephone"
 
-#: src/hooks/useHookUserProfile.tsx:189
-#: src/hooks/useHookUserProfile.tsx:203
+#: src/components/TestFlow/screen.tsx:142
+msgid "Next question"
+msgstr "Next question"
+
+#: src/hooks/useHookUserProfile.tsx:215
+#: src/hooks/useHookUserProfile.tsx:229
 msgid "Password"
-msgstr ""
+msgstr "Password"
+
+#: src/hooks/useHookUserProfile.tsx:248
+msgid "Passwords do not match"
+msgstr "Passwords do not match"
+
+#: src/hooks/useHookChangeProfile.tsx:183
+msgid "Phone"
+msgstr "Phone"
 
 #: src/hooks/useButtonRegister.tsx:36
 msgid "Register"
-msgstr ""
+msgstr "Register"
 
-#: src/components/Profile/Main/screen.tsx:31
+#: src/components/Profile/Main/screen.tsx:45
 msgid "Reminders"
-msgstr ""
+msgstr "Reminders"
 
-#: src/hooks/useHookUserProfile.tsx:216
+#: src/hooks/useHookUserProfile.tsx:242
 msgid "Repeat password"
-msgstr ""
+msgstr "Repeat password"
 
 #: src/components/IntroOnBording/screen.tsx:41
 #: src/components/IntroOnBording/screen.tsx:47
 #: src/components/IntroOnBording/screen.tsx:53
 #: src/components/IntroOnBording/screen.tsx:59
 msgid "Revolutinary way of learning English"
-msgstr ""
+msgstr "Revolutinary way of learning English"
 
-#: src/components/LogOrRegister/comp/BlockSelect.tsx:54
+#: src/components/LogOrRegister/comp/BlockSelect.tsx:53
 msgid "Sign up with Google"
-msgstr ""
+msgstr "Sign up with Google"
+
+#: src/components/HomeScreen/SearchScreen/Section/Stack_Component.tsx:50
+msgid "Success"
+msgstr "Success"
 
 #: src/components/Profile/Apperance/screen.tsx:41
 msgid "System"
-msgstr ""
+msgstr "System"
 
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:12
 #: src/components/LogOrRegister/placeHolderNameRegister.tsx:26
 msgid "Telephone"
-msgstr ""
+msgstr "Telephone"
 
 #: src/components/IntroOnBording/screen.tsx:42
 #: src/components/IntroOnBording/screen.tsx:48
 #: src/components/IntroOnBording/screen.tsx:54
 #: src/components/IntroOnBording/screen.tsx:60
 msgid "With the help of interval trainings that you design by yourself"
-msgstr ""
+msgstr "With the help of interval trainings that you design by yourself"
 
 #: src/components/HomeScreen/Home/renderItem/CardScene.tsx:51
-msgid "words"
-msgstr ""
+#~ msgid "words"
+#~ msgstr "words"

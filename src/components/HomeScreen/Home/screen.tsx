@@ -16,7 +16,7 @@ const App = () => {
   const sectionListRef = React.useRef<SectionList | null>(null);
   const [data] = useGetCurrentStack();
 
-  console.log(R.pipe(R.path([1, 'data']))(data));
+  console.log(R.pipe(R.path([1, 'data', 0, 'data']))(data));
 
   return (
     <Container notPaddingTop={false} background={colors.lightPrimary}>
@@ -33,7 +33,7 @@ const App = () => {
         }}
       />
       <GroupPlayComponent
-        isEmpty={R.pipe(R.path([1, 'data', 0]), R.isEmpty)(data)}
+        isEmpty={R.pipe(R.path([1, 'data', 0, 'data']), R.isEmpty)(data)}
       />
     </Container>
   );
