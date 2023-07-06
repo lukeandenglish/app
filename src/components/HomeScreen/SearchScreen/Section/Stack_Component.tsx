@@ -3,10 +3,15 @@ import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Notifier} from 'react-native-notifier';
 import {SvgXml} from 'react-native-svg';
+import {useDispatch} from 'react-redux';
+import {registerCallbackEndpoints} from '../../../../api/registerCallbackEndpoints';
 import {addedSvg, plusSvg} from '../../../../assets/close';
 import {ArtSvg} from '../../../../assets/collection';
 import {iPlayState} from '../../../../hooks/usePlaySound';
+import {homeApi} from '../../../../redux/api/homeCard';
 import {Layout} from '../../../../styleApp/Layout';
 import {Inset, Stack} from '../../../../styleApp/Spacing';
 import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
@@ -14,6 +19,11 @@ import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
 import {HeaderStack, iHeaderStack} from '../Component/HeaderStack';
+import Animated, {
+  ZoomInUp,
+  FadeOutDown,
+  Layout as RNRLayout,
+} from 'react-native-reanimated';
 
 export const debug = false;
 
@@ -24,11 +34,30 @@ export const Stack_Component: ({
   play,
   data,
   emptyIcon,
+  added,
 }) => React.JSX.Element = ({onPressAdd, title, data}: iStackComponent) => {
+  const [state, setState] = React.useState([]);
+  const dispatch = useDispatch();
+
+  const handleAdded = async item => {
+    await registerCallbackEndpoints({
+      endpoints: homeApi.endpoints.listCard,
+      dispatch,
+      args: {item},
+    }).then(() => {
+      setState(R.append(item)(state));
+      Notifier.showNotification({
+        title: t`Success`,
+        description: [item.name, t`added in my playlist`].join(' '),
+      });
+    });
+  };
+
   if (R.isEmpty(data)) {
     return (
       <View style={Styles.flex1}>
-        <HeaderStack title={title} onPress={onPressAdd} emptyIcon={true} />
+        <HeaderStack title={title} />
+        <Stack size="s10" />
         <Inset
           _debug={debug}
           vertical="s16"
@@ -66,6 +95,7 @@ export const Stack_Component: ({
         onPress={onPressAdd}
         emptyIcon={false}
       />
+      <Stack size="s10" />
       <Inset
         horizontal="s16"
         layout={StyleSheet.flatten({
@@ -93,75 +123,93 @@ export const Stack_Component: ({
                 };
 
           return (
-            <View
-              key={[index, 'search'].join('')}
-              style={[
-                styles.iwp,
-                {
-                  backgroundColor: item.background,
-                  borderColor: item.background,
-                  padding: R.path([dasdas.padding.symbol])(Units),
-                  width: isCalcSize(dasdas.window[0]),
-                  height: isCalcSize(dasdas.window[1]),
-                  marginBottom: Units.s8,
-                  position: 'relative',
-                },
-              ]}>
+            <Animated.View
+              entering={ZoomInUp}
+              exiting={FadeOutDown}
+              layout={RNRLayout.duration(1400).delay(1400)}>
               <View
-                style={{
-                  width: isCalcSize(dasdas.svg[0]),
-                  height: isCalcSize(dasdas.svg[1]),
-                }}>
-                <SvgXml
-                  xml={ArtSvg}
-                  width={isCalcSize(dasdas.svg[0])}
-                  height={isCalcSize(dasdas.svg[1])}
-                />
-              </View>
-              <View
+                key={[index, 'search'].join('')}
                 style={[
-                  styles.cw,
+                  styles.iwp,
                   {
                     backgroundColor: item.background,
-                    bottom: R.path([dasdas.padding.symbol])(Units) / 2,
-                    paddingLeft: R.path([dasdas.padding.symbol])(Units),
-                    paddingRight: R.path([dasdas.padding.symbol])(Units),
-                    right: 0,
+                    borderColor: item.background,
+                    padding: R.path([dasdas.padding.symbol])(Units),
                     width: isCalcSize(dasdas.window[0]),
+                    height: isCalcSize(dasdas.window[1]),
+                    marginBottom: Units.s8,
+                    position: 'relative',
                   },
                 ]}>
-                <Stack size="s2" />
-                <View style={styles.wt}>
-                  <Text style={[Typography.text16, FontFamily[500]]}>
-                    {item.name}
-                  </Text>
+                <View
+                  style={{
+                    width: isCalcSize(dasdas.svg[0]),
+                    height: isCalcSize(dasdas.svg[1]),
+                  }}>
+                  <SvgXml
+                    xml={ArtSvg}
+                    width={isCalcSize(dasdas.svg[0])}
+                    height={isCalcSize(dasdas.svg[1])}
+                  />
                 </View>
-                <Stack size={dasdas.padding.small} />
                 <View
                   style={[
-                    styles.wtd,
+                    styles.cw,
                     {
-                      width:
-                        isCalcSize(dasdas.window[0]) -
-                        2 * R.path([dasdas.padding.symbol])(Units),
+                      backgroundColor: item.background,
+                      bottom: R.path([dasdas.padding.symbol])(Units) / 2,
+                      paddingLeft: R.path([dasdas.padding.symbol])(Units),
+                      paddingRight: R.path([dasdas.padding.symbol])(Units),
+                      right: 0,
+                      width: isCalcSize(dasdas.window[0]),
                     },
                   ]}>
-                  <Text
-                    style={[
-                      styles.wtd1,
-                      Typography.text12,
-                      FontFamily[400],
-                      {alignItems: 'flex-end'},
-                    ]}>
-                    {[item?.countLearn, 'слова'].join(' ')}
-                  </Text>
-                  <View style={{position: 'absolute', right: 0}}>
-                    <SvgXml xml={addedSvg} />
+                  <Stack size="s2" />
+                  <View style={styles.wt}>
+                    <Text style={[Typography.text16, FontFamily[500]]}>
+                      {item.name}
+                    </Text>
                   </View>
+                  <Stack size={dasdas.padding.small} />
+                  <View
+                    style={[
+                      styles.wtd,
+                      {
+                        width:
+                          isCalcSize(dasdas.window[0]) -
+                          2 * R.path([dasdas.padding.symbol])(Units),
+                      },
+                    ]}>
+                    <Text
+                      style={[
+                        styles.wtd1,
+                        Typography.text12,
+                        FontFamily[400],
+                        {alignItems: 'flex-end'},
+                      ]}>
+                      {[item?.countLearn, 'слова'].join(' ')}
+                    </Text>
+                    <View style={{position: 'absolute', right: 0}}>
+                      {state.find(x => x === item) ? (
+                        <View
+                          style={{
+                            width: 25,
+                            height: 25,
+                            backgroundColor: colors.lightInk,
+                            borderRadius: Units.s4,
+                          }}
+                        />
+                      ) : (
+                        <TouchableOpacity onPress={() => handleAdded(item)}>
+                          <SvgXml xml={addedSvg} />
+                        </TouchableOpacity>
+                      )}
+                    </View>
+                  </View>
+                  <Stack _debug={debug} size="s12" />
                 </View>
-                <Stack _debug={debug} size="s12" />
               </View>
-            </View>
+            </Animated.View>
           );
         })}
       </Inset>

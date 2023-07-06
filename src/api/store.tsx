@@ -14,6 +14,7 @@ import REDUCER_PATH from '../config/reducer';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {registerApi} from '../redux/api/registerApi';
 import {deckCard} from '../redux/api/deckCard';
+import {homeApi} from '../redux/api/homeCard';
 
 export const PERSIST_STORAGE = {
   auth: {
@@ -26,6 +27,7 @@ const rootReducer = combineReducers({
   [REDUCER_PATH.USER]: persistReducer(PERSIST_STORAGE.auth, reducerBranch),
   [registerApi.reducerPath]: registerApi.reducer,
   [deckCard.reducerPath]: deckCard.reducer,
+  [homeApi.reducerPath]: homeApi.reducer,
 }) as any;
 
 const debounceNotify = _.debounce(notify => notify());

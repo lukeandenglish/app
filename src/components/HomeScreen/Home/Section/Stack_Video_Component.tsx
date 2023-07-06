@@ -3,19 +3,24 @@ import {t} from '@lingui/macro';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import * as R from 'ramda';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {ImageBackground, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SvgXml} from 'react-native-svg';
 import {closeSvg, playVideoSvg, plusSvg} from '../../../../assets/close';
 import {ArtSvg} from '../../../../assets/collection';
 import {iPlayState, isCheck} from '../../../../hooks/usePlaySound';
+import {Layout} from '../../../../styleApp/Layout';
 import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
 import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units/index';
 import colors from '../../../../styleApp/colors';
 import {HeaderStack, iHeaderStack} from '../Component/HeaderStack';
-import {Layout} from '../../../../styleApp/Layout';
+import Animated, {
+  FadeOutDown,
+  ZoomInUp,
+  Layout as RNRLayout,
+} from 'react-native-reanimated';
 
 export const debug = false;
 
@@ -26,6 +31,7 @@ export const Stack_Video_Component: ({
   play,
   data,
   emptyIcon,
+  fetchMore,
 }) => React.JSX.Element = ({
   onPressAdd,
   title,
@@ -33,6 +39,7 @@ export const Stack_Video_Component: ({
   play,
   data,
   emptyIcon,
+  fetchMore,
 }) => {
   if (R.isEmpty(data)) {
     return (
@@ -78,50 +85,73 @@ export const Stack_Video_Component: ({
         }}
         estimatedItemSize={Layout.window.height}
         data={data}
+        extraData={data}
         ItemSeparatorComponent={() => <Queue size="s8" />}
         showsHorizontalScrollIndicator={false}
-        renderItem={(props: ListRenderItemInfo<iData>) => (
-          <View
-            style={[
-              styles.iwp,
-              {
-                height: isCalcSize(317),
-                backgroundColor: props.item.background,
-                borderColor: props.item.background,
-              },
-            ]}>
-            <Inset
-              _debug={debug}
-              vertical="s6"
-              layout={StyleSheet.flatten(Styles.flex1)}>
-              <View />
-            </Inset>
-            <View style={styles.cw}>
-              <TouchableOpacity
-                onPress={() => handlePlayMusic(props.index, props.item.name)()}>
-                <SvgXml
-                  xml={
-                    isCheck(props.index, play, props.item.name)
-                      ? closeSvg
-                      : playVideoSvg
-                  }
-                />
-                <Stack _debug={debug} size="s12" />
-                <View style={styles.wt}>
-                  <Text
-                    style={[Typography.text18, styles.wtt, FontFamily['500']]}>
-                    {props.item.name}
-                  </Text>
+        onEndReachedThreshold={0.8}
+        keyExtractor={(item, index) => [index, item.name, emptyIcon].join('_')}
+        onEndReached={fetchMore}
+        renderItem={(props: ListRenderItemInfo<iData>) => {
+          return (
+            <Animated.View
+              entering={ZoomInUp}
+              exiting={FadeOutDown}
+              layout={RNRLayout.duration(1400).delay(1400)}>
+              <ImageBackground
+                source={{uri: props.item.preview}}
+                imageStyle={{borderRadius: isCalcSize(12)}}
+                style={[
+                  styles.iwp,
+                  {
+                    height: isCalcSize(317),
+                    backgroundColor: props.item.background,
+                    borderColor: props.item.background,
+                  },
+                ]}>
+                <Inset
+                  _debug={debug}
+                  vertical="s6"
+                  layout={StyleSheet.flatten(Styles.flex1)}>
+                  <View />
+                </Inset>
+                <View style={styles.cw}>
+                  <TouchableOpacity
+                    onPress={() =>
+                      handlePlayMusic(props.index, props.item.name)()
+                    }>
+                    <SvgXml
+                      xml={
+                        isCheck(props.index, play, props.item.name)
+                          ? closeSvg
+                          : playVideoSvg
+                      }
+                    />
+                    <Stack _debug={debug} size="s12" />
+                    <View style={styles.wt}>
+                      <Text
+                        style={[
+                          Typography.text18,
+                          styles.wtt,
+                          FontFamily['500'],
+                        ]}>
+                        {props.item.name}
+                      </Text>
+                    </View>
+                    <Stack _debug={debug} size="s10" />
+                    <Text
+                      style={[
+                        Typography.text12,
+                        styles.wtt,
+                        FontFamily['400'],
+                      ]}>
+                      {props.item.data}
+                    </Text>
+                  </TouchableOpacity>
                 </View>
-                <Stack _debug={debug} size="s10" />
-                <Text
-                  style={[Typography.text12, styles.wtt, FontFamily['400']]}>
-                  {props.item.data}
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        )}
+              </ImageBackground>
+            </Animated.View>
+          );
+        }}
       />
     </View>
   );
@@ -133,6 +163,7 @@ export interface iData {
   background: string;
   onPressAdd: () => void;
   onPressMusic: () => void;
+  preview?: string;
 }
 
 export interface iStackComponent extends iHeaderStack {
@@ -183,7 +214,6 @@ const styles = StyleSheet.create({
   iwp: {
     width: isCalcSize(197),
     height: isCalcSize(317),
-    borderWidth: Units.s1,
     borderRadius: Units.s12,
     position: 'relative',
   },

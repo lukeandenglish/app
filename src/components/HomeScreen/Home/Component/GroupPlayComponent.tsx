@@ -20,8 +20,13 @@ import {
   ItemSeparator,
   SelectCardRenderItem,
 } from '../BottomSheet/MyPlayList';
+import Animated, {
+  ZoomInUp,
+  FadeOutDown,
+  Layout as RNRLayout,
+} from 'react-native-reanimated';
 
-export const GroupPlayComponent = () => {
+export const GroupPlayComponent = ({isEmpty}) => {
   const bottomSheetRef = React.useRef<BottomSheet>(null);
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
@@ -63,33 +68,41 @@ export const GroupPlayComponent = () => {
 
   return (
     <>
+      <View style={{height: isCalcSize(!isEmpty ? 140 : 70) + insets.bottom}} />
       <View style={styles.gpcw}>
-        <Inset
-          horizontal="s16"
-          vertical="s12"
-          layout={StyleSheet.flatten({
-            flexDirection: 'row',
-            alignItems: 'center',
-          })}>
-          <View style={styles.gpcwbl} />
-          <Queue size="s16" />
-          <View style={Styles.flex1}>
-            <Text style={(Typography.text16, FontFamily['500'])}>
-              High society vocabulary
-            </Text>
-            <Stack size="s6" />
-            <Text style={[Typography.text12, FontFamily['400']]}>
-              33 / 43 слов{' '}
-            </Text>
-            <Stack size="s6" />
-          </View>
-          <Queue size="s16" />
-          <SvgXml xml={playModalSvg} />
-          <Queue size="s16" />
-          <TouchableOpacity onPress={hancleOpenModal}>
-            <SvgXml xml={listSvg} />
-          </TouchableOpacity>
-        </Inset>
+        {!isEmpty && (
+          <Animated.View
+            entering={ZoomInUp}
+            exiting={FadeOutDown}
+            layout={RNRLayout.duration(1400).delay(1400)}>
+            <Inset
+              horizontal="s16"
+              vertical="s12"
+              layout={StyleSheet.flatten({
+                flexDirection: 'row',
+                alignItems: 'center',
+              })}>
+              <View style={styles.gpcwbl} />
+              <Queue size="s16" />
+              <View style={Styles.flex1}>
+                <Text style={(Typography.text16, FontFamily['500'])}>
+                  High society vocabulary
+                </Text>
+                <Stack size="s6" />
+                <Text style={[Typography.text12, FontFamily['400']]}>
+                  33 / 43 слов{' '}
+                </Text>
+                <Stack size="s6" />
+              </View>
+              <Queue size="s16" />
+              <SvgXml xml={playModalSvg} />
+              <Queue size="s16" />
+              <TouchableOpacity onPress={hancleOpenModal}>
+                <SvgXml xml={listSvg} />
+              </TouchableOpacity>
+            </Inset>
+          </Animated.View>
+        )}
         <View
           style={[
             styles.rowbtn,
@@ -127,7 +140,7 @@ export const GroupPlayComponent = () => {
                   styles.btntxt,
                   Typography.text12,
                   FontFamily[400],
-                  {color: colors.gray_350},
+                  {color: '#E2F601'},
                 ]}>{t`Учить`}</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -190,7 +203,6 @@ const styles = StyleSheet.create({
   },
   gpcw: {
     position: 'absolute',
-    // height: isCalcSize(72),
     borderTopWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.10)',
     backgroundColor: colors.lightPrimary,

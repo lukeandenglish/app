@@ -18,6 +18,11 @@ import colors from '../../../../styleApp/colors';
 import {HeaderStack, iHeaderStack} from '../Component/HeaderStack';
 import {useNavigation} from '@react-navigation/native';
 import ROUTER_PAGE from '../../../../config/page';
+import Animated, {
+  FadeOutDown,
+  ZoomInUp,
+  Layout as RNRLayout,
+} from 'react-native-reanimated';
 
 export const debug = false;
 
@@ -28,14 +33,89 @@ export const Stack_Component: ({
   play,
   data,
   emptyIcon,
+  fetchMore,
+  loading,
 }) => React.JSX.Element = ({
   onPressAdd,
   title,
   play,
   data,
   emptyIcon,
+  fetchMore,
+  loading,
 }: iStackComponent) => {
   const navigation = useNavigation();
+  const refScroll = React.useRef(null);
+
+  const RenderItem = React.useCallback(
+    (props: ListRenderItemInfo<iData>) => (
+      <Animated.View
+        entering={ZoomInUp}
+        exiting={FadeOutDown}
+        layout={RNRLayout.duration(1400).delay(1400)}>
+        <View
+          style={[
+            styles.iwp,
+            {
+              backgroundColor: props.item.background,
+              borderColor: props.item.background,
+            },
+          ]}>
+          <Inset
+            _debug={debug}
+            vertical="s6"
+            layout={StyleSheet.flatten(Styles.flex1)}>
+            <SvgXml
+              xml={ArtSvg}
+              height={isCalcSize(189)}
+              width={isCalcSize(169)}
+            />
+          </Inset>
+          <View style={[styles.cw, {backgroundColor: props.item.background}]}>
+            <Stack size="s6" />
+            <View style={styles.wt}>
+              <Text style={[Typography.text18, styles.wtt, FontFamily[500]]}>
+                {props.item.name}
+              </Text>
+            </View>
+            <Stack _debug={debug} size="s12" />
+            <View style={{borderBottomWidth: Units.s1}} />
+            <Stack _debug={debug} size="s12" />
+            <View style={styles.wtd}>
+              <View>
+                <Text style={[styles.wtd1, Typography.text12, FontFamily[400]]}>
+                  {[props.item?.countLearn, ' / ', props.item?.count].join('')}
+                </Text>
+                <Text
+                  style={[
+                    styles.wtd2,
+                    Typography.text12,
+                    FontFamily[400],
+                  ]}>{t`Слов выучено`}</Text>
+              </View>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_USER_CARD, {
+                    isMy: emptyIcon,
+                  })
+                }>
+                <SvgXml
+                  xml={
+                    isCheck(props.index, play, props.item.name)
+                      ? reverseSvg
+                      : playSvg
+                  }
+                  width={isCalcSize(36)}
+                  height={isCalcSize(36)}
+                />
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Animated.View>
+    ),
+    [],
+  );
 
   if (R.isEmpty(data)) {
     return (
@@ -75,78 +155,20 @@ export const Stack_Component: ({
     <View style={[Styles.flex1]}>
       <HeaderStack title={title} onPress={onPressAdd} emptyIcon={emptyIcon} />
       <FlashList
+        ref={refScroll}
         horizontal
         contentContainerStyle={{
           paddingHorizontal: Units.s12,
         }}
         estimatedItemSize={Layout.window.height}
         data={data}
+        extraData={data}
         ItemSeparatorComponent={() => <Queue size="s8" />}
         showsHorizontalScrollIndicator={false}
-        renderItem={(props: ListRenderItemInfo<iData>) => (
-          <View
-            style={[
-              styles.iwp,
-              {
-                backgroundColor: props.item.background,
-                borderColor: props.item.background,
-              },
-            ]}>
-            <Inset
-              _debug={debug}
-              vertical="s6"
-              layout={StyleSheet.flatten(Styles.flex1)}>
-              <SvgXml
-                xml={ArtSvg}
-                height={isCalcSize(189)}
-                width={isCalcSize(169)}
-              />
-            </Inset>
-            <View style={[styles.cw, {backgroundColor: props.item.background}]}>
-              <Stack size="s6" />
-              <View style={styles.wt}>
-                <Text style={[Typography.text18, styles.wtt, FontFamily[500]]}>
-                  {props.item.name}
-                </Text>
-              </View>
-              <Stack _debug={debug} size="s12" />
-              <View style={{borderBottomWidth: Units.s1}} />
-              <Stack _debug={debug} size="s12" />
-              <View style={styles.wtd}>
-                <View>
-                  <Text
-                    style={[styles.wtd1, Typography.text12, FontFamily[400]]}>
-                    {[props.item?.countLearn, ' / ', props.item?.count].join(
-                      '',
-                    )}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.wtd2,
-                      Typography.text12,
-                      FontFamily[400],
-                    ]}>{t`Слов выучено`}</Text>
-                </View>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_USER_CARD, {
-                      isMy: emptyIcon,
-                    })
-                  }>
-                  <SvgXml
-                    xml={
-                      isCheck(props.index, play, props.item.name)
-                        ? reverseSvg
-                        : playSvg
-                    }
-                    width={isCalcSize(36)}
-                    height={isCalcSize(36)}
-                  />
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        )}
+        onEndReachedThreshold={0.8}
+        keyExtractor={(item, index) => [index, item.name, emptyIcon].join('_')}
+        onEndReached={fetchMore}
+        renderItem={RenderItem}
       />
     </View>
   );
@@ -164,6 +186,7 @@ export interface iStackComponent extends iHeaderStack {
   data?: iData[];
   play: iPlayState;
   onPressAdd: () => void;
+  fetchMore: () => void;
 }
 
 const styles = StyleSheet.create({

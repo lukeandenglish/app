@@ -80,3 +80,48 @@ export default {
   lightsteelblue: '#c0d4ff',
   transparent: 'transparent',
 } as Record<Colors, string>;
+
+type CardColor =
+  | 'Grey'
+  | 'White'
+  | 'Black'
+  | 'Blue_Sky'
+  | 'Faded_Flam'
+  | 'Faded_Grass'
+  | 'Faded_Grim'
+  | 'Faded_Must'
+  | 'Faded_Neon'
+  | 'Faded_Pep'
+  | 'Faded_Purp'
+  | 'Faded_Sky'
+  | 'Flamingo'
+  | 'Grass'
+  | 'Grim_Cloud'
+  | 'Mustard'
+  | 'Neon_Lemon'
+  | 'Purple_rain'
+  | 'Red_Pepper'
+  | 'Yellow';
+
+export const cardColor = {
+  Grey: '#92A0BC',
+  White: '#FFFFFF',
+  Black: '#000000',
+  Blue_Sky: '#79A7FF',
+  Faded_Flam: '#FAE0FB',
+  Faded_Grass: '#E4F6BE',
+  Faded_Grim: '#E7E7E7',
+  Faded_Must: '#EAE6C8',
+  Faded_Neon: '#FBFFD0',
+  Faded_Pep: '#FFD0D0',
+  Faded_Purp: '#D6C7FF',
+  Faded_Sky: '#C0D4FF',
+  Flamingo: '#FF81F6',
+  Grass: '#3EC100',
+  Grim_Cloud: '#92A0BC',
+  Mustard: '#BFB03D',
+  Neon_Lemon: '#E2F601',
+  Purple_rain: '#A281FF',
+  Red_Pepper: '#FE6232',
+  Yellow: '#E2F601',
+} as Record<CardColor, string>;

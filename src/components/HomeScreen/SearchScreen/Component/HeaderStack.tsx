@@ -1,15 +1,12 @@
 import React from 'react';
 import {StyleSheet, Text} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-import {SvgXml} from 'react-native-svg';
-import {plusSvg} from '../../../../assets/close';
+import {Inset} from '../../../../styleApp/Spacing';
 import {FontFamily, Typography} from '../../../../styleApp/Typografy';
 import {isCalcSize} from '../../../../styleApp/Units';
-import {Inset} from '../../../../styleApp/Spacing';
 
 const debug = false;
 
-export const HeaderStack = ({title, onPress, emptyIcon}) => {
+export const HeaderStack = ({title}) => {
   return (
     <Inset
       _debug={debug}
@@ -17,18 +14,9 @@ export const HeaderStack = ({title, onPress, emptyIcon}) => {
       bottom="s12"
       top="s36"
       layout={StyleSheet.flatten(styles.hiw)}>
-      <Text style={[Typography.text24, styles.hit, FontFamily.wermut]}>
+      <Text style={[Typography.text38, styles.hit, FontFamily.wermut]}>
         {title}
       </Text>
-      {emptyIcon && (
-        <TouchableOpacity onPress={onPress}>
-          <SvgXml
-            xml={plusSvg}
-            width={isCalcSize(24)}
-            height={isCalcSize(24)}
-          />
-        </TouchableOpacity>
-      )}
     </Inset>
   );
 };

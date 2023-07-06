@@ -1,6 +1,8 @@
 import yaml from 'yaml';
 
 const yamlString = `
+GET: GET
+POST: POST
 AUTH:
     SIGN_UP:
         METHOD: POST
