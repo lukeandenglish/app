@@ -18,7 +18,7 @@ import {deckCard} from '../../../redux/api/deckCard';
 import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
 import {useDispatch} from 'react-redux';
 
-export default (): React.ReactNode => {
+export default () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
   const dispatch = useDispatch();

@@ -41,9 +41,9 @@ export const Stack_Component: ({
 
   const handleAdded = async item => {
     await registerCallbackEndpoints({
-      endpoints: homeApi.endpoints.listCard,
+      endpoints: homeApi.endpoints.addedFavour,
       dispatch,
-      args: {item},
+      args: {stackId: item.stackId},
     }).then(() => {
       setState(R.append(item)(state));
       Notifier.showNotification({

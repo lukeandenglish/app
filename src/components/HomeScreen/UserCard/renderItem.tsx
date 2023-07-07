@@ -4,23 +4,206 @@ import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {
+  ScrollView,
+  TextInput,
+  TouchableOpacity,
+} from 'react-native-gesture-handler';
+import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {addedSvg, playSoundSvg, startLearnSvg} from '../../../assets/close';
+import {useDispatch} from 'react-redux';
+import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
+import {
+  addedSvg,
+  closeSvg,
+  playSoundSvg,
+  startLearnSvg,
+} from '../../../assets/close';
 import {reverseSvg} from '../../../assets/collection';
 import SECTION from '../../../config/section';
 import {isCheck} from '../../../hooks/usePlaySound';
+import {homeApi} from '../../../redux/api/homeCard';
 import {Inset, Queue, Stack} from '../../../styleApp/Spacing';
 import {FontFamily, Typography} from '../../../styleApp/Typografy';
 import {BottomSheetCustomComponent} from '../../../styleApp/UI/BottomSheetCustomComponent';
 import {Button} from '../../../styleApp/UI/Button';
 import {Units} from '../../../styleApp/Units';
-import colors from '../../../styleApp/colors';
+import colors, {cardColor} from '../../../styleApp/colors';
 import {MyImage} from './Section/MyImage';
 import {Result} from './Section/Result';
 
+const Bearer = ({handleAddedNewWord}) => {
+  const insets = useSafeAreaInsets();
+  const [title, setState] = React.useState('');
+  const [select, setSelect] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
+  const [result, setResult] = React.useState([]);
+  const dispatch = useDispatch();
+  const ref = React.useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  React.useEffect(() => {
+    setState('');
+    setSelect('');
+    setLoading(false);
+    setResult([]);
+  }, [handleAddedNewWord]);
+  React.useLayoutEffect(() => {
+    setResult([]);
+    setLoading(true);
+    ref.current && clearTimeout(ref.current);
+    ref.current = setTimeout(() => {
+      if (title.length !== 0) {
+        registerCallbackEndpoints({
+          endpoints: homeApi.endpoints.translateText,
+          dispatch,
+          args: {title},
+        }).then(data => {
+          setResult(data);
+          setLoading(false);
+        });
+      }
+    }, 2500);
+    return () => ref.current && clearTimeout(ref.current);
+  }, [title]);
+
+  const textList = R.pipe(
+    R.path(['data', 'data', 'translations']),
+    R.defaultTo([]),
+  )(result);
+
+  return (
+    <View style={{flex: 1, justifyContent: 'space-between'}}>
+      <View>
+        <Inset horizontal="s12">
+          <View style={{flexDirection: 'row'}}>
+            <View />
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+              <Text style={Typography.text18}>Новое слово</Text>
+            </View>
+            <View>
+              <SvgXml xml={closeSvg} />
+            </View>
+          </View>
+        </Inset>
+        <Stack size="s40" />
+        <Inset horizontal="s20">
+          <View style={{borderBottomWidth: 1}}>
+            <TextInput
+              onChangeText={setState}
+              value={title}
+              placeholder="Введите слово"
+              style={[Typography.text30, FontFamily.wermut]}
+            />
+            <Stack size="s16" />
+          </View>
+
+          <Stack size="s40" />
+          <View style={{borderBottomWidth: 1}}>
+            <TextInput
+              placeholder="Перевод не найден"
+              value={select}
+              onChangeText={setSelect}
+              style={[Typography.text30, FontFamily.wermut]}
+            />
+            <Stack size="s16" />
+          </View>
+          <Stack size="s24" />
+          {/* {loading && (
+            <>
+              <Stack size="s24" />
+              <View style={{backgroundColor: 'red', width: 50, height: 50}} />
+              <Stack size="s24" />
+            </>
+          )} */}
+          {!R.isEmpty(textList) && (
+            <View>
+              <Text style={[Typography.text12, FontFamily['300']]}>
+                Нажмите пробел чтобы выбрать предложенный вариант или выберите
+                альтенативные переводы
+              </Text>
+              <Stack size="s16" />
+            </View>
+          )}
+        </Inset>
+
+        {!R.isEmpty(textList) && (
+          <View>
+            <ScrollView horizontal>
+              <Queue size="s24" />
+              {textList.map((x, idx) => (
+                <View key={[idx].join('')} style={{flexDirection: 'row'}}>
+                  <TouchableOpacity
+                    onPress={() => setSelect(x.translatedText)}
+                    style={styles.tapBlc}>
+                    <Inset horizontal="s16" vertical="s10">
+                      <Text style={[Typography.text14, FontFamily['500']]}>
+                        {x.translatedText}
+                      </Text>
+                    </Inset>
+                  </TouchableOpacity>
+                  <Queue size="s8" />
+                </View>
+              ))}
+              <Queue size="s24" />
+            </ScrollView>
+            <Stack size="s16" />
+          </View>
+        )}
+      </View>
+      <Inset
+        horizontal="s24"
+        bottom="s50"
+        layout={StyleSheet.flatten({paddingBottom: insets.bottom})}>
+        <Button
+          title={t`Добавить`}
+          onPress={handleAddedNewWord({
+            title,
+            select,
+          })}
+          style={styles.iwba}
+          styleText={Object.assign([
+            styles.iwbat,
+            {paddingRight: 0, minHeight: 20},
+            Typography.text16,
+            FontFamily['600'],
+          ])}
+        />
+        <Stack size="s30" />
+        <KeyboardSpacer />
+      </Inset>
+    </View>
+  );
+};
+
 const SelectionCode = props => {
   const ref = React.useRef<BottomSheet | null>(null);
+  const dispatch = useDispatch();
+
+  console.log(props);
+
+  const handleAddedNewWord =
+    ({title, select}) =>
+    () => {
+      registerCallbackEndpoints({
+        endpoints: homeApi.endpoints.putNewWordStack,
+        dispatch,
+        args: {
+          stackId: props.stackId,
+          title,
+          translatedText: select,
+        },
+      }).then(data => {
+        props.onRefetch();
+        ref.current?.close();
+      });
+    };
+
   return (
     <>
       <Inset horizontal="s24">
@@ -49,7 +232,6 @@ const SelectionCode = props => {
               </Button>
             );
           }
-          console.log(x.play);
           return (
             <Inset
               key={['key', el].join('_')}
@@ -74,10 +256,7 @@ const SelectionCode = props => {
                 <Queue size="s24" />
                 <View style={styles.cntr}>
                   <TouchableOpacity
-                    onPress={props.handlePlayMusic(
-                      el,
-                      [x.title, el].join('_'),
-                    )}>
+                    onPress={x?.handlePlayMusic(el, [x.title, el].join('_'))}>
                     <SvgXml
                       xml={
                         isCheck(el, x.play, [x.title, el].join('_'))
@@ -111,7 +290,7 @@ const SelectionCode = props => {
       </Inset>
       <Portal name="AddedNewWord">
         <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
-          <View />
+          <Bearer handleAddedNewWord={handleAddedNewWord} />
         </BottomSheetCustomComponent>
       </Portal>
     </>
@@ -132,6 +311,12 @@ export const renderItem = (render: any) => {
 };
 
 const styles = StyleSheet.create({
+  tapBlc: {
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: cardColor.Faded_Grass,
+  },
   iwbat: {
     flex: 1,
     textAlign: 'center',

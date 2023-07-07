@@ -42,6 +42,7 @@ const store = configureStore({
       .concat(thunkMiddleware)
       .concat(registerApi.middleware)
       .concat(deckCard.middleware)
+      .concat(homeApi.middleware)
       .concat(promiseMiddleware),
   // .concat(createLogger({ diff: false }))
   preloadedState: {},

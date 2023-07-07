@@ -1,65 +1,80 @@
-import {
-  iCurrentUserId,
-  iCurrentToken,
-  iSignUpEmail,
-  iSignUpPhone,
-} from './type';
 import {ENPOINTS} from '../../../api/endpoints/register';
-import {actionSignOut} from '../../action/register';
 import {
   errorBuilderMessage,
   registerCallbackEndpoints,
 } from '../../../api/registerCallbackEndpoints';
+import {actionSignOut} from '../../action/register';
 import {deckCard} from '../deckCard';
+import {
+  iGmailPassword,
+  iResetPassword,
+  iSignUpEmail,
+  iTokenResieve,
+  iVerifyPassword,
+} from './type';
 
 export const REGISTER_ENDPOINTS = {
-  emailToken: {
-    query: ({user_id}: iCurrentUserId) => ({
-      url: ENPOINTS.EMAIL_TOKEN,
-      method: ENPOINTS.POST,
-      body: {user_id},
+  gmailAuth: {
+    query: ({
+      email,
+      accountId,
+      access_token,
+      idToken,
+    }: iGmailPassword): iTokenResieve => ({
+      url: ENPOINTS.AUTH.GOOGLE.ROUTE,
+      method: ENPOINTS.AUTH.GOOGLE.METHOD,
+      body: {email, accountId, access_token, idToken},
     }),
   },
-  phoneToken: {
-    query: ({user_id}: iCurrentUserId) => ({
-      url: ENPOINTS.PHONE_TOKEN,
-      method: ENPOINTS.POST,
-      body: {user_id},
+  resetPassword: {
+    query: ({userId, token, password}: iResetPassword) => ({
+      url: ENPOINTS.AUTH.RESET_PASSWORD.ROUTE,
+      method: ENPOINTS.AUTH.RESET_PASSWORD.METHOD,
+      body: {userId, token, password},
+    }),
+  },
+  forgotPassword: {
+    query: ({type, phone, email}: iSignUpEmail) => ({
+      url: ENPOINTS.AUTH.FORGOT.ROUTE,
+      method: ENPOINTS.AUTH.FORGOT.METHOD,
+      body: {type, phone, email},
+    }),
+  },
+  refreshToken: {
+    query: ({accessToken, refreshToken}: iTokenResieve) => ({
+      url: ENPOINTS.AUTH.REFRESH.ROUTE,
+      method: ENPOINTS.AUTH.REFRESH.METHOD,
+      body: {accessToken, refreshToken},
     }),
   },
   phoneVerify: {
-    query: ({token}: iCurrentToken) => ({
-      url: ENPOINTS.PHONE_VERIFY,
-      method: ENPOINTS.POST,
-      body: {token},
+    query: ({userId, token}: iVerifyPassword): iTokenResieve => ({
+      url: ENPOINTS.AUTH.VERIFY.ROUTE,
+      method: ENPOINTS.AUTH.VERIFY.METHOD,
+      body: {userId, token},
     }),
   },
-  passwordReset: {
-    query: ({email}: {email: iSignUpEmail['email']}) => ({
-      url: ENPOINTS.PASSWORD_RESET,
-      method: ENPOINTS.POST,
-      body: {email},
+  signUp: {
+    query: ({
+      email,
+      password,
+      type,
+      phone,
+    }: iSignUpEmail): {
+      id: string;
+      email: string;
+      phone: string;
+    } => ({
+      url: ENPOINTS.AUTH.SIGN_UP.ROUTE,
+      method: ENPOINTS.AUTH.SIGN_UP.METHOD,
+      body: {email, password, type, phone},
     }),
   },
-  smsPassword: {
-    query: ({phone}: {phone: iSignUpPhone['phone']}) => ({
-      url: ENPOINTS.PASSWORD_RESET,
-      method: ENPOINTS.POST,
-      body: {phone},
-    }),
-  },
-  emailSignUp: {
-    query: ({email, password}: iSignUpEmail) => ({
-      url: ENPOINTS.EMAIL_SIGNUP,
-      method: ENPOINTS.POST,
-      body: {email, password},
-    }),
-  },
-  emailLogin: {
-    query: ({email, password}: iSignUpEmail) => ({
-      url: ENPOINTS.EMAIL_LOGIN,
-      method: ENPOINTS.POST,
-      body: {email, password},
+  login: {
+    query: ({email, password, type, phone}: iSignUpEmail): iTokenResieve => ({
+      url: ENPOINTS.AUTH.LOGIN.ROUTE,
+      method: ENPOINTS.AUTH.LOGIN.METHOD,
+      body: {type, phone, email, password},
     }),
     async onQueryStarted(args, {dispatch, queryFulfilled}) {
       queryFulfilled.then(() => {
@@ -70,20 +85,6 @@ export const REGISTER_ENDPOINTS = {
         });
       });
     },
-  },
-  phoneSignUp: {
-    query: ({phone, password}: iSignUpPhone) => ({
-      url: ENPOINTS.PHONE_SIGNUP,
-      method: ENPOINTS.POST,
-      body: {phone, password},
-    }),
-  },
-  phoneLogin: {
-    query: ({phone, password}: iSignUpPhone) => ({
-      url: ENPOINTS.PHONE_LOGIN,
-      method: ENPOINTS.POST,
-      body: {phone, password},
-    }),
   },
   deleteUser: {
     async queryFn(_args, queryApi) {
@@ -121,4 +122,15 @@ export const REGISTER_ENDPOINTS = {
       }
     },
   },
-};
+} as Record<iStack, any>;
+
+type iStack =
+  | 'logOutUser'
+  | 'deleteUser'
+  | 'gmailAuth'
+  | 'resetPassword'
+  | 'forgotPassword'
+  | 'refreshToken'
+  | 'phoneVerify'
+  | 'signUp'
+  | 'login';

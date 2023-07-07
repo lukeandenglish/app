@@ -61,7 +61,7 @@ export const useGetCurrentStack = () => {
 
   const loadGreetingList = async () => {
     setLoading(true);
-    const user = await registerCallbackEndpoints({
+    let user = await registerCallbackEndpoints({
       endpoints: homeApi.endpoints.listUser,
       dispatch,
       args: {page: userPage},
@@ -90,11 +90,12 @@ export const useGetCurrentStack = () => {
 
   const loadGreetingCard = async () => {
     setLoading(true);
-    const card = await registerCallbackEndpoints({
+    let card = await registerCallbackEndpoints({
       endpoints: homeApi.endpoints.listCard,
       dispatch,
       args: {page: cardPage},
     });
+
     setLoading(false);
 
     return generateLearningData(
@@ -119,11 +120,12 @@ export const useGetCurrentStack = () => {
 
   const loadGreetingVideo = async () => {
     setLoading(true);
-    const video = await registerCallbackEndpoints({
+    let video = await registerCallbackEndpoints({
       endpoints: homeApi.endpoints.listVideo,
       dispatch,
       args: {page: videoPage},
     });
+
     setLoading(false);
 
     return generateVideoData(

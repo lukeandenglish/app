@@ -16,12 +16,13 @@ const App = () => {
   const sectionListRef = React.useRef<SectionList | null>(null);
   const [data] = useGetCurrentStack();
   const route = useRoute();
-  const ref = React.useRef();
 
   return (
     <Container
       notPaddingTop={false}
-      background={route?.params?.isMy ? colors.pink : colors.faded_flam}>
+      background={
+        !route?.params?.data?.admin ? colors.pink : colors.faded_flam
+      }>
       <SectionList
         ref={sectionListRef}
         sections={data as any[]}

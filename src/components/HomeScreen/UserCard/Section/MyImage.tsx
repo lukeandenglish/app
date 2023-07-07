@@ -1,6 +1,6 @@
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {Text, View, StyleSheet} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
@@ -20,8 +20,6 @@ import colors from '../../../../styleApp/colors';
 export const MyImage = props => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const route = useRoute();
-  const isMy = route?.params?.isMy ?? false;
   return (
     <View style={Styles.flex1}>
       <View
@@ -49,7 +47,7 @@ export const MyImage = props => {
             />
           </TouchableOpacity>
         </View>
-        {isMy && (
+        {!props.isAdmin && (
           <View
             style={[
               styles.rab,
@@ -71,20 +69,21 @@ export const MyImage = props => {
       <Inset horizontal="s24">
         <View style={Styles.flex1}>
           <Text style={[Typography.text38, FontFamily.wermut]}>
-            {'Pet owner vocab'}
+            {props.title}
           </Text>
         </View>
         <Stack size="s18" />
         <View style={Styles.flex1}>
           <Text style={[Typography.text12, FontFamily['400']]}>
-            {'by Luke English'}
+            {props.author ?? 'by Luke English'}
           </Text>
         </View>
         <Stack size="s18" />
-        {!isMy ? (
+        {props.isAdmin ? (
           <View style={styles.fr}>
             <Button
               title={'В закладки'}
+              onPress={props.onAddedFavour}
               styleText={Typography.text14}
               style={styles.ibt}>
               <SvgXml xml={addedSvg} />
@@ -92,6 +91,7 @@ export const MyImage = props => {
             <Queue size="s12" />
             <Button
               title="Скопировать"
+              onPress={props.onCopy}
               styleText={Typography.text14}
               style={styles.ibt}>
               <SvgXml xml={copySvg} />

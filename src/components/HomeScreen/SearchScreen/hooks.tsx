@@ -1,15 +1,15 @@
 /* eslint-disable no-dupe-keys */
 import {t} from '@lingui/macro';
+import {useFocusEffect} from '@react-navigation/native';
+import * as R from 'ramda';
+import React from 'react';
+import {useDispatch} from 'react-redux';
+import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
 import SECTION from '../../../config/section';
 import {usePlaySound} from '../../../hooks/usePlaySound';
-import {iStackComponent} from './Section/Stack_Component';
-import {useDispatch} from 'react-redux';
-import {useFocusEffect} from '@react-navigation/native';
-import React from 'react';
-import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
 import {homeApi} from '../../../redux/api/homeCard';
-import * as R from 'ramda';
 import {filterData} from '../Home/hooks';
+import {iStackComponent} from './Section/Stack_Component';
 
 const generateMyData = (state: any = {}, data: any[] = []) => {
   state.data = data.map((d, idx) => ({idx, ...d}));
@@ -27,7 +27,7 @@ export const useGetCurrentStack = () => {
     video: iStackComponent['data'];
     user: iStackComponent['data'];
   }>({card: [], video: [], user: []});
-  const [added, setAdded] = React.useState<number>([]);
+  const [added, setAdded] = React.useState<any>([]);
 
   const updateVideoPage = () => {
     setPageVideo(videoPage + 1);
@@ -37,7 +37,7 @@ export const useGetCurrentStack = () => {
   const loadGreetingVideo = async () => {
     setLoading(true);
     const video = await registerCallbackEndpoints({
-      endpoints: homeApi.endpoints.listVideo,
+      endpoints: homeApi.endpoints.listLuke,
       dispatch,
       args: {page: videoPage},
     });

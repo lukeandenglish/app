@@ -6,7 +6,7 @@ import {BlockHeader} from '../../../block/profile/BlockHeader';
 import colors from '../../../styleApp/colors';
 import {isCalcSize} from '../../../styleApp/Units';
 
-export default (): React.ReactNode => {
+export default () => {
   const insets = useSafeAreaInsets();
   const scrollRef = React.useRef<ScrollView | null>(null);
 

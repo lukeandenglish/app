@@ -3,7 +3,6 @@ import auth from '@react-native-firebase/auth';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import * as R from 'ramda';
 import {Alert} from 'react-native';
-import {registerApi} from './index';
 import {GOOGLE_ID} from '../../../../cred';
 import {
   errorBuilderMessage,
@@ -12,8 +11,8 @@ import {
 import {RootState} from '../../../api/store';
 import REDUCER_PATH from '../../../config/reducer';
 import {isCheckElement} from '../../../helper';
+import {registerApi} from './index';
 import {iGmailToken} from './type';
-import Reactron from '../../../../ReactotronConfig';
 
 export const selectorUserProfile = (store: RootState) => {
   const [email, password, agreements, name, image, passwordRepeat] = R.pipe(
@@ -39,14 +38,13 @@ export const selectorAuthUserProfile = (store: RootState) => {
 };
 
 export const FUNCTION = {
-  receiveQuery: {
+  signUpQuery: {
     async queryFn(_args, queryApi) {
       const [data, password, agreements] = selectorUserProfile(
         queryApi.getState(),
       );
 
-      const emailEndpoints = registerApi.endpoints.emailSignUp;
-      const phoneEndpoints = registerApi.endpoints.phoneSignUp;
+      const signUp = registerApi.endpoints.signUp;
       if (!agreements) {
         return errorBuilderMessage({
           args: {data, password, agreements},
@@ -58,88 +56,18 @@ export const FUNCTION = {
         });
       }
 
-      const {args, phone, email} = isCheckElement(data);
-      if (phone) {
-        const responce = await registerCallbackEndpoints({
-          endpoints: phoneEndpoints,
-          args: {phone: args, email: null, password: password.trim()},
-          dispatch: queryApi.dispatch,
-        });
-        return responce;
-      }
-      if (email) {
-        const responce = await registerCallbackEndpoints({
-          endpoints: emailEndpoints,
-          args: {phone: null, email: args, password: password.trim()},
-          dispatch: queryApi.dispatch,
-        });
-        return responce;
-      }
-
-      return errorBuilderMessage({
-        args: {data, password, agreements},
-        extra: {
-          data: {error: false, value: ''},
-          password: {error: false, value: ''},
-          agreements: {error: true, value: ''},
+      const {email} = isCheckElement(data);
+      const responce = await registerCallbackEndpoints({
+        endpoints: signUp,
+        args: {
+          phone: data,
+          email: data,
+          type: email ? 'EMAIL' : 'PHONE',
+          password: password.trim(),
         },
+        dispatch: queryApi.dispatch,
       });
-    },
-  },
-  signUpQuery: {
-    async queryFn(_args, queryApi) {
-      const [data, password, agreements, name, image, passwordRepeat] =
-        selectorUserProfile(queryApi.getState());
-      const emailEndpoints = registerApi.endpoints.emailSignUp;
-      const phoneEndpoints = registerApi.endpoints.phoneSignUp;
-
-      const phoneTokenEndpoints = registerApi.endpoints.phoneToken;
-      const emailTokenEndpoints = registerApi.endpoints.emailToken;
-      Reactron.log('data', data);
-      const {args, phone, email} = isCheckElement(data);
-      Reactron.log({args, phone, email});
-
-      if (R.equals(passwordRepeat)(password)) {
-        if (phone) {
-          const responce = await registerCallbackEndpoints({
-            endpoints: phoneEndpoints,
-            args: {phone: args, email: null, password: password.trim()},
-            dispatch: queryApi.dispatch,
-          });
-
-          await registerCallbackEndpoints({
-            endpoints: phoneTokenEndpoints,
-            args: {user_id: responce.data?.id},
-            dispatch: queryApi.dispatch,
-          });
-
-          return responce;
-        }
-        if (email) {
-          const responce = await registerCallbackEndpoints({
-            endpoints: emailEndpoints,
-            args: {phone: null, email: args, password: password.trim()},
-            dispatch: queryApi.dispatch,
-          });
-
-          await registerCallbackEndpoints({
-            endpoints: emailTokenEndpoints,
-            args: {user_id: responce.data?.id},
-            dispatch: queryApi.dispatch,
-          });
-
-          return responce;
-        }
-      }
-
-      return errorBuilderMessage({
-        args: {data, password, agreements},
-        extra: {
-          data: {error: false, value: ''},
-          password: {error: false, value: ''},
-          agreements: {error: true, value: ''},
-        },
-      });
+      return responce;
     },
   },
   loginQuery: {
@@ -148,37 +76,30 @@ export const FUNCTION = {
         queryApi.getState(),
       );
 
-      const emailEndpoints = registerApi.endpoints.emailLogin;
-      const phoneEndpoints = registerApi.endpoints.phoneLogin;
-
-      Reactron.log('data', data);
-      const {args, phone, email} = isCheckElement(data);
-      Reactron.log({args, phone, email});
-      if (phone) {
-        const responce = await registerCallbackEndpoints({
-          endpoints: phoneEndpoints,
-          args: {phone: args, email: null, password: password.trim()},
-          dispatch: queryApi.dispatch,
+      const signUp = registerApi.endpoints.login;
+      if (!agreements) {
+        return errorBuilderMessage({
+          args: {data, password, agreements},
+          extra: {
+            data: {error: false, value: ''},
+            password: {error: false, value: ''},
+            agreements: {error: true, value: ''},
+          },
         });
-        return responce;
-      }
-      if (email) {
-        const responce = await registerCallbackEndpoints({
-          endpoints: emailEndpoints,
-          args: {phone: null, email: args, password: password.trim()},
-          dispatch: queryApi.dispatch,
-        });
-        return responce;
       }
 
-      return errorBuilderMessage({
-        args: {data, password, agreements},
-        extra: {
-          data: {error: false, value: ''},
-          password: {error: false, value: ''},
-          agreements: {error: true, value: ''},
+      const {email} = isCheckElement(data);
+      const responce = await registerCallbackEndpoints({
+        endpoints: signUp,
+        args: {
+          phone: data,
+          email: data,
+          type: email ? 'EMAIL' : 'PHONE',
+          password: password.trim(),
         },
+        dispatch: queryApi.dispatch,
       });
+      return responce;
     },
   },
   handleSignApple: {
@@ -289,4 +210,11 @@ export const FUNCTION = {
       }
     },
   },
-};
+} as Record<iStack, any>;
+
+type iStack =
+  | 'loginQuery'
+  | 'signUpQuery'
+  | 'initialGoogleSignUp'
+  | 'handleSignApple'
+  | 'handleSignGoogle';

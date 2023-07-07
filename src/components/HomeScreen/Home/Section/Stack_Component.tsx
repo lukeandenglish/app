@@ -23,6 +23,9 @@ import Animated, {
   ZoomInUp,
   Layout as RNRLayout,
 } from 'react-native-reanimated';
+import {registerCallbackEndpoints} from '../../../../api/registerCallbackEndpoints';
+import {homeApi} from '../../../../redux/api/homeCard';
+import {useDispatch} from 'react-redux';
 
 export const debug = false;
 
@@ -46,6 +49,7 @@ export const Stack_Component: ({
 }: iStackComponent) => {
   const navigation = useNavigation();
   const refScroll = React.useRef(null);
+  const dispatch = useDispatch();
 
   const RenderItem = React.useCallback(
     (props: ListRenderItemInfo<iData>) => (
@@ -94,11 +98,18 @@ export const Stack_Component: ({
                   ]}>{t`Слов выучено`}</Text>
               </View>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_USER_CARD, {
-                    isMy: emptyIcon,
-                  })
-                }>
+                onPress={() => {
+                  registerCallbackEndpoints({
+                    endpoints: homeApi.endpoints.currentStack,
+                    dispatch,
+                    args: {stackId: props.item.stackId},
+                  }).then((data: any) => {
+                    navigation.navigate(
+                      ROUTER_PAGE.AUTH.PROFILE_USER_CARD,
+                      data,
+                    );
+                  });
+                }}>
                 <SvgXml
                   xml={
                     isCheck(props.index, play, props.item.name)

@@ -42,7 +42,7 @@ const App = () => {
       <Stack.Navigator initialRouteName={ROUTER_PAGE.UNAUTH.IntroOnBording}>
         {!hasTokenCreate && (
           <Stack.Group>
-            <Stack.Screen
+            {/* <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_MAIN}
               component={HomeScreen}
               options={SlideRightFunc(false)}
@@ -51,7 +51,7 @@ const App = () => {
               name={ROUTER_PAGE.AUTH.PROFILE_SEARCH_CARD}
               component={SearchScreen}
               options={SlideRightFunc(false)}
-            />
+            /> */}
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.PROFILE_USER_CARD}
               component={UserCard}

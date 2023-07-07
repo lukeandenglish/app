@@ -153,6 +153,12 @@ export const BottomSheetCustomComponent = React.forwardRef(
             borderTopLeftRadius: isCalcSize(16),
             backgroundColor: colors.transparent,
           },
+          mode === 'fullscreenWithout' && {
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+            marginTop: 0,
+            marginBottom: 0,
+          },
           R.isEmpty(handleStyle) && {
             borderTopRightRadius: 0,
             borderTopLeftRadius: 0,

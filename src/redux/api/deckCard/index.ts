@@ -1,10 +1,9 @@
 /* eslint-disable @typescript-eslint/no-shadow */
 import {createApi} from '@reduxjs/toolkit/query';
-import {ENPOINTS} from '../../../api/endpoints/register';
-import REDUCER_PATH from '../../../config/reducer';
-import {getCatalogDeck} from './helper';
 import * as R from 'ramda';
+import {ENPOINTS} from '../../../api/endpoints/register';
 import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
+import REDUCER_PATH from '../../../config/reducer';
 import {baseQueryAuth} from './baseQueryAuth';
 
 export interface iSignUpEmail {
@@ -82,11 +81,6 @@ export const deckCard = createApi({
         } catch (e) {
           console.log(e);
         }
-      },
-    }),
-    deckCardHome: builder.query<iSignUpEmail, any>({
-      queryFn(_args) {
-        return {data: getCatalogDeck()};
       },
     }),
   }),

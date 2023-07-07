@@ -1,6 +1,9 @@
+import {NativeStackNavigationOptions} from '@react-navigation/native-stack';
 import {TransitionPresets} from '@react-navigation/stack';
 
-export const ModalSlideFunc = (header: boolean) => ({
+export const ModalSlideFunc = (
+  header: boolean,
+): NativeStackNavigationOptions => ({
   animationEnabled: true,
   cardOverlayEnabled: true,
   cardStyle: {shadowColor: 'transparent'},
@@ -10,7 +13,9 @@ export const ModalSlideFunc = (header: boolean) => ({
   ...TransitionPresets.ModalPresentationIOS,
 });
 
-export const SlideRightFunc = (header: boolean) => ({
+export const SlideRightFunc = (
+  header: boolean,
+): NativeStackNavigationOptions => ({
   animationEnabled: false,
   cardOverlayEnabled: true,
   gestureEnabled: true,
@@ -18,8 +23,7 @@ export const SlideRightFunc = (header: boolean) => ({
   ...TransitionPresets.SlideFromRightIOS,
 });
 
-
-export const SlideToTop = (header: boolean) => ({
+export const SlideToTop = (header: boolean): NativeStackNavigationOptions => ({
   animationEnabled: false,
   cardOverlayEnabled: true,
   gestureEnabled: true,
@@ -27,11 +31,10 @@ export const SlideToTop = (header: boolean) => ({
   ...TransitionPresets.BottomSheetAndroid,
 });
 
-
 export const ScaleSlideRightFunc = (
   header: boolean,
   gestureEnabled = true,
-) => ({
+): NativeStackNavigationOptions => ({
   animationEnabled: false,
   cardOverlayEnabled: true,
   gestureEnabled,
