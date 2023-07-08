@@ -45,9 +45,7 @@ export const Card = ({
           horizontal="s24"
           layout={StyleSheet.flatten(styles.cicq)}>
           <Image
-            source={{
-              uri: photo.url,
-            }}
+            source={photo}
             style={{height: isCalcSize(189), width: isCalcSize(163)}}
           />
         </Inset>
@@ -100,6 +98,7 @@ export const FinishScreen = ({
   const insets = useSafeAreaInsets();
   return (
     <>
+      <HeaderModal title={t`Название`} onClose={onClose} onBack={onBack} />
       <BottomSheetScrollView
         contentContainerStyle={[
           styles.fgctx,
@@ -107,7 +106,7 @@ export const FinishScreen = ({
             paddingBottom: insets.bottom,
           },
         ]}>
-        <HeaderModal title={t`Название`} onClose={onClose} onBack={onBack} />
+        <View />
         <View style={styles.cwc}>
           <Card
             title={title}

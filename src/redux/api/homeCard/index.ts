@@ -17,6 +17,7 @@ export const homeApi = createApi({
     createNewWordStack: builder.query(REGISTER_ENDPOINTS.createNewWordStack),
     deleteNewWordStack: builder.query(REGISTER_ENDPOINTS.deleteNewWordStack),
     getListIllustration: builder.query(REGISTER_ENDPOINTS.getListIllustration),
+    createNewStack: builder.query(REGISTER_ENDPOINTS.createNewStack),
 
     listCard: builder.query<iCurrentUserId, any>(REGISTER_ENDPOINTS.listCard),
     listVideo: builder.query<iCurrentUserId, any>(REGISTER_ENDPOINTS.listVideo),

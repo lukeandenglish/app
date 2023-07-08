@@ -27,6 +27,7 @@ export const HeaderModal = ({title, onClose, onBack}) => {
       <View style={styles.row}>
         <TouchableOpacity
           disabled={!onBack}
+          onPress={onBack}
           style={[Styles.iconClose, !onBack && {display: 'none'}]}>
           <SvgXml xml={closeSvg} />
         </TouchableOpacity>

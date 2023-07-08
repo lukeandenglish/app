@@ -1,6 +1,18 @@
 import {ENPOINTS} from '../../../api/endpoints/register';
 
 export const REGISTER_ENDPOINTS = {
+  createNewStack: {
+    query: ({title, color, fileId, description}) => ({
+      url: ENPOINTS.STACK.CREATE.ROUTE,
+      method: ENPOINTS.STACK.CREATE.METHOD,
+      body: {
+        title: [title ?? ''].join().trim(),
+        color,
+        fileId,
+        description: [description ?? ''].join('').trim(),
+      },
+    }),
+  },
   putNewWordStack: {
     query: ({stackId, title, translatedText, cardId}) => ({
       url: ENPOINTS.CARD.UPDATE.ROUTE,
@@ -120,4 +132,5 @@ type iStack =
   | 'translateText'
   | 'listLuke'
   | 'listCard'
+  | 'createNewStack'
   | 'currentStack';

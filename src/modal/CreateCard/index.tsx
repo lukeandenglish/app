@@ -23,16 +23,18 @@ export const CreateCard = ({onClose}) => {
   const [listImage, setListImage] = React.useState({});
   const [title, setTitleSelect] = React.useState('');
   const dispatch = useDispatch();
-  const [photo, setPhoto] = React.useState({});
+  const [photo, setPhoto] = React.useState(null);
   const [color, setColor] = React.useState(cardColor.Blue_Sky);
 
-  const handleCreateCard = () => {
-    registerCallbackEndpoints({
-      endpoints: homeApi.endpoints.getListIllustration,
+  const handleCreateCard = async () => {
+    await registerCallbackEndpoints({
+      endpoints: homeApi.endpoints.createNewStack,
       dispatch,
-      args: {title, photo, color: color},
+      args: {title, fileId: photo?.id, color: color},
     });
   };
+
+  console.log(photo);
 
   const myInput = {
     selectInput: {
@@ -78,7 +80,7 @@ export const CreateCard = ({onClose}) => {
       </>
     );
   }
-  if (R.isEmpty(photo)) {
+  if (R.isNil(photo)) {
     return (
       <BottomSheetFlatList
         ListHeaderComponent={() => (
@@ -91,7 +93,7 @@ export const CreateCard = ({onClose}) => {
         renderItem={({item}: any) => {
           return (
             <TouchableOpacity
-              onPress={() => setPhoto({photo: item})}
+              onPress={() => setPhoto(item)}
               style={styles.sigrp}>
               <Image source={item} style={styles.sigrp} resizeMode="cover" />
             </TouchableOpacity>
@@ -108,7 +110,7 @@ export const CreateCard = ({onClose}) => {
       selectColor={color}
       setSelectColor={setColor}
       onClose={onClose}
-      onBack={() => setPhoto({})}
+      onBack={() => setPhoto(null)}
       title={title}
       disabled={false}
       handleCreateCard={handleCreateCard}
