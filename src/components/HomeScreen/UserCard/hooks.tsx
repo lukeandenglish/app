@@ -18,7 +18,7 @@ export const useGetCurrentStack = () => {
 
   useFocusEffect(
     React.useCallback(() => {
-      setState(route?.params?.data);
+      setState(R.pipe(R.path(['params', 'data']), R.defaultTo({}))(route));
       registerCallbackEndpoints({
         endpoints: homeApi.endpoints.currentStack,
         dispatch,
@@ -36,6 +36,13 @@ export const useGetCurrentStack = () => {
     R.path(['data', 'description'])(state) ??
     "Sir Charles Spencer Chaplin KBE was an English comic actor, filmmaker, and composer who rose to fame in the era of silent film. He became a worldwide icon through his screen persona, the Tramp, and is considered one of the film industry's most important figures.";
   const title = R.pipe(R.path(['data', 'title']), R.defaultTo(''))(state);
+  const image = R.pipe(R.path(['data', 'photo']), R.defaultTo(''))(state);
+  const author = R.pipe(
+    R.path(['data', 'userId']),
+    R.defaultTo('by Luke English'),
+  )(state);
+  console.log(image);
+
   const dataOriginCards = R.pipe(
     R.path(['data', 'cards']),
     R.defaultTo([]),
@@ -59,16 +66,21 @@ export const useGetCurrentStack = () => {
           {
             card: false,
             play,
-            component: () => <PortalHost name="AddedNewWord" />,
+            component: () => (
+              <>
+                <PortalHost name="AddedNewWord" />
+                <PortalHost name="UpdateCardWord" />
+              </>
+            ),
           },
         ]
       : [],
   );
 
   const ExtraData = {
-    image: '',
+    image,
     title,
-    author: '',
+    author,
   };
   const ExtraResultData = {
     learn: {

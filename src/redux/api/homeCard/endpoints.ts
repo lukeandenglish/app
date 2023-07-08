@@ -2,6 +2,20 @@ import {ENPOINTS} from '../../../api/endpoints/register';
 
 export const REGISTER_ENDPOINTS = {
   putNewWordStack: {
+    query: ({stackId, title, translatedText, cardId}) => ({
+      url: ENPOINTS.CARD.UPDATE.ROUTE,
+      method: ENPOINTS.CARD.UPDATE.METHOD,
+      body: {stackId, title, translatedText, cardId},
+    }),
+  },
+  deleteNewWordStack: {
+    query: ({stackId, cardId}) => ({
+      url: ENPOINTS.CARD.DELETE.ROUTE,
+      method: ENPOINTS.CARD.DELETE.METHOD,
+      body: {stackId, cardId},
+    }),
+  },
+  createNewWordStack: {
     query: ({stackId, title, translatedText}) => ({
       url: ENPOINTS.CARD.CREATE.ROUTE,
       method: ENPOINTS.CARD.CREATE.METHOD,
@@ -84,12 +98,14 @@ export const REGISTER_ENDPOINTS = {
 } as Record<iStack, any>;
 
 type iStack =
+  | 'deleteNewWordStack'
+  | 'putNewWordStack'
+  | 'createNewWordStack'
   | 'listUser'
   | 'addedFavour'
   | 'copyStack'
   | 'listVideo'
   | 'translateText'
   | 'listLuke'
-  | 'putNewWordStack'
   | 'listCard'
   | 'currentStack';

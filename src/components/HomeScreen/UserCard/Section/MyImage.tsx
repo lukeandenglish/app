@@ -1,6 +1,6 @@
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, Image, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
@@ -10,16 +10,20 @@ import {
   copySvg,
   moreSvg,
 } from '../../../../assets/close';
-import {ArtSvg} from '../../../../assets/collection';
 import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
 import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
+import {Portal} from '@gorhom/portal';
+import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCustomComponent';
+import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
 
 export const MyImage = props => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
+  const ref = React.useRef<BottomSheet | null>(null);
+
   return (
     <View style={Styles.flex1}>
       <View
@@ -29,7 +33,10 @@ export const MyImage = props => {
             paddingTop: insets.top,
           },
         ]}>
-        <SvgXml xml={ArtSvg} width={isCalcSize(292)} height={isCalcSize(307)} />
+        <Image
+          source={props.image}
+          style={{width: isCalcSize(292), height: isCalcSize(307)}}
+        />
         <View
           style={[
             styles.lab,
@@ -55,7 +62,11 @@ export const MyImage = props => {
                 top: insets.top,
               },
             ]}>
-            <TouchableOpacity style={Styles.iconClose}>
+            <TouchableOpacity
+              onPress={() => {
+                ref.current?.snapToIndex(1);
+              }}
+              style={Styles.iconClose}>
               <SvgXml
                 xml={moreSvg}
                 width={isCalcSize(24)}
@@ -75,7 +86,7 @@ export const MyImage = props => {
         <Stack size="s18" />
         <View style={Styles.flex1}>
           <Text style={[Typography.text12, FontFamily['400']]}>
-            {props.author ?? 'by Luke English'}
+            {props.author}
           </Text>
         </View>
         <Stack size="s18" />
@@ -105,6 +116,11 @@ export const MyImage = props => {
       <Inset horizontal="s24">
         <View style={styles.bbw} />
       </Inset>
+      <Portal name="UpdateCardWord">
+        <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
+          <View />
+        </BottomSheetCustomComponent>
+      </Portal>
     </View>
   );
 };
