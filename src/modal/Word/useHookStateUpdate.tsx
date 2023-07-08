@@ -2,8 +2,8 @@ import {t} from '@lingui/macro';
 import * as R from 'ramda';
 import React from 'react';
 import {useDispatch} from 'react-redux';
-import {registerCallbackEndpoints} from '../../../../api/registerCallbackEndpoints';
-import {homeApi} from '../../../../redux/api/homeCard';
+import {registerCallbackEndpoints} from '../../api/registerCallbackEndpoints';
+import {homeApi} from '../../redux/api/homeCard';
 import {Keyboard} from 'react-native';
 
 export const useHookStateUpdate = () => {

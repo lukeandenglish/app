@@ -11,16 +11,12 @@ import Animated, {
 } from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {playSvg} from '../../../../../assets/close';
-import {Inset, Stack} from '../../../../../styleApp/Spacing';
-import {
-  FontFamily,
-  Styles,
-  Typography,
-} from '../../../../../styleApp/Typografy';
-import {Units, isCalcSize} from '../../../../../styleApp/Units';
-import {cardColor} from '../../../../../styleApp/colors';
-import {HeaderModal, ModalButton} from '../../Modal';
+import {playSvg} from '../../assets/close';
+import {Inset, Stack} from '../../styleApp/Spacing';
+import {FontFamily, Styles, Typography} from '../../styleApp/Typografy';
+import {Units, isCalcSize} from '../../styleApp/Units';
+import {cardColor} from '../../styleApp/colors';
+import {HeaderModal, ModalButton} from '../Word';
 
 export const Card = ({
   title,

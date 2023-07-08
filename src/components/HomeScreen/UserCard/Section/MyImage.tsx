@@ -18,7 +18,7 @@ import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCus
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors, {cardColor} from '../../../../styleApp/colors';
-import {CreateCard} from './CreateCard';
+import {CreateCard} from '../../../../modal/CreateCard';
 
 export const MyImage = props => {
   const insets = useSafeAreaInsets();

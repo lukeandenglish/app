@@ -7,13 +7,13 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useDispatch} from 'react-redux';
-import {registerCallbackEndpoints} from '../../../../../api/registerCallbackEndpoints';
-import {homeApi} from '../../../../../redux/api/homeCard';
-import {Layout} from '../../../../../styleApp/Layout';
-import {Stack} from '../../../../../styleApp/Spacing';
-import {Units, isCalcSize} from '../../../../../styleApp/Units';
-import colors, {cardColor} from '../../../../../styleApp/colors';
-import {HeaderModal, ModalButton, ModalInput} from '../../Modal';
+import {registerCallbackEndpoints} from '../../api/registerCallbackEndpoints';
+import {homeApi} from '../../redux/api/homeCard';
+import {Layout} from '../../styleApp/Layout';
+import {Stack} from '../../styleApp/Spacing';
+import {Units, isCalcSize} from '../../styleApp/Units';
+import colors, {cardColor} from '../../styleApp/colors';
+import {HeaderModal, ModalButton, ModalInput} from '../Word';
 import {FinishScreen} from './FinishScreen';
 
 export const CreateCard = ({onClose}) => {
@@ -57,13 +57,10 @@ export const CreateCard = ({onClose}) => {
   if (!next) {
     return (
       <>
+        <HeaderModal title={t`Название`} onClose={onClose} onBack={undefined} />
         <BottomSheetScrollView
           contentContainerStyle={[{paddingBottom: insets.bottom}, styles.ctN]}>
-          <HeaderModal
-            title={t`Название`}
-            onClose={onClose}
-            onBack={undefined}
-          />
+          <View />
           <View>
             <Stack size="s50" />
             <ModalInput inputName={myInput.selectInput} />

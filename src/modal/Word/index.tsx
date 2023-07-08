@@ -11,15 +11,15 @@ import {
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {closeSvg} from '../../../../assets/close';
-import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
-import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
-import {Button} from '../../../../styleApp/UI/Button';
-import {Units} from '../../../../styleApp/Units';
-import colors, {cardColor} from '../../../../styleApp/colors';
+import {closeSvg} from '../../assets/close';
+import {Inset, Queue, Stack} from '../../styleApp/Spacing';
+import {FontFamily, Styles, Typography} from '../../styleApp/Typografy';
+import {Button} from '../../styleApp/UI/Button';
+import {Units} from '../../styleApp/Units';
+import colors, {cardColor} from '../../styleApp/colors';
 import {useHookStateUpdate} from './useHookStateUpdate';
-import {Layout} from '../../../../styleApp/Layout';
-import {iHandleWordUpdate} from '../Section/SelectionCode';
+import {Layout} from '../../styleApp/Layout';
+import {iHandleWordUpdate} from '../../components/HomeScreen/UserCard/Section/SelectionCode';
 
 export const HeaderModal = ({title, onClose, onBack}) => {
   return (

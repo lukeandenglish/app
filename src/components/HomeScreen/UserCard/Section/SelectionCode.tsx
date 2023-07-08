@@ -28,7 +28,7 @@ import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCus
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units} from '../../../../styleApp/Units';
 import colors, {cardColor} from '../../../../styleApp/colors';
-import {Bearer} from '../Modal';
+import {Bearer} from '../../../../modal/Word';
 import {iStackData} from '../renderItem';
 
 export interface iHandleWordUpdate extends iStackData {
