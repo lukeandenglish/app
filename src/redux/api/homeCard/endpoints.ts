@@ -22,6 +22,17 @@ export const REGISTER_ENDPOINTS = {
       body: {stackId, title, translatedText},
     }),
   },
+  getListIllustration: {
+    query: () => ({
+      url: [
+        ENPOINTS.STACK.ILUSTRATION.ROUTE,
+        '?',
+        'limit=50',
+        '&offset=0',
+      ].join(''),
+      method: ENPOINTS.STACK.ILUSTRATION.METHOD,
+    }),
+  },
   currentStack: {
     query: () => ({
       url: ENPOINTS.STACK.ONE_STACK.ROUTE,
@@ -104,6 +115,7 @@ type iStack =
   | 'listUser'
   | 'addedFavour'
   | 'copyStack'
+  | 'getListIllustration'
   | 'listVideo'
   | 'translateText'
   | 'listLuke'

@@ -1,6 +1,8 @@
+import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
+import {Portal} from '@gorhom/portal';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {StyleSheet, Text, Image, View} from 'react-native';
+import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
@@ -12,12 +14,11 @@ import {
 } from '../../../../assets/close';
 import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
 import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
+import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCustomComponent';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
-import colors from '../../../../styleApp/colors';
-import {Portal} from '@gorhom/portal';
-import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCustomComponent';
-import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
+import colors, {cardColor} from '../../../../styleApp/colors';
+import {CreateCard} from './CreateCard';
 
 export const MyImage = props => {
   const insets = useSafeAreaInsets();
@@ -118,14 +119,14 @@ export const MyImage = props => {
       </Inset>
       <Portal name="UpdateCardWord">
         <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
-          <View />
+          <CreateCard onClose={() => ref.current?.close()} />
         </BottomSheetCustomComponent>
       </Portal>
     </View>
   );
 };
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   rab: {position: 'absolute', right: 14},
   lab: {position: 'absolute', left: 14},
   imc: {
@@ -140,5 +141,58 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(0, 0, 0, 0.20)',
     borderRadius: Units.s8,
+  },
+  btw: {borderBottomWidth: 1},
+  tapBlc: {
+    borderRadius: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: cardColor.Faded_Grass,
+  },
+  ew: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  etw: {width: isCalcSize(240)},
+  ett: {
+    textAlign: 'center',
+    color: colors.lightInk,
+    lineHeight: Units.s22,
+  },
+  etb: {
+    backgroundColor: colors.lightPrimary,
+    borderWidth: 1,
+    borderColor: 'rgba(0, 0, 0, 0.20)',
+  },
+  wtd2: {fontWeight: '400'},
+  wtd1: {fontWeight: '600'},
+  wtd: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  wtt: {
+    fontWeight: '600',
+    flex: 1,
+    lineHeight: Units.s20,
+  },
+  wt: {
+    width: isCalcSize(163),
+    minHeight: isCalcSize(43),
+    flexDirection: 'row',
+  },
+  cw: {
+    position: 'absolute',
+    bottom: Units.s12,
+    paddingLeft: Units.s16,
+    left: 0,
+    right: 0,
+    paddingRight: Units.s16,
+  },
+  iwp: {
+    width: isCalcSize(197),
+    height: isCalcSize(317),
+    borderWidth: Units.s1,
+    borderRadius: Units.s12,
+    position: 'relative',
   },
 });

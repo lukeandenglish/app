@@ -17,23 +17,72 @@ import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units} from '../../../../styleApp/Units';
 import colors, {cardColor} from '../../../../styleApp/colors';
-import {iHandleWordUpdate} from '../SelectionCode';
 import {useHookStateUpdate} from './useHookStateUpdate';
 import {Layout} from '../../../../styleApp/Layout';
+import {iHandleWordUpdate} from '../Section/SelectionCode';
 
-const HeaderModal = ({title, onClose}) => {
+export const HeaderModal = ({title, onClose, onBack}) => {
   return (
     <Inset horizontal="s12">
       <View style={styles.row}>
-        <View style={[Styles.iconClose]} />
+        <TouchableOpacity
+          disabled={!onBack}
+          style={[Styles.iconClose, !onBack && {display: 'none'}]}>
+          <SvgXml xml={closeSvg} />
+        </TouchableOpacity>
         <View style={styles.hc}>
           <Text style={Typography.text18}>{title}</Text>
         </View>
-        <TouchableOpacity onPress={onClose} style={[Styles.iconClose]}>
+        <TouchableOpacity
+          onPress={onClose}
+          disabled={!onClose}
+          style={[Styles.iconClose, !onClose && {display: 'none'}]}>
           <SvgXml xml={closeSvg} />
         </TouchableOpacity>
       </View>
     </Inset>
+  );
+};
+
+export const ModalButton = ({
+  title,
+  disabled,
+  onPress,
+}: {
+  title: string;
+  disabled: boolean;
+  onPress: () => void;
+}) => {
+  return (
+    <View style={[styles.absPos, disabled && {opacity: 0.5}]}>
+      <Inset horizontal="s24" bottom="s50">
+        <Button
+          title={title}
+          disabled={disabled}
+          onPress={onPress}
+          style={styles.iwba}
+          styleText={Object.assign([
+            styles.iwbat,
+            {paddingRight: 0, minHeight: 20},
+            Typography.text16,
+            FontFamily['600'],
+          ])}
+        />
+        <Stack size="s20" />
+      </Inset>
+    </View>
+  );
+};
+
+export const ModalInput = ({inputName}) => {
+  return (
+    <View style={styles.btw}>
+      <TextInput
+        {...inputName}
+        style={[Typography.text30, FontFamily.wermut]}
+      />
+      <Stack size="s16" />
+    </View>
   );
 };
 
@@ -76,27 +125,13 @@ export const Bearer = ({
           styles.wrapper,
           {paddingBottom: insets.bottom},
         ]}>
-        <HeaderModal title={titleHeader} onClose={onClose} />
+        <HeaderModal title={titleHeader} onClose={onClose} onBack={undefined} />
         <Stack size="s40" />
         <Inset horizontal="s20">
-          <View style={styles.btw}>
-            <TextInput
-              {...inputName.initialInput}
-              style={[Typography.text30, FontFamily.wermut]}
-            />
-            <Stack size="s16" />
-          </View>
-
+          <ModalInput inputName={inputName.selectInput} />
           <Stack size="s40" />
-          <View style={styles.btw}>
-            <TextInput
-              {...inputName.selectInput}
-              style={[Typography.text30, FontFamily.wermut]}
-            />
-            <Stack size="s16" />
-          </View>
+          <ModalInput inputName={inputName.selectInput} />
         </Inset>
-
         {isCheck && (
           <View>
             <Inset bottom="s16" top="s24" horizontal="s20">
@@ -129,6 +164,14 @@ export const Bearer = ({
         <View style={styles.hpb} />
         <KeyboardSpacer />
       </BottomSheetScrollView>
+      <ModalButton
+        title={stackId ? t`Обновить` : t`Добавить`}
+        disabled={isDisabled}
+        onPress={handleAddedNewWord({
+          title: inputName.initialInput.value,
+          select: inputName.selectInput.value,
+        })}
+      />
       <View style={[styles.absPos, isDisabled && {opacity: 0.5}]}>
         <Inset horizontal="s24" bottom="s50">
           <Button

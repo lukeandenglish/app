@@ -41,7 +41,6 @@ export const useGetCurrentStack = () => {
     R.path(['data', 'userId']),
     R.defaultTo('by Luke English'),
   )(state);
-  console.log(image);
 
   const dataOriginCards = R.pipe(
     R.path(['data', 'cards']),

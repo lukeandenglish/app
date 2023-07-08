@@ -8,6 +8,7 @@ import {Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
 import {useGetCurrentStack} from './hooks';
 import {renderItem} from './renderItem';
+import * as R from 'ramda';
 
 export const WIDTH = Dimensions.get('screen').width;
 
@@ -21,7 +22,9 @@ const App = () => {
     <Container
       notPaddingTop={false}
       background={
-        !route?.params?.data?.admin ? colors.pink : colors.faded_flam
+        !R.path(['params', 'data', 'admin'])(route)
+          ? colors.pink
+          : colors.faded_flam
       }>
       <SectionList
         ref={sectionListRef}
