@@ -1,22 +1,44 @@
-export default {
+import yaml from 'yaml';
+
+const CTX = `
+UNAUTH:
+    IntroOnBording: IntroOnBording
+    LogInOrRegister: LogInOrRegister
+    Register: Register
+    Login: Login
+    ForgotPassword: ForgotPassword
+TAB:
+    Home: Home
+    Create: Create
+    Settings: Settings
+AUTH:
+    ProfileMain: ProfileMain
+    ProfileApperance: ProfileApperance
+    ProfileEdit: ProfileEdit
+    ProfileTest: ProfileTest
+    ProfileUserCard: ProfileUserCard
+    ProfileSearchCard: ProfileSearchCard
+`;
+
+export default yaml.parse(CTX) as {
   UNAUTH: {
-    IntroOnBording: 'IntroOnBording',
-    LogInOrRegister: 'LogInOrRegister',
-    Register: 'Register',
-    Login: 'Login',
-    ForgotPassword: 'ForgotPassword',
-  },
+    IntroOnBording: string;
+    LogInOrRegister: string;
+    Register: string;
+    Login: string;
+    ForgotPassword: string;
+  };
   TAB: {
-    HOME: 'Home',
-    CREATE: 'CREATE',
-    SETTINGS: 'SETTINGS',
-  },
+    Home: string;
+    Create: string;
+    Settings: string;
+  };
   AUTH: {
-    PROFILE_MAIN: 'ProfileMain',
-    PROFILE_APPERANCE: 'ProfileApperance',
-    PROFILE_EDIT: 'ProfileEdit',
-    PROFILE_TEST: 'ProfileTest',
-    PROFILE_USER_CARD: 'ProfileUserCard',
-    PROFILE_SEARCH_CARD: 'ProfileSearchCard',
-  },
+    ProfileMain: string;
+    ProfileApperance: string;
+    ProfileEdit: string;
+    ProfileTest: string;
+    ProfileUserCard: string;
+    ProfileSearchCard: string;
+  };
 };

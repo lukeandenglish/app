@@ -74,46 +74,54 @@ export const REGISTER_ENDPOINTS = {
   },
   listCard: {
     query: () => ({
-      url: ENPOINTS.USER.STACK_FOVORITE.ROUTE,
+      url: [
+        ENPOINTS.USER.STACK_FOVORITE.ROUTE,
+        '?',
+        'limit=30',
+        'offset=0',
+      ].join(''),
       method: ENPOINTS.USER.STACK_FOVORITE.METHOD,
-      body: {limit: 30, offset: 0},
-      transformResponse: (response, meta, arg) => {
-        console.log({response});
+      transformResponse: response => {
         return response;
       },
     }),
   },
   listLuke: {
     query: () => ({
-      url: ENPOINTS.USER.STACK_FOVORITE.ROUTE,
+      url: [
+        ENPOINTS.USER.STACK_FOVORITE.ROUTE,
+        '?',
+        'limit=30',
+        'offset=0',
+      ].join(''),
       method: ENPOINTS.USER.STACK_FOVORITE.METHOD,
-      body: {limit: 30, offset: 0},
-
-      transformResponse: (response, meta, arg) => {
-        console.log({response});
+      transformResponse: response => {
         return response;
       },
     }),
   },
   listVideo: {
     query: () => ({
-      url: ENPOINTS.STACK.LUKE_SEARCH.ROUTE,
+      url: [ENPOINTS.STACK.LUKE_SEARCH.ROUTE, '?', 'limit=30', 'offset=0'].join(
+        '',
+      ),
       method: ENPOINTS.STACK.LUKE_SEARCH.METHOD,
-      body: {limit: 30, offset: 0},
 
-      transformResponse: (response, meta, arg) => {
-        console.log({response});
+      transformResponse: response => {
         return response;
       },
     }),
   },
   listUser: {
     query: () => ({
-      url: ENPOINTS.USER.FAVORITES_LIST.ROUTE,
+      url: [
+        ENPOINTS.USER.FAVORITES_LIST.ROUTE,
+        '?',
+        'limit=30',
+        'offset=0',
+      ].join(''),
       method: ENPOINTS.USER.FAVORITES_LIST.METHOD,
-      body: {limit: 30, offset: 0},
-      transformResponse: (response, meta, arg) => {
-        console.log({response});
+      transformResponse: response => {
         return response;
       },
     }),

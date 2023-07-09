@@ -43,27 +43,15 @@ export const GroupPlayComponent = ({isEmpty}) => {
   ];
 
   const handlePageNavigate = () => {
-    try {
-      navigation.navigate(ROUTER_PAGE.TAB.SETTINGS);
-    } catch (e) {
-      console.log(e);
-    }
+    navigation.navigate(ROUTER_PAGE.TAB.Settings);
   };
 
   const handlePageSearchNavigate = () => {
-    try {
-      navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_SEARCH_CARD);
-    } catch (e) {
-      console.log(e);
-    }
+    navigation.navigate(ROUTER_PAGE.AUTH.ProfileSearchCard);
   };
 
   const handlePageMainNavigate = () => {
-    try {
-      navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_MAIN);
-    } catch (e) {
-      console.log(e);
-    }
+    navigation.navigate(ROUTER_PAGE.AUTH.ProfileMain);
   };
 
   return (

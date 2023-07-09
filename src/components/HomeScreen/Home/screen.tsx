@@ -1,8 +1,10 @@
-/* eslint-disable react-native/no-inline-styles */
+import BottomSheet from '@gorhom/bottom-sheet';
 import * as R from 'ramda';
 import React from 'react';
 import {Dimensions, SectionList} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {CreateCard} from '../../../modal/CreateCard';
+import {BottomSheetCustomComponent} from '../../../styleApp/UI/BottomSheetCustomComponent';
 import {Container} from '../../../styleApp/UI/Container';
 import {Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
@@ -14,16 +16,19 @@ export const WIDTH = Dimensions.get('screen').width;
 const App = () => {
   const insets = useSafeAreaInsets();
   const sectionListRef = React.useRef<SectionList | null>(null);
-  const [data] = useGetCurrentStack();
+  let [data] = useGetCurrentStack();
+  const ref = React.useRef<BottomSheet | null>(null);
 
-  console.log(R.pipe(R.path([1, 'data', 0, 'data']))(data));
+  const DATA = R.assocPath([1, 'data', 0, 'onPressAdd'], () =>
+    ref.current?.snapToIndex(1),
+  )(data);
 
   return (
     <Container notPaddingTop={false} background={colors.lightPrimary}>
       <SectionList
         ref={sectionListRef}
-        sections={data as any[]}
-        extraData={data}
+        sections={DATA}
+        extraData={DATA}
         bounces={false}
         keyExtractor={(item, index) => [item, index].join('_')}
         renderItem={renderItem}
@@ -35,6 +40,9 @@ const App = () => {
       <GroupPlayComponent
         isEmpty={R.pipe(R.path([1, 'data', 0, 'data']), R.isEmpty)(data)}
       />
+      <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
+        <CreateCard onClose={() => ref.current?.close()} />
+      </BottomSheetCustomComponent>
     </Container>
   );
 };

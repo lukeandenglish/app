@@ -44,7 +44,7 @@ export const GroupPlayComponent = ({isEmpty}) => {
 
   const handlePageNavigate = () => {
     try {
-      navigation.navigate(ROUTER_PAGE.TAB.SETTINGS);
+      navigation.navigate(ROUTER_PAGE.TAB.Settings);
     } catch (e) {
       console.log(e);
     }
@@ -52,7 +52,7 @@ export const GroupPlayComponent = ({isEmpty}) => {
 
   const handlePageSearchNavigate = () => {
     try {
-      navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_SEARCH_CARD);
+      navigation.navigate(ROUTER_PAGE.AUTH.ProfileSearchCard);
     } catch (e) {
       console.log(e);
     }
@@ -60,7 +60,7 @@ export const GroupPlayComponent = ({isEmpty}) => {
 
   const handlePageMainNavigate = () => {
     try {
-      navigation.navigate(ROUTER_PAGE.AUTH.PROFILE_MAIN);
+      navigation.navigate(ROUTER_PAGE.AUTH.ProfileMain);
     } catch (e) {
       console.log(e);
     }

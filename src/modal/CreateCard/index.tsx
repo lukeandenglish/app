@@ -30,11 +30,10 @@ export const CreateCard = ({onClose}) => {
     await registerCallbackEndpoints({
       endpoints: homeApi.endpoints.createNewStack,
       dispatch,
-      args: {title, fileId: photo?.id, color: color},
+      args: {title, fileId: R.path(['id'])(photo), color: color},
     });
+    onClose();
   };
-
-  console.log(photo);
 
   const myInput = {
     selectInput: {

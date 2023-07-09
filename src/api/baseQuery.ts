@@ -8,7 +8,7 @@ export const baseQuery = fetchBaseQuery({
     headers.set('Access-Control-Allow-Origin', '*');
     headers.set(
       'Authorization',
-      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmX25hbWUiOm51bGwsImxfbmFtZSI6bnVsbCwiaWQiOiJjOGQzOTg0Yy0xNGYxLTQxMWMtYTc5OC1kZTk3NTgzYTZkYmEiLCJlbWFpbCI6ImZpbnRlY2htdXN0cmVldHNAZ21haWwuY29tIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwibGV2ZWwiOm51bGwsInBob25lVmVyaWZpZWQiOmZhbHNlLCJwcm92aWRlcnMiOltdLCJpYXQiOjE2ODg2NzAzNTksImV4cCI6MTY4ODg0MzE1OX0.V0AT529M6oo_WXzrebVhR5aM-GRdcwd03w9iKYdQGXw',
+      'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmX25hbWUiOm51bGwsImxfbmFtZSI6bnVsbCwiaWQiOiJjOGQzOTg0Yy0xNGYxLTQxMWMtYTc5OC1kZTk3NTgzYTZkYmEiLCJlbWFpbCI6ImZpbnRlY2htdXN0cmVldHNAZ21haWwuY29tIiwiZW1haWxWZXJpZmllZCI6dHJ1ZSwibGV2ZWwiOiJaRVJPIiwicGhvbmVWZXJpZmllZCI6ZmFsc2UsInByb3ZpZGVycyI6W10sImlhdCI6MTY4ODkxODA3NSwiZXhwIjoxNjg5MDkwODc1fQ.u_Iopxl_RLfAWN4Wi0Yio2bRERV1-Uw6zMXgCuaM31A',
     );
 
     return headers;

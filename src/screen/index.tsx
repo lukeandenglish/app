@@ -40,46 +40,45 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={ROUTER_PAGE.UNAUTH.IntroOnBording}>
-        {!hasTokenCreate && (
+        {!hasTokenCreate ? (
           <Stack.Group>
-            {/* <Stack.Screen
-              name={ROUTER_PAGE.AUTH.PROFILE_MAIN}
+            <Stack.Screen
+              name={ROUTER_PAGE.AUTH.ProfileMain}
               component={HomeScreen}
               options={SlideRightFunc(false)}
             />
             <Stack.Screen
-              name={ROUTER_PAGE.AUTH.PROFILE_SEARCH_CARD}
-              component={SearchScreen}
-              options={SlideRightFunc(false)}
-            /> */}
-            <Stack.Screen
-              name={ROUTER_PAGE.AUTH.PROFILE_USER_CARD}
+              name={ROUTER_PAGE.AUTH.ProfileUserCard}
               component={UserCard}
               options={SlideToTop(false)}
             />
             <Stack.Screen
-              name={ROUTER_PAGE.TAB.SETTINGS}
-              component={MainProfile}
+              name={ROUTER_PAGE.AUTH.ProfileSearchCard}
+              component={SearchScreen}
               options={SlideRightFunc(false)}
             />
             <Stack.Screen
-              name={ROUTER_PAGE.AUTH.PROFILE_EDIT}
-              component={EditProfile}
-              options={SlideRightFunc(false)}
+              name={ROUTER_PAGE.AUTH.ProfileTest}
+              component={TestFlow}
+              options={SlideRightFunc(true)}
             />
             <Stack.Screen
-              name={ROUTER_PAGE.AUTH.PROFILE_APPERANCE}
+              name={ROUTER_PAGE.AUTH.ProfileApperance}
               component={ApperanceProfile}
               options={SlideRightFunc(true)}
             />
             <Stack.Screen
-              name={ROUTER_PAGE.AUTH.PROFILE_TEST}
-              component={TestFlow}
-              options={SlideRightFunc(true)}
+              name={ROUTER_PAGE.AUTH.ProfileEdit}
+              component={EditProfile}
+              options={SlideRightFunc(false)}
+            />
+            <Stack.Screen
+              name={ROUTER_PAGE.TAB.Settings}
+              component={MainProfile}
+              options={SlideRightFunc(false)}
             />
           </Stack.Group>
-        )}
-        {hasTokenCreate && (
+        ) : (
           <Stack.Group>
             <Stack.Screen
               name={ROUTER_PAGE.UNAUTH.IntroOnBording}

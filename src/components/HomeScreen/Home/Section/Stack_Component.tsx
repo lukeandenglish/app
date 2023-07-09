@@ -45,7 +45,6 @@ export const Stack_Component: ({
   data,
   emptyIcon,
   fetchMore,
-  loading,
 }: iStackComponent) => {
   const navigation = useNavigation();
   const refScroll = React.useRef(null);
@@ -102,12 +101,9 @@ export const Stack_Component: ({
                   registerCallbackEndpoints({
                     endpoints: homeApi.endpoints.currentStack,
                     dispatch,
-                    args: {stackId: props.item.stackId},
+                    args: {stackId: R.path(['item', 'stackId'])(props)},
                   }).then((data: any) => {
-                    navigation.navigate(
-                      ROUTER_PAGE.AUTH.PROFILE_USER_CARD,
-                      data,
-                    );
+                    navigation.navigate(ROUTER_PAGE.AUTH.ProfileUserCard, data);
                   });
                 }}>
                 <SvgXml
