@@ -34,9 +34,7 @@ export const useGetCurrentStack = () => {
   const isAdmin = R.path(['data', 'admin'])(state);
   const stackId = R.path(['data', 'id'])(state);
   const color = R.path(['data', 'color'])(state);
-  const description =
-    R.path(['data', 'description'])(state) ??
-    "Sir Charles Spencer Chaplin KBE was an English comic actor, filmmaker, and composer who rose to fame in the era of silent film. He became a worldwide icon through his screen persona, the Tramp, and is considered one of the film industry's most important figures.";
+  const description = R.path(['data', 'description'])(state) ?? '';
   const title = R.pipe(R.path(['data', 'title']), R.defaultTo(''))(state);
   const image = R.pipe(R.path(['data', 'photo']), R.defaultTo(''))(state);
   const author = R.pipe(

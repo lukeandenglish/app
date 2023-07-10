@@ -1,32 +1,27 @@
 import BottomSheet, {BottomSheetFlatList} from '@gorhom/bottom-sheet';
 import {t} from '@lingui/macro';
 import {useNavigation} from '@react-navigation/native';
+import * as R from 'ramda';
 import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import Animated, {
-  FadeOutDown,
-  Layout as RNRLayout,
-  ZoomInUp,
-} from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {listSvg, playModalSvg} from '../../../../assets/close/index';
 import {profile} from '../../../../assets/svg/bottom-tabs';
 import ROUTER_PAGE from '../../../../config/page';
-import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
+import {Inset} from '../../../../styleApp/Spacing';
 import {Styles} from '../../../../styleApp/Styles';
 import {FontFamily, Typography} from '../../../../styleApp/Typografy';
 import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCustomComponent';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
-import {useMyWatchList} from '../../Home/hooks';
-import * as R from 'ramda';
 import {
-  ItemSeparator,
   HeaderCardRenderItem,
+  ItemSeparator,
   SelectCardRenderItem,
 } from '../../Home/BottomSheet/MyPlayList';
+import {PlayStoreMarket} from '../../Home/Component/GroupPlayComponent';
+import {useMyWatchList} from '../../Home/hooks';
 
 export const GroupPlayComponent = ({isEmpty}) => {
   const bottomSheetRef = React.useRef<BottomSheet>(null);
@@ -58,37 +53,7 @@ export const GroupPlayComponent = ({isEmpty}) => {
       <View style={{height: isCalcSize(!isEmpty ? 140 : 70) + insets.bottom}} />
       <View style={styles.gpcw}>
         {!isEmpty && (
-          <Animated.View
-            entering={ZoomInUp}
-            exiting={FadeOutDown}
-            layout={RNRLayout.duration(1400).delay(1400)}>
-            <Inset
-              horizontal="s16"
-              vertical="s12"
-              layout={StyleSheet.flatten({
-                flexDirection: 'row',
-                alignItems: 'center',
-              })}>
-              <View style={styles.gpcwbl} />
-              <Queue size="s16" />
-              <View style={Styles.flex1}>
-                <Text style={(Typography.text16, FontFamily['500'])}>
-                  High society vocabulary
-                </Text>
-                <Stack size="s6" />
-                <Text style={[Typography.text12, FontFamily['400']]}>
-                  33 / 43 слов{' '}
-                </Text>
-                <Stack size="s6" />
-              </View>
-              <Queue size="s16" />
-              <SvgXml xml={playModalSvg} />
-              <Queue size="s16" />
-              <TouchableOpacity onPress={hancleOpenModal}>
-                <SvgXml xml={listSvg} />
-              </TouchableOpacity>
-            </Inset>
-          </Animated.View>
+          <PlayStoreMarket hancleOpenModal={hancleOpenModal} data={data?.[1]} />
         )}
         <View
           style={[
@@ -223,10 +188,8 @@ const styles = StyleSheet.create({
   },
   gpcwbl: {
     height: isCalcSize(48),
-    alignItems: 'center',
     justifyContent: 'center',
     width: isCalcSize(48),
-    backgroundColor: 'red',
     borderRadius: Units.s8,
   },
   gpcw: {
