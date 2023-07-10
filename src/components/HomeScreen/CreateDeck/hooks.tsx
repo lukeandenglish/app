@@ -107,14 +107,17 @@ export const useGetCurrentStack = () => {
       save: change.length > 0,
       handleSaveDescription: () => console.log('Save description'),
     },
-    onRefetch: () =>
-      registerCallbackEndpoints({
-        endpoints: homeApi.endpoints.currentStack,
-        dispatch,
-        args: {stackId},
-      })
-        .then(setState)
-        .catch(e => console.log(e)),
+    onRefetch: () => {
+      if (stackId) {
+        registerCallbackEndpoints({
+          endpoints: homeApi.endpoints.currentStack,
+          dispatch,
+          args: {stackId},
+        })
+          .then(setState)
+          .catch(e => console.log(e));
+      }
+    },
     count: [dataOriginCards?.length].join(''),
     data: dataCards ?? [],
     onCopy: () =>

@@ -79,7 +79,7 @@ export const useGetCurrentStack = () => {
       },
       filterData(
         R.pipe(
-          R.path<iStackComponent['data']>(['data']),
+          R.path<iStackComponent['data']>(['data', 'rows']),
           R.defaultTo([]),
           R.concat(R.pipe(R.path(['user', 'data']), R.defaultTo([]))(state)),
         )(user),
@@ -109,7 +109,7 @@ export const useGetCurrentStack = () => {
       },
       filterData(
         R.pipe(
-          R.path<iStackComponent['data']>(['data']),
+          R.path<iStackComponent['data']>(['data', 'rows']),
           R.defaultTo([]),
           R.concat(R.pipe(R.path(['card', 'data']), R.defaultTo([]))(state)),
         )(card),
@@ -139,7 +139,7 @@ export const useGetCurrentStack = () => {
       },
       filterData(
         R.pipe(
-          R.path<iStackComponent['data']>(['data']),
+          R.path<iStackComponent['data']>(['data', 'rows']),
           R.defaultTo([]),
           R.concat(R.pipe(R.path(['video', 'data']), R.defaultTo([]))(state)),
         )(video),
@@ -198,4 +198,51 @@ export const useGetCurrentStack = () => {
       [userPage, updateUserPage],
     ],
   ];
+};
+
+export const useMyWatchList = () => {
+  const [state, setState] = React.useState<{
+    user: iStackComponent['data'];
+  }>({user: []});
+  const [loading, setLoading] = React.useState(false);
+  const [userPage, setPageUser] = React.useState(0);
+  const dispatch = useDispatch();
+
+  const loadGreetingList = async () => {
+    setLoading(true);
+    let user = await registerCallbackEndpoints({
+      endpoints: homeApi.endpoints.listUser,
+      dispatch,
+      args: {page: userPage},
+    });
+    setLoading(false);
+
+    return filterData(
+      R.pipe(
+        R.path<iStackComponent['data']>(['data', 'rows']),
+        R.defaultTo([]),
+        R.concat(R.pipe(R.path(['user']), R.defaultTo([]))(state)),
+      )(user),
+    );
+  };
+
+  const updateUserPage = () => {
+    setPageUser(userPage + 1);
+    loadGreetingList();
+  };
+
+  const handleInitialState = async () => {
+    const user = await loadGreetingList();
+    setState({user});
+  };
+
+  React.useLayoutEffect(() => {
+    handleInitialState();
+  }, []);
+
+  return {
+    loading,
+    data: state.user,
+    updateUserPage,
+  };
 };

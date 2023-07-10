@@ -20,11 +20,13 @@ import {FontFamily, Typography} from '../../../../styleApp/Typografy';
 import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCustomComponent';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors from '../../../../styleApp/colors';
+import {useMyWatchList} from '../../Home/hooks';
+import * as R from 'ramda';
 import {
-  HeaderCardRenderItem,
   ItemSeparator,
+  HeaderCardRenderItem,
   SelectCardRenderItem,
-} from '../BottomSheet/MyPlayList';
+} from '../../Home/BottomSheet/MyPlayList';
 
 export const GroupPlayComponent = ({isEmpty}) => {
   const bottomSheetRef = React.useRef<BottomSheet>(null);
@@ -33,40 +35,23 @@ export const GroupPlayComponent = ({isEmpty}) => {
   const hancleOpenModal = () => {
     bottomSheetRef.current?.snapToIndex(1);
   };
-  const dataList = [
-    {name: 'Учить всё', desc: '30 / 84 слов '},
-    {name: 'Talking contemporary art', desc: '30 / 84 слов '},
-    {name: 'High society vacabulary', desc: '30 / 84 слов '},
-    {name: 'Talking to plumbers', desc: '30 / 84 слов '},
-    {name: 'Talking english to the French ', desc: '30 / 84 слов '},
-    {name: 'Talking contemporary art', desc: '30 / 84 слов '},
-  ];
 
+  const {loading, data, updateUserPage} = useMyWatchList();
+
+  const dataList = R.concat([{title: 'Учить всё', desc: '30 / 84 слов '}])(
+    data,
+  );
   const handlePageNavigate = () => {
-    try {
-      navigation.navigate(ROUTER_PAGE.TAB.Settings);
-    } catch (e) {
-      console.log(e);
-    }
+    navigation.navigate(ROUTER_PAGE.TAB.Settings);
   };
 
   const handlePageSearchNavigate = () => {
-    try {
-      navigation.navigate(ROUTER_PAGE.AUTH.ProfileSearchCard);
-    } catch (e) {
-      console.log(e);
-    }
+    navigation.navigate(ROUTER_PAGE.AUTH.ProfileSearchCard);
   };
 
   const handlePageMainNavigate = () => {
-    try {
-      navigation.navigate(ROUTER_PAGE.AUTH.ProfileMain);
-    } catch (e) {
-      console.log(e);
-    }
+    navigation.navigate(ROUTER_PAGE.AUTH.ProfileMain);
   };
-
-  console.log(isEmpty);
 
   return (
     <>
@@ -208,7 +193,12 @@ export const GroupPlayComponent = ({isEmpty}) => {
           ItemSeparatorComponent={ItemSeparator}
           ListHeaderComponent={HeaderCardRenderItem}
           renderItem={props => {
-            return <SelectCardRenderItem {...props} />;
+            return (
+              <SelectCardRenderItem
+                {...props}
+                onClose={() => bottomSheetRef.current?.close()}
+              />
+            );
           }}
           data={dataList}
         />

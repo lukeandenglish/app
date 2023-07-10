@@ -174,7 +174,7 @@ export const SelectionCode = props => {
                       <SvgXml
                         xml={
                           isCheck(el, x.play, [x.title, el].join('_'))
-                            ? reverseSvg
+                            ? reverseSvg()
                             : playSoundSvg
                         }
                       />

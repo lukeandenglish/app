@@ -39,7 +39,7 @@ type Colors =
   | 'gray_350'
   | 'lightsteelblue';
 
-export default {
+const color = {
   faded_flam: '#FAE0FB',
   gray_100: '#fafafa',
   gray_200: '#909090',
@@ -123,3 +123,15 @@ export const cardColor = {
   Red_Pepper: '#FE6232',
   Yellow: '#E2F601',
 } as Record<CardColor, string>;
+
+import * as R from 'ramda';
+export const cardTextColor = R.cond([
+  [R.equals(cardColor.Grey), R.always(color.lightPrimary)],
+  [R.equals(cardColor.Grim_Cloud), R.always(color.lightPrimary)],
+  [R.equals(color.lightPrimary), R.always(color.lightPrimary)],
+  [R.equals('#232323'), R.always(color.lightPrimary)],
+  [R.F, R.always(color.lightInk)],
+  [R.T, R.always(color.lightInk)],
+]);
+
+export default color;

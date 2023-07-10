@@ -25,6 +25,8 @@ import Animated, {
   FadeOutDown,
   Layout as RNRLayout,
 } from 'react-native-reanimated';
+import * as R from 'ramda';
+import {useMyWatchList} from '../hooks';
 
 export const GroupPlayComponent = ({isEmpty}) => {
   const bottomSheetRef = React.useRef<BottomSheet>(null);
@@ -33,14 +35,12 @@ export const GroupPlayComponent = ({isEmpty}) => {
   const hancleOpenModal = () => {
     bottomSheetRef.current?.snapToIndex(1);
   };
-  const dataList = [
-    {name: 'Учить всё', desc: '30 / 84 слов '},
-    {name: 'Talking contemporary art', desc: '30 / 84 слов '},
-    {name: 'High society vacabulary', desc: '30 / 84 слов '},
-    {name: 'Talking to plumbers', desc: '30 / 84 слов '},
-    {name: 'Talking english to the French ', desc: '30 / 84 слов '},
-    {name: 'Talking contemporary art', desc: '30 / 84 слов '},
-  ];
+
+  const {loading, data, updateUserPage} = useMyWatchList();
+
+  const dataList = R.concat([{title: 'Учить всё', desc: '30 / 84 слов '}])(
+    data,
+  );
 
   const handlePageNavigate = () => {
     navigation.navigate(ROUTER_PAGE.TAB.Settings);
@@ -158,7 +158,14 @@ export const GroupPlayComponent = ({isEmpty}) => {
           ItemSeparatorComponent={ItemSeparator}
           ListHeaderComponent={HeaderCardRenderItem}
           renderItem={props => {
-            return <SelectCardRenderItem {...props} />;
+            return (
+              <SelectCardRenderItem
+                {...props}
+                onClose={() => {
+                  bottomSheetRef.current?.close();
+                }}
+              />
+            );
           }}
           data={dataList}
         />

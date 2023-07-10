@@ -1,4 +1,5 @@
 import {ENPOINTS} from '../../../api/endpoints/register';
+import * as R from 'ramda';
 
 export const REGISTER_ENDPOINTS = {
   createNewStack: {
@@ -91,7 +92,7 @@ export const REGISTER_ENDPOINTS = {
       url: [
         ENPOINTS.USER.STACK_FOVORITE.ROUTE,
         '?',
-        'limit=30',
+        'limit=30&',
         'offset=0',
       ].join(''),
       method: ENPOINTS.USER.STACK_FOVORITE.METHOD,
@@ -102,9 +103,12 @@ export const REGISTER_ENDPOINTS = {
   },
   listVideo: {
     query: () => ({
-      url: [ENPOINTS.STACK.LUKE_SEARCH.ROUTE, '?', 'limit=30', 'offset=0'].join(
-        '',
-      ),
+      url: [
+        ENPOINTS.STACK.LUKE_SEARCH.ROUTE,
+        '?',
+        'limit=30',
+        '&offset=0',
+      ].join(''),
       method: ENPOINTS.STACK.LUKE_SEARCH.METHOD,
 
       transformResponse: response => {
@@ -114,17 +118,18 @@ export const REGISTER_ENDPOINTS = {
   },
   listUser: {
     query: () => ({
-      url: [
-        ENPOINTS.USER.FAVORITES_LIST.ROUTE,
-        '?',
-        'limit=30',
-        'offset=0',
-      ].join(''),
-      method: ENPOINTS.USER.FAVORITES_LIST.METHOD,
-      transformResponse: response => {
-        return response;
-      },
+      url: [ENPOINTS.STACK.USER_LIST.ROUTE, '?', 'limit=30', '&offset=0'].join(
+        '',
+      ),
+      method: ENPOINTS.STACK.USER_LIST.METHOD,
     }),
+    transformResponse: (response, meta, args) => {
+      return {
+        rows: response?.rows ?? [],
+        total: response?.count ?? 0,
+        args,
+      };
+    },
   },
 } as Record<iStack, any>;
 

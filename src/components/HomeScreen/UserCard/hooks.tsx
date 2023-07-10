@@ -19,13 +19,15 @@ export const useGetCurrentStack = () => {
   useFocusEffect(
     React.useCallback(() => {
       setState(R.pipe(R.path(['params', 'data']), R.defaultTo({}))(route));
-      registerCallbackEndpoints({
-        endpoints: homeApi.endpoints.currentStack,
-        dispatch,
-        args: {},
-      })
-        .then(setState)
-        .catch(e => console.log(e));
+      if (R.path(['params', 'data', 'id'])(route)) {
+        registerCallbackEndpoints({
+          endpoints: homeApi.endpoints.currentStack,
+          dispatch,
+          args: {stackId: R.path(['params', 'data', 'id'])(route)},
+        })
+          .then(setState)
+          .catch(e => console.log(e));
+      }
     }, []),
   );
 
@@ -97,14 +99,17 @@ export const useGetCurrentStack = () => {
     description,
     isAdmin,
     stackId,
-    onRefetch: () =>
-      registerCallbackEndpoints({
-        endpoints: homeApi.endpoints.currentStack,
-        dispatch,
-        args: {},
-      })
-        .then(setState)
-        .catch(e => console.log(e)),
+    onRefetch: () => {
+      if (R.path(['params', 'data', 'id'])(route)) {
+        registerCallbackEndpoints({
+          endpoints: homeApi.endpoints.currentStack,
+          dispatch,
+          args: {stackId: R.path(['params', 'data', 'id'])(route)},
+        })
+          .then(setState)
+          .catch(e => console.log(e));
+      }
+    },
     count: [dataOriginCards?.length].join(''),
     data: dataCards ?? [],
     onCopy: () =>

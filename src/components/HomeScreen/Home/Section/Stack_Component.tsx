@@ -1,30 +1,30 @@
 import {t} from '@lingui/macro';
-import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
+import {useNavigation} from '@react-navigation/native';
+import {ListRenderItemInfo} from '@shopify/flash-list';
 import * as R from 'ramda';
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Image, StyleSheet, Text, View} from 'react-native';
+import {FlatList, TouchableOpacity} from 'react-native-gesture-handler';
+import Animated, {
+  FadeOutDown,
+  Layout as RNRLayout,
+  ZoomInUp,
+} from 'react-native-reanimated';
 import {SvgXml} from 'react-native-svg';
+import {useDispatch} from 'react-redux';
+import {registerCallbackEndpoints} from '../../../../api/registerCallbackEndpoints';
 import {playSvg, plusSvg} from '../../../../assets/close';
 import {ArtSvg, reverseSvg} from '../../../../assets/collection';
+import ROUTER_PAGE from '../../../../config/page';
 import {iPlayState, isCheck} from '../../../../hooks/usePlaySound';
+import {homeApi} from '../../../../redux/api/homeCard';
 import {Layout} from '../../../../styleApp/Layout';
 import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
 import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
-import colors from '../../../../styleApp/colors';
+import colors, {cardTextColor} from '../../../../styleApp/colors';
 import {HeaderStack, iHeaderStack} from '../Component/HeaderStack';
-import {useNavigation} from '@react-navigation/native';
-import ROUTER_PAGE from '../../../../config/page';
-import Animated, {
-  FadeOutDown,
-  ZoomInUp,
-  Layout as RNRLayout,
-} from 'react-native-reanimated';
-import {registerCallbackEndpoints} from '../../../../api/registerCallbackEndpoints';
-import {homeApi} from '../../../../redux/api/homeCard';
-import {useDispatch} from 'react-redux';
 
 export const debug = false;
 
@@ -50,79 +50,113 @@ export const Stack_Component: ({
   const dispatch = useDispatch();
 
   const RenderItem = React.useCallback(
-    (props: ListRenderItemInfo<iData>) => (
-      <Animated.View
-        entering={ZoomInUp}
-        exiting={FadeOutDown}
-        layout={RNRLayout.duration(1400).delay(1400)}>
-        <View
-          style={[
-            styles.iwp,
-            {
-              backgroundColor: props.item.background,
-              borderColor: props.item.background,
-            },
-          ]}>
-          <Inset vertical="s6" layout={StyleSheet.flatten(Styles.flex1)}>
-            <SvgXml
-              xml={ArtSvg}
-              height={isCalcSize(189)}
-              width={isCalcSize(169)}
-            />
-          </Inset>
-          <View style={[styles.cw, {backgroundColor: props.item.background}]}>
-            <Stack size="s6" />
-            <View style={styles.wt}>
-              <Text style={[Typography.text18, styles.wtt, FontFamily[500]]}>
-                {props.item.name}
-              </Text>
-            </View>
-            <Stack size="s12" />
-            <View style={{borderBottomWidth: Units.s1}} />
-            <Stack size="s12" />
-            <View style={styles.wtd}>
-              <View>
-                <Text style={[styles.wtd1, Typography.text12, FontFamily[400]]}>
-                  {[props.item?.countLearn, ' / ', props.item?.count].join('')}
-                </Text>
+    (props: ListRenderItemInfo<iData>) => {
+      const colorText = {color: cardTextColor(props.item.color)};
+      return (
+        <Animated.View
+          entering={ZoomInUp}
+          exiting={FadeOutDown}
+          layout={RNRLayout.duration(1400).delay(1400)}
+          style={{flex: 1}}>
+          <View
+            style={[
+              styles.iwp,
+              {
+                backgroundColor: props.item.color,
+                borderColor: props.item.color,
+              },
+            ]}>
+            <Inset vertical="s6" layout={StyleSheet.flatten(Styles.flex1)}>
+              <Image
+                source={{uri: props.item.photo.url}}
+                style={{
+                  height: isCalcSize(189),
+                  width: isCalcSize(169),
+                }}
+              />
+            </Inset>
+            <View style={[styles.cw, {backgroundColor: props.item.color}]}>
+              <Stack size="s6" />
+              <View style={styles.wt}>
                 <Text
+                  numberOfLines={2}
                   style={[
-                    styles.wtd2,
-                    Typography.text12,
-                    FontFamily[400],
-                  ]}>{t`Слов выучено`}</Text>
+                    Typography.text18,
+                    styles.wtt,
+                    FontFamily[500],
+                    colorText,
+                  ]}>
+                  {props.item.title}
+                </Text>
               </View>
-              <TouchableOpacity
-                onPress={() => {
-                  registerCallbackEndpoints({
-                    endpoints: homeApi.endpoints.currentStack,
-                    dispatch,
-                    args: {stackId: R.path(['item', 'stackId'])(props)},
-                  }).then(data => {
-                    navigation.navigate(ROUTER_PAGE.AUTH.ProfileUserCard, data);
-                  });
-                }}>
-                <SvgXml
-                  xml={
-                    isCheck(props.index, play, props.item.name)
-                      ? reverseSvg
-                      : playSvg
-                  }
-                  width={isCalcSize(36)}
-                  height={isCalcSize(36)}
-                />
-              </TouchableOpacity>
+              <Stack size="s12" />
+              <View
+                style={[
+                  {borderBottomWidth: Units.s1},
+                  {borderColor: colors.gray_500},
+                ]}
+              />
+              <Stack size="s12" />
+              <View style={styles.wtd}>
+                <View>
+                  <Text
+                    style={[
+                      styles.wtd1,
+                      Typography.text12,
+                      FontFamily[400],
+                      colorText,
+                    ]}>
+                    {[
+                      props.item?.countLearn ?? 0,
+                      ' / ',
+                      props.item?.count ?? 0,
+                    ].join('')}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.wtd2,
+                      Typography.text12,
+                      FontFamily[400],
+                      colorText,
+                    ]}>{t`Слов выучено`}</Text>
+                </View>
+                <TouchableOpacity
+                  onPress={() => {
+                    if (R.path(['item', 'id'])(props)) {
+                      registerCallbackEndpoints({
+                        endpoints: homeApi.endpoints.currentStack,
+                        dispatch,
+                        args: {stackId: R.path(['item', 'id'])(props)},
+                      }).then(data => {
+                        navigation.navigate(
+                          ROUTER_PAGE.AUTH.ProfileUserCard,
+                          data,
+                        );
+                      });
+                    }
+                  }}>
+                  <SvgXml
+                    xml={
+                      isCheck(props.index, play, props.item.name)
+                        ? reverseSvg(colorText.color)
+                        : playSvg(colorText.color)
+                    }
+                    width={isCalcSize(36)}
+                    height={isCalcSize(36)}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
-        </View>
-      </Animated.View>
-    ),
-    [],
+        </Animated.View>
+      );
+    },
+    [data],
   );
 
   if (R.isEmpty(data)) {
     return (
-      <View style={Styles.flex1}>
+      <>
         <HeaderStack title={title} onPress={onPressAdd} emptyIcon={true} />
         <Inset
           vertical="s16"
@@ -149,38 +183,46 @@ export const Stack_Component: ({
             />
           </Button>
         </Inset>
-      </View>
+      </>
     );
   }
 
   return (
-    <View style={[Styles.flex1]}>
+    <View style={{flex: 1}}>
       <HeaderStack title={title} onPress={onPressAdd} emptyIcon={emptyIcon} />
-      <FlashList
-        ref={refScroll}
-        horizontal
-        contentContainerStyle={{
-          paddingHorizontal: Units.s12,
-        }}
-        estimatedItemSize={Layout.window.height}
-        data={data}
-        extraData={data}
-        ItemSeparatorComponent={() => <Queue size="s8" />}
-        showsHorizontalScrollIndicator={false}
-        onEndReachedThreshold={0.8}
-        keyExtractor={(item, index) => [index, item.name, emptyIcon].join('_')}
-        onEndReached={fetchMore}
-        renderItem={RenderItem}
-      />
+      <View style={{height: isCalcSize(320)}}>
+        <FlatList
+          ref={refScroll}
+          horizontal
+          contentContainerStyle={{
+            paddingHorizontal: Units.s12,
+          }}
+          estimatedItemSize={Layout.window.height}
+          data={data}
+          extraData={data}
+          ItemSeparatorComponent={() => <Queue size="s8" />}
+          showsHorizontalScrollIndicator={false}
+          onEndReachedThreshold={0.8}
+          keyExtractor={(item, index) =>
+            [index, item.title, emptyIcon].join('_')
+          }
+          onEndReached={fetchMore}
+          renderItem={RenderItem}
+        />
+      </View>
     </View>
   );
 };
 
 export interface iData {
-  name: string;
+  title: string;
   countLearn: number;
   count: number;
-  background: string;
+  fileId: string;
+  photo: {
+    url: string;
+  };
+  color: string;
   onPressMusic: () => void;
 }
 
@@ -222,6 +264,7 @@ const styles = StyleSheet.create({
     width: isCalcSize(163),
     minHeight: isCalcSize(43),
     flexDirection: 'row',
+    alignItems: 'flex-end',
   },
   cw: {
     position: 'absolute',

@@ -45,7 +45,7 @@ export const SelectCardRenderItem = props => {
         <SvgXml
           width={isCalcSize(36)}
           height={isCalcSize(36)}
-          xml={props.index === 0 ? reverseSvg : playSvg}
+          xml={props.index === 0 ? reverseSvg() : playSvg()}
         />
       </View>
     </View>

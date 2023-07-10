@@ -51,14 +51,16 @@ const App = () => {
       <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
         <CreateCard
           onClose={stackId => {
-            registerCallbackEndpoints({
-              endpoints: homeApi.endpoints.currentStack,
-              dispatch,
-              args: {stackId},
-            }).then(data => {
-              navigation.navigate(ROUTER_PAGE.AUTH.ProfileCreateCard, data);
-              ref.current?.close();
-            });
+            if (stackId) {
+              registerCallbackEndpoints({
+                endpoints: homeApi.endpoints.currentStack,
+                dispatch,
+                args: {stackId},
+              }).then(data => {
+                navigation.navigate(ROUTER_PAGE.AUTH.ProfileCreateCard, data);
+                ref.current?.close();
+              });
+            }
           }}
         />
       </BottomSheetCustomComponent>
