@@ -46,8 +46,8 @@ export const REGISTER_ENDPOINTS = {
     }),
   },
   currentStack: {
-    query: () => ({
-      url: ENPOINTS.STACK.ONE_STACK.ROUTE,
+    query: ({stackId}: {stackId: string}) => ({
+      url: [ENPOINTS.STACK.ONE_STACK.ROUTE, stackId].join('/'),
       method: ENPOINTS.STACK.ONE_STACK.METHOD,
     }),
   },

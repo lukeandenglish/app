@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-dupe-keys */
 import {t} from '@lingui/macro';
 import SECTION from '../../../config/section';
 import {usePlaySound} from '../../../hooks/usePlaySound';

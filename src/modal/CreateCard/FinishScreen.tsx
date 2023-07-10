@@ -26,7 +26,6 @@ export const Card = ({
   learnCount,
   onPress,
 }) => {
-  console.log(photo);
   return (
     <Animated.View
       entering={ZoomInUp}

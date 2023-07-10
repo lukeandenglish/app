@@ -56,7 +56,7 @@ export const useHookStateUpdate = () => {
   const inputName = {
     initialInput: {
       onChangeText: (e: string) => {
-        setState(e.toLowerCase());
+        setState(e);
         handleLoadState(e);
       },
       onEndEditing: () => {
@@ -72,6 +72,7 @@ export const useHookStateUpdate = () => {
     },
     selectInput: {
       placeholder: loading ? t`Loading...` : t`Перевод не найден`,
+      disabled: loading,
       value: select,
       multiline: true,
       numberOfLines: 10,

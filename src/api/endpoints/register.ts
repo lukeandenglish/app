@@ -51,7 +51,7 @@ STACK:
         ROUTE: stack/user-list
     ONE_STACK:
         METHOD: GET
-        ROUTE: stack/264062ce-6bd7-4113-995e-4337a4232dab
+        ROUTE: stack
     ILUSTRATION:
         METHOD: GET
         ROUTE: file/illustrations

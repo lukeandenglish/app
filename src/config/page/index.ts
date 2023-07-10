@@ -18,6 +18,7 @@ AUTH:
     ProfileTest: ProfileTest
     ProfileUserCard: ProfileUserCard
     ProfileSearchCard: ProfileSearchCard
+    ProfileCreateCard: ProfileCreateCard
 `;
 
 export default yaml.parse(CTX) as {
@@ -40,5 +41,6 @@ export default yaml.parse(CTX) as {
     ProfileTest: string;
     ProfileUserCard: string;
     ProfileSearchCard: string;
+    ProfileCreateCard: string;
   };
 };

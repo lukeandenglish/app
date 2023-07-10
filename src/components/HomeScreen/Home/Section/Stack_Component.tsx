@@ -1,4 +1,3 @@
-/* eslint-disable react-native/no-inline-styles */
 import {t} from '@lingui/macro';
 import {FlashList, ListRenderItemInfo} from '@shopify/flash-list';
 import * as R from 'ramda';
@@ -64,10 +63,7 @@ export const Stack_Component: ({
               borderColor: props.item.background,
             },
           ]}>
-          <Inset
-            _debug={debug}
-            vertical="s6"
-            layout={StyleSheet.flatten(Styles.flex1)}>
+          <Inset vertical="s6" layout={StyleSheet.flatten(Styles.flex1)}>
             <SvgXml
               xml={ArtSvg}
               height={isCalcSize(189)}
@@ -81,9 +77,9 @@ export const Stack_Component: ({
                 {props.item.name}
               </Text>
             </View>
-            <Stack _debug={debug} size="s12" />
+            <Stack size="s12" />
             <View style={{borderBottomWidth: Units.s1}} />
-            <Stack _debug={debug} size="s12" />
+            <Stack size="s12" />
             <View style={styles.wtd}>
               <View>
                 <Text style={[styles.wtd1, Typography.text12, FontFamily[400]]}>
@@ -102,7 +98,7 @@ export const Stack_Component: ({
                     endpoints: homeApi.endpoints.currentStack,
                     dispatch,
                     args: {stackId: R.path(['item', 'stackId'])(props)},
-                  }).then((data: any) => {
+                  }).then(data => {
                     navigation.navigate(ROUTER_PAGE.AUTH.ProfileUserCard, data);
                   });
                 }}>
@@ -129,7 +125,6 @@ export const Stack_Component: ({
       <View style={Styles.flex1}>
         <HeaderStack title={title} onPress={onPressAdd} emptyIcon={true} />
         <Inset
-          _debug={debug}
           vertical="s16"
           horizontal="s16"
           layout={StyleSheet.flatten(styles.ew)}>
@@ -138,14 +133,14 @@ export const Stack_Component: ({
             height={isCalcSize(189)}
             width={isCalcSize(169)}
           />
-          <Stack _debug={debug} size="s16" />
+          <Stack size="s16" />
           <View style={styles.etw}>
             <Text style={styles.ett}>
               {t`Создайте свой первый стэк и добавьте слова`}
             </Text>
           </View>
 
-          <Stack _debug={debug} size="s18" />
+          <Stack size="s18" />
           <Button title="Новый стэк" style={styles.etb} onPress={onPressAdd}>
             <SvgXml
               xml={plusSvg}

@@ -1,29 +1,19 @@
-import BottomSheet from '@gorhom/bottom-sheet/lib/typescript/components/bottomSheet/BottomSheet';
-import {Portal} from '@gorhom/portal';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import {Image, StyleSheet, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {
-  addedSvg,
-  closeNavigateSvg,
-  copySvg,
-  moreSvg,
-} from '../../../../assets/close';
+import {addedSvg, closeNavigateSvg, copySvg} from '../../../../assets/close';
 import {Inset, Queue, Stack} from '../../../../styleApp/Spacing';
 import {FontFamily, Styles, Typography} from '../../../../styleApp/Typografy';
-import {BottomSheetCustomComponent} from '../../../../styleApp/UI/BottomSheetCustomComponent';
 import {Button} from '../../../../styleApp/UI/Button';
 import {Units, isCalcSize} from '../../../../styleApp/Units';
 import colors, {cardColor} from '../../../../styleApp/colors';
-import {CreateCard} from '../../../../modal/CreateCard';
 
 export const MyImage = props => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation();
-  const ref = React.useRef<BottomSheet | null>(null);
 
   return (
     <View style={Styles.flex1}>
@@ -41,7 +31,7 @@ export const MyImage = props => {
         />
         <View
           style={[
-            styles.lab,
+            styles.rab,
             {
               top: insets.top,
             },
@@ -56,39 +46,12 @@ export const MyImage = props => {
             />
           </TouchableOpacity>
         </View>
-        {!props.isAdmin && (
-          <View
-            style={[
-              styles.rab,
-              {
-                top: insets.top,
-              },
-            ]}>
-            <TouchableOpacity
-              onPress={() => {
-                ref.current?.snapToIndex(1);
-              }}
-              style={Styles.iconClose}>
-              <SvgXml
-                xml={moreSvg}
-                width={isCalcSize(24)}
-                height={isCalcSize(24)}
-              />
-            </TouchableOpacity>
-          </View>
-        )}
       </View>
       <Stack size="s24" />
       <Inset horizontal="s24">
         <View style={Styles.flex1}>
           <Text style={[Typography.text38, FontFamily.wermut]}>
             {props.title}
-          </Text>
-        </View>
-        <Stack size="s18" />
-        <View style={Styles.flex1}>
-          <Text style={[Typography.text12, FontFamily['400']]}>
-            {props.author}
           </Text>
         </View>
         <Stack size="s18" />
@@ -118,11 +81,6 @@ export const MyImage = props => {
       <Inset horizontal="s24">
         <View style={styles.bbw} />
       </Inset>
-      <Portal name="UpdateCardWord">
-        <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
-          <CreateCard onClose={() => ref.current?.close()} />
-        </BottomSheetCustomComponent>
-      </Portal>
     </View>
   );
 };

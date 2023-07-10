@@ -6,6 +6,7 @@ import React from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import ForgotPassword from '../components/ForgotPassword';
 import HomeScreen from '../components/HomeScreen/Home/screen';
+import CreateDeck from '../components/HomeScreen/CreateDeck/screen';
 import SearchScreen from '../components/HomeScreen/SearchScreen/screen';
 import UserCard from '../components/HomeScreen/UserCard/screen';
 import IntroOnBording from '../components/IntroOnBording/screen';
@@ -45,6 +46,11 @@ const App = () => {
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.ProfileMain}
               component={HomeScreen}
+              options={SlideRightFunc(false)}
+            />
+            <Stack.Screen
+              name={ROUTER_PAGE.AUTH.ProfileCreateCard}
+              component={CreateDeck}
               options={SlideRightFunc(false)}
             />
             <Stack.Screen

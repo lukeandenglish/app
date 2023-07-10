@@ -1,7 +1,6 @@
 import {BottomSheetFlatList, BottomSheetScrollView} from '@gorhom/bottom-sheet';
 import {t} from '@lingui/macro';
 import * as R from 'ramda';
-import React from 'react';
 import {Image, StyleSheet, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
@@ -12,48 +11,39 @@ import {homeApi} from '../../redux/api/homeCard';
 import {Layout} from '../../styleApp/Layout';
 import {Stack} from '../../styleApp/Spacing';
 import {Units, isCalcSize} from '../../styleApp/Units';
-import colors, {cardColor} from '../../styleApp/colors';
+import colors from '../../styleApp/colors';
 import {HeaderModal, ModalButton, ModalInput} from '../Word';
 import {FinishScreen} from './FinishScreen';
+import {useCreateCard} from './useCreateCard';
+import React from 'react';
 
 export const CreateCard = ({onClose}) => {
   const insets = useSafeAreaInsets();
-  const [next, setNext] = React.useState(false);
-
-  const [listImage, setListImage] = React.useState({});
-  const [title, setTitleSelect] = React.useState('');
   const dispatch = useDispatch();
-  const [photo, setPhoto] = React.useState(null);
-  const [color, setColor] = React.useState(cardColor.Blue_Sky);
+
+  const {
+    myInput,
+    next,
+    setNext,
+    setPhoto,
+    setColor,
+    photo,
+    color,
+    title,
+    listImage,
+    handleInitialState,
+  } = useCreateCard();
 
   const handleCreateCard = async () => {
     await registerCallbackEndpoints({
       endpoints: homeApi.endpoints.createNewStack,
       dispatch,
       args: {title, fileId: R.path(['id'])(photo), color: color},
+    }).then(data => {
+      onClose(data?.data?.id);
+      handleInitialState();
     });
-    onClose();
   };
-
-  const myInput = {
-    selectInput: {
-      placeholder: t`Новый стэк`,
-      value: title,
-      multiline: true,
-      numberOfLines: 10,
-      onChangeText: setTitleSelect,
-
-      style: {textAlign: 'center'},
-    },
-  };
-
-  React.useEffect(() => {
-    registerCallbackEndpoints({
-      endpoints: homeApi.endpoints.getListIllustration,
-      dispatch,
-      args: {},
-    }).then(setListImage);
-  }, [dispatch]);
 
   if (!next) {
     return (

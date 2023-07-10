@@ -105,8 +105,6 @@ type CardColor =
 
 export const cardColor = {
   Grey: '#92A0BC',
-  White: '#FFFFFF',
-  Black: '#000000',
   Blue_Sky: '#79A7FF',
   Faded_Flam: '#FAE0FB',
   Faded_Grass: '#E4F6BE',

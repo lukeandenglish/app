@@ -11,6 +11,12 @@ import colors from '../../../styleApp/colors';
 import {GroupPlayComponent} from './Component/GroupPlayComponent';
 import {useGetCurrentStack} from './hooks';
 import {renderItem} from './renderItem';
+import {useNavigation} from '@react-navigation/native';
+import ROUTER_PAGE from '../../../config/page';
+import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
+import {homeApi} from '../../../redux/api/homeCard';
+import {useDispatch} from 'react-redux';
+
 export const WIDTH = Dimensions.get('screen').width;
 
 const App = () => {
@@ -18,10 +24,12 @@ const App = () => {
   const sectionListRef = React.useRef<SectionList | null>(null);
   let [data] = useGetCurrentStack();
   const ref = React.useRef<BottomSheet | null>(null);
+  const navigation = useNavigation();
+  const dispatch = useDispatch();
 
-  const DATA = R.assocPath([1, 'data', 0, 'onPressAdd'], () =>
-    ref.current?.snapToIndex(1),
-  )(data);
+  const DATA = R.assocPath([1, 'data', 0, 'onPressAdd'], () => {
+    ref.current?.snapToIndex(1);
+  })(data);
 
   return (
     <Container notPaddingTop={false} background={colors.lightPrimary}>
@@ -41,7 +49,18 @@ const App = () => {
         isEmpty={R.pipe(R.path([1, 'data', 0, 'data']), R.isEmpty)(data)}
       />
       <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
-        <CreateCard onClose={() => ref.current?.close()} />
+        <CreateCard
+          onClose={stackId => {
+            registerCallbackEndpoints({
+              endpoints: homeApi.endpoints.currentStack,
+              dispatch,
+              args: {stackId},
+            }).then(data => {
+              navigation.navigate(ROUTER_PAGE.AUTH.ProfileCreateCard, data);
+              ref.current?.close();
+            });
+          }}
+        />
       </BottomSheetCustomComponent>
     </Container>
   );

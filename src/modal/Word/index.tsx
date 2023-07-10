@@ -28,8 +28,8 @@ export const HeaderModal = ({title, onClose, onBack}) => {
         <TouchableOpacity
           disabled={!onBack}
           onPress={onBack}
-          style={[Styles.iconClose, !onBack && {display: 'none'}]}>
-          <SvgXml xml={closeSvg} />
+          style={[Styles.iconClose]}>
+          <SvgXml xml={closeSvg} style={[!onBack && {display: 'none'}]} />
         </TouchableOpacity>
         <View style={styles.hc}>
           <Text style={Typography.text18}>{title}</Text>
@@ -37,8 +37,8 @@ export const HeaderModal = ({title, onClose, onBack}) => {
         <TouchableOpacity
           onPress={onClose}
           disabled={!onClose}
-          style={[Styles.iconClose, !onClose && {display: 'none'}]}>
-          <SvgXml xml={closeSvg} />
+          style={[Styles.iconClose]}>
+          <SvgXml xml={closeSvg} style={[!onClose && {display: 'none'}]} />
         </TouchableOpacity>
       </View>
     </Inset>
@@ -129,7 +129,7 @@ export const Bearer = ({
         <HeaderModal title={titleHeader} onClose={onClose} onBack={undefined} />
         <Stack size="s40" />
         <Inset horizontal="s20">
-          <ModalInput inputName={inputName.selectInput} />
+          <ModalInput inputName={inputName.initialInput} />
           <Stack size="s40" />
           <ModalInput inputName={inputName.selectInput} />
         </Inset>
