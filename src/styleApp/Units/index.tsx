@@ -43,6 +43,7 @@ export const Units = {
 
   s8: isCalcSize(8) as 8,
   s80: isCalcSize(80) as 80,
+  s86: isCalcSize(86) as 86,
 
   p_base: isCalcSize(16) as 16,
   p_xl: isCalcSize(20) as 20,

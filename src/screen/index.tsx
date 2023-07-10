@@ -41,7 +41,7 @@ const App = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName={ROUTER_PAGE.UNAUTH.IntroOnBording}>
-        {!hasTokenCreate ? (
+        {hasTokenCreate ? (
           <Stack.Group>
             <Stack.Screen
               name={ROUTER_PAGE.AUTH.ProfileMain}
