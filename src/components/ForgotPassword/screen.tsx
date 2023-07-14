@@ -1,256 +1,192 @@
-/* eslint-disable react-native/no-inline-styles */
+import {TouchableOpacity} from '@gorhom/bottom-sheet';
 import {t} from '@lingui/macro';
-import {useNavigation} from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useRoute,
+} from '@react-navigation/native';
 import * as R from 'ramda';
 import * as React from 'react';
-import {Pressable, ScrollView, StyleSheet, TextInput, View} from 'react-native';
-import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
+import {StyleSheet, View} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useSelector} from 'react-redux';
-import REDUCER_PATH from '../../config/reducer';
-import {useButtonRegister} from '../../hooks/useButtonRegister';
-import {useHookUserProfile} from '../../hooks/useHookUserProfile';
-import {useIsVisibleKeyboard} from '../../hooks/useIsVisibleKeyboard';
-import {IUserProfile} from '../../redux/api/registerApi/type';
-import {Inset, Stack} from '../../styleApp/Spacing';
-import {FontFamily, Styles} from '../../styleApp/Typografy';
-import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
-import {Button} from '../../styleApp/UI/Button';
-import {LabelText} from '../../styleApp/UI/LabelText';
-import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
-import colors from '../../styleApp/colors';
 import {SvgXml} from 'react-native-svg';
+import {useDispatch, useSelector} from 'react-redux';
+import {registerCallbackEndpoints} from '../../api/registerCallbackEndpoints';
 import {closeSvg} from '../../assets/close';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import REDUCER_PATH from '../../config/reducer';
+import {isMobileHelperPhone} from '../../helper/isMobileHelperPhone';
+import {registerApi} from '../../redux/api/registerApi';
+import {Layout} from '../../styleApp/Layout';
+import {Stack} from '../../styleApp/Spacing';
+import {FontFamily, Styles, Typography} from '../../styleApp/Typografy';
+import {LabelText} from '../../styleApp/UI/LabelText';
+import {Units, isCalcSize} from '../../styleApp/Units';
+import colors from '../../styleApp/colors';
+import {SelectInput} from './SelectInput';
 
-const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
-  const {ReceiveEmail} = useButtonRegister();
-  const {isKeyboardVisible} = useIsVisibleKeyboard();
-  const [state] = useHookUserProfile();
-  const navigation = useNavigation();
-  let [email, password, agreements] = useSelector(
-    R.pipe(
-      R.path([REDUCER_PATH.USER]),
-      R.paths([['email'], ['password'], ['agreements'], ['loading']]),
-      R.defaultTo(['', '', false, false]),
-    ),
-  ) as [
-    IUserProfile['email'],
-    IUserProfile['password'],
-    IUserProfile['agreements'],
-    IUserProfile['loading'],
-  ];
+const INITIAL_TIMER = 60;
 
+const LogInOrRegisterScreen = () => {
   const insets = useSafeAreaInsets();
-  const scrollRef = React.useRef<ScrollView | null>(null);
-  const emailRef = React.useRef<TextInput | null>(null);
+  const ref = React.useRef(null);
+  const refTimer = React.useRef(null);
+  const navigation = useNavigation();
+  const [state, setState] = React.useState('');
+  const [timer, setTimer] = React.useState<number>(0);
+  const route = useRoute();
 
-  const registerEnabled = React.useMemo(() => {
-    if (password?.length > 3 && email?.length > 3 && agreements) {
-      return false;
-    }
-    return true;
-  }, [email, password, agreements]);
+  const dispatch = useDispatch();
+  const [userId, email, phone] = useSelector(
+    R.pipe(R.path([REDUCER_PATH.USER]), R.paths<string[]>([['userId']])),
+  );
 
-  const moveToButton = () => {
-    setTimeout(() => {
-      scrollRef.current?.scrollToEnd();
+  React.useEffect(() => {
+    refTimer.current = setTimeout(() => {
+      const newTimer = timer - 1;
+      if (newTimer >= 0) {
+        setTimer(newTimer);
+      }
+    }, 1000);
+
+    return () => refTimer.current && clearTimeout(refTimer.current);
+  }, [timer]);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      if (!userId) {
+        navigation.goBack();
+      }
+      setTimer(INITIAL_TIMER);
+      return () => {
+        setTimer(0);
+        refTimer.current && clearTimeout(refTimer.current);
+      };
+    }, []),
+  );
+
+  const onSubmit = async token => {
+    await registerCallbackEndpoints({
+      endpoints: registerApi.endpoints.phoneVerify,
+      dispatch,
+      args: {userId, token},
     });
+    setState('');
   };
 
   return (
-    <View style={[styles.wrapper]}>
-      <View
-        style={[
-          styles.blc,
-          {
-            paddingBottom: insets.bottom,
-          },
-        ]}>
-        <ScrollView
-          bounces={false}
-          ref={scrollRef}
-          contentContainerStyle={styles.cnt}>
-          <Inset
-            horizontal="s16"
-            top="s16"
-            layout={StyleSheet.flatten({width: 70})}>
-            <TouchableOpacity
-              onPress={navigation.goBack}
-              style={[
-                Styles.iconClose,
-                {alignItems: 'center', justifyContent: 'center'},
-              ]}>
-              <SvgXml xml={closeSvg} width="30" height="30" />
-            </TouchableOpacity>
-          </Inset>
-          <View>
-            <Inset horizontal="s16" layout={styles.insctx}>
-              <Stack size="s16" />
-              <LabelText
-                title={t`Забыли пароль?`}
-                style={Object.assign([
-                  styles.text,
-                  styles.textPosition,
-                  styles.textLeft,
-                  FontFamily.wermut,
-                ])}
-              />
-              <Stack size="s16" />
-              <LabelText
-                title={t`Введите вашу почту и мы вышлем инструкция по восстановлению пароля`}
-                style={Object.assign([
-                  styles.text1,
-                  styles.text1Typo,
-                  styles.textLeft,
-                  FontFamily.wermut,
-                ])}
-              />
-              <Stack size="s24" />
-              <Stack size="s16" />
-              <View onTouchStart={moveToButton}>
-                <AnimateIInput
-                  ref={emailRef}
-                  testID="email"
-                  keyboardType="email-address"
-                  onScrollRef={moveToButton}
-                  {...state.email}
-                />
-              </View>
-            </Inset>
-          </View>
-        </ScrollView>
-        <KeyboardSpacer />
-        <Inset
-          horizontal="s16"
-          bottom="s6"
-          layout={StyleSheet.flatten(
-            Object.assign([
-              styles.btnMode,
-              isKeyboardVisible && {display: 'none'},
-            ]),
-          )}>
-          <Button
-            disabled={registerEnabled}
-            {...ReceiveEmail}
-            styleText={styles.btnclr}
+    <ScrollView
+      ref={ref}
+      bounces={false}
+      contentContainerStyle={[
+        styles.growblock,
+        {paddingTop: insets.top, paddingBottom: insets.bottom},
+      ]}>
+      <TouchableOpacity onPress={navigation.goBack} style={[Styles.iconClose]}>
+        <SvgXml xml={closeSvg} />
+      </TouchableOpacity>
+      <Stack size="s24" />
+      <View style={{alignItems: 'center', justifyContent: 'center'}}>
+        <LabelText
+          mode="desc"
+          title={t`Теперь код`}
+          style={Object.assign([
+            {color: colors.lightInk, textAlign: 'center'},
+            Typography.text30,
+            FontFamily.wermut,
+          ])}
+        />
+        <Stack size="s16" />
+        <LabelText
+          mode="desc"
+          title={
+            email
+              ? t`Мы отправили вам код на адресс почты`
+              : t`Мы отправили вам код на телефон`
+          }
+          style={Object.assign([
+            {color: colors.lightInk, textAlign: 'center'},
+            Typography.text14,
+            FontFamily.wermut,
+          ])}
+        />
+        <LabelText
+          mode="desc"
+          title={email ?? isMobileHelperPhone(phone ?? '')?.formatInternational}
+          style={Object.assign([
+            {color: colors.lightInk, textAlign: 'center'},
+            Typography.text14,
+            FontFamily.wermut,
+          ])}
+        />
+
+        <Stack size="s50" />
+        <SelectInput onSubmit={onSubmit} state={state} setState={setState} />
+        <Stack size="s24" />
+
+        <TouchableOpacity
+          disabled={timer !== 0}
+          onPress={async () => {
+            await registerCallbackEndpoints({
+              endpoints: registerApi.endpoints.signUp,
+              dispatch,
+              args: route.params,
+            }).then(() => setTimer(INITIAL_TIMER));
+          }}>
+          <LabelText
+            mode="desc"
+            title={t`Отправить еще раз ${
+              timer !== 0 ? ['(', timer, ')'].join('') : ''
+            }`}
             style={Object.assign([
-              {
-                backgroundColor: colors.actionColor,
-              },
-              isKeyboardVisible && {display: 'none'},
+              {color: colors.lightInk, textAlign: 'center'},
+              Typography.text14,
+              FontFamily.wermut,
             ])}
           />
-        </Inset>
+        </TouchableOpacity>
       </View>
-    </View>
+      <Stack size="s50" />
+    </ScrollView>
   );
 };
 
+export default LogInOrRegisterScreen;
+
 const styles = StyleSheet.create({
-  textLeft: {textAlign: 'left'},
-  btnMode: {bottom: 0},
-  btnclr: {color: colors.lightPrimary},
-  insctx: {
-    flex: 1,
-  },
-  btnswn: {
-    width: isCalcSize(20),
-    height: isCalcSize(20),
-  },
-  swm: {
-    position: 'absolute',
-    right: 0,
-    top: -isCalcSize(30),
+  blockitem: {
     flexDirection: 'row',
-  },
-  line: {
-    height: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.stroke,
-  },
-  cnt: {flexGrow: 1},
-  wrapper: {
-    flex: 1,
-    backgroundColor: colors.transparent,
-  },
-  blc: {
-    flex: 1,
-    borderTopRightRadius: Border.br_base,
-    backgroundColor: colors.lightPrimary,
-    borderTopLeftRadius: Border.br_base,
-  },
-  checkboxChildLayout: {
-    height: isCalcSize(24),
-    width: isCalcSize(24),
-  },
-  textPosition: {
-    textAlign: 'center',
-  },
-  text: {
-    fontSize: FontSize.heading1_size,
-    lineHeight: isCalcSize(40),
-    color: colors.lightInk,
-  },
-  button: {
-    top: isCalcSize(332),
-    borderColor: '#000',
-    borderWidth: 1,
-    borderStyle: 'solid',
-    position: 'absolute',
-  },
-  fdfdfdf: {
-    textAlign: 'left',
-    fontSize: FontSize.subheading3_size,
-    color: colors.lightInk,
-  },
-  text1Typo: {
-    fontSize: FontSize.subheading3_size,
-    color: colors.lightInk,
-    fontWeight: '300',
-  },
-  fdfdfdfWrapper: {
-    top: 22,
-    right: '0%',
-    left: '0%',
-    borderRadius: Border.br_81xl,
-    backgroundColor: colors.whitesmoke_100,
-    padding: Units.p_xl,
-    width: '100%',
-  },
-  logInOr: {
-    display: 'flex',
-    width: isCalcSize(243),
-    fontWeight: '500',
-    color: colors.lightPrimary,
-    height: isCalcSize(16),
-    justifyContent: 'center',
-    alignItems: 'center',
-    fontSize: FontSize.subheading3_size,
-  },
-  text1: {
-    lineHeight: 22,
-    textAlign: 'center',
-  },
-  checkboxChild: {
-    borderRadius: Border.br_5xs,
-    backgroundColor: colors.whitesmoke_200,
-    position: 'relative',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  iAgreeWith: {
-    marginLeft: isCalcSize(12),
-    textAlign: 'left',
-    fontSize: FontSize.subheading3_size,
-    color: colors.lightInk,
+  nexicon: {
+    width: Units.s48,
+    height: Units.s48,
+    borderRadius: Units.s50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.lightInk,
   },
-  checkbox: {},
-  logInOrRegister: {
-    flex: 1,
-    overflow: 'hidden',
-    width: '100%',
+  ima: {
+    borderWidth: Units.s1,
+    height: isCalcSize(224),
+    width: isCalcSize(193),
+  },
+  cen: {justifyContent: 'center', alignItems: 'center'},
+  flex: {flex: 1},
+  growblock: {
+    backgroundColor: colors.lemon,
+    flexGrow: 1,
+    paddingHorizontal: Units.s20,
+    borderWidth: Units.s1,
+    minHeight: Layout.window.height,
+  },
+  soicon: {
+    width: Units.s64,
+    height: Units.s64,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: Units.s1,
+    borderRadius: Units.s50,
   },
 });
-
-export default LogInOrRegisterScreen;
