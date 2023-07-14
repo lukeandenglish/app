@@ -77,10 +77,13 @@ CARD:
     DELETE:
         METHOD: DELETE
         ROUTE: card
+    COPY:
+        METHOD: POST
+        ROUTE: card/copy-card
 `;
 
 type iUserList = 'LEVEL' | 'FAVORITE' | 'STACK_FOVORITE' | 'FAVORITES_LIST';
-type iCardList = 'CREATE' | 'UPDATE' | 'DELETE';
+type iCardList = 'CREATE' | 'UPDATE' | 'DELETE' | 'COPY';
 type iHelperList = 'TRANSLATE_TEXT';
 
 type iStackList =

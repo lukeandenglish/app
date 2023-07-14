@@ -13,7 +13,6 @@ import REDUCER_PATH from '../config/reducer';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {registerApi} from '../redux/api/registerApi';
-import {deckCard} from '../redux/api/deckCard';
 import {homeApi} from '../redux/api/homeCard';
 
 export const PERSIST_STORAGE = {
@@ -26,7 +25,6 @@ export const PERSIST_STORAGE = {
 const rootReducer = combineReducers({
   [REDUCER_PATH.USER]: persistReducer(PERSIST_STORAGE.auth, reducerBranch),
   [registerApi.reducerPath]: registerApi.reducer,
-  [deckCard.reducerPath]: deckCard.reducer,
   [homeApi.reducerPath]: homeApi.reducer,
 }) as any;
 
@@ -41,7 +39,6 @@ const store = configureStore({
     })
       .concat(thunkMiddleware)
       .concat(registerApi.middleware)
-      .concat(deckCard.middleware)
       .concat(homeApi.middleware)
       .concat(promiseMiddleware),
   // .concat(createLogger({ diff: false }))
