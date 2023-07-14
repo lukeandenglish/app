@@ -1,10 +1,6 @@
 import {ENPOINTS} from '../../../api/endpoints/register';
-import {
-  errorBuilderMessage,
-  registerCallbackEndpoints,
-} from '../../../api/registerCallbackEndpoints';
+import {errorBuilderMessage} from '../../../api/registerCallbackEndpoints';
 import {actionSignOut} from '../../action/register';
-import {deckCard} from '../deckCard';
 import {
   iGmailPassword,
   iResetPassword,
@@ -76,15 +72,15 @@ export const REGISTER_ENDPOINTS = {
       method: ENPOINTS.AUTH.LOGIN.METHOD,
       body: {type, phone, email, password},
     }),
-    async onQueryStarted(args, {dispatch, queryFulfilled}) {
-      queryFulfilled.then(() => {
-        registerCallbackEndpoints({
-          dispatch,
-          endpoints: deckCard.endpoints.myProfile,
-          args: {},
-        });
-      });
-    },
+    // async onQueryStarted(args, {dispatch, queryFulfilled}) {
+    //   queryFulfilled.then(() => {
+    //     registerCallbackEndpoints({
+    //       dispatch,
+    //       endpoints: deckCard.endpoints.myProfile,
+    //       args: {},
+    //     });
+    //   });
+    // },
   },
   deleteUser: {
     async queryFn(_args, queryApi) {

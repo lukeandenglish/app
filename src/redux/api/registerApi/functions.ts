@@ -4,15 +4,11 @@ import {GoogleSignin} from '@react-native-google-signin/google-signin';
 import * as R from 'ramda';
 import {Alert} from 'react-native';
 import {GOOGLE_ID} from '../../../../cred';
-import {
-  errorBuilderMessage,
-  registerCallbackEndpoints,
-} from '../../../api/registerCallbackEndpoints';
+import {errorBuilderMessage} from '../../../api/registerCallbackEndpoints';
 import {RootState} from '../../../api/store';
 import REDUCER_PATH from '../../../config/reducer';
-import {isCheckElement} from '../../../helper';
-import {registerApi} from './index';
 import {iGmailToken} from './type';
+import {registerApi} from '.';
 
 export const selectorUserProfile = (store: RootState) => {
   const [email, password, agreements, name, image, passwordRepeat] = R.pipe(
@@ -38,70 +34,6 @@ export const selectorAuthUserProfile = (store: RootState) => {
 };
 
 export const FUNCTION = {
-  signUpQuery: {
-    async queryFn(_args, queryApi) {
-      const [data, password, agreements] = selectorUserProfile(
-        queryApi.getState(),
-      );
-
-      const signUp = registerApi.endpoints.signUp;
-      if (!agreements) {
-        return errorBuilderMessage({
-          args: {data, password, agreements},
-          extra: {
-            data: {error: false, value: ''},
-            password: {error: false, value: ''},
-            agreements: {error: true, value: ''},
-          },
-        });
-      }
-
-      const {email} = isCheckElement(data);
-      const responce = await registerCallbackEndpoints({
-        endpoints: signUp,
-        args: {
-          phone: data,
-          email: data,
-          type: email ? 'EMAIL' : 'PHONE',
-          password: password.trim(),
-        },
-        dispatch: queryApi.dispatch,
-      });
-      return responce;
-    },
-  },
-  loginQuery: {
-    async queryFn(_args, queryApi) {
-      const [data, password, agreements] = selectorUserProfile(
-        queryApi.getState(),
-      );
-
-      const signUp = registerApi.endpoints.login;
-      if (!agreements) {
-        return errorBuilderMessage({
-          args: {data, password, agreements},
-          extra: {
-            data: {error: false, value: ''},
-            password: {error: false, value: ''},
-            agreements: {error: true, value: ''},
-          },
-        });
-      }
-
-      const {email} = isCheckElement(data);
-      const responce = await registerCallbackEndpoints({
-        endpoints: signUp,
-        args: {
-          phone: data,
-          email: data,
-          type: email ? 'EMAIL' : 'PHONE',
-          password: password.trim(),
-        },
-        dispatch: queryApi.dispatch,
-      });
-      return responce;
-    },
-  },
   handleSignApple: {
     async queryFn(_args) {
       const appleAuthRequestResponse = await appleAuth.performRequest({
@@ -162,6 +94,7 @@ export const FUNCTION = {
           try {
             auth().onAuthStateChanged(() => {
               const responce = {data: {tokens, userProfile}};
+              console.log(JSON.stringify(responce));
               res(responce);
             });
           } catch (e) {
@@ -210,7 +143,7 @@ export const FUNCTION = {
       }
     },
   },
-} as Record<iStack, any>;
+} as unknown as Record<iStack, any>;
 
 type iStack =
   | 'loginQuery'

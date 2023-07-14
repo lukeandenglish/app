@@ -32,6 +32,7 @@ export const registerApi = createApi({
     resetPassword: builder.query<iCurrentUserId, any>(
       REGISTER_ENDPOINTS.resetPassword,
     ),
+ 
     handleSignApple: builder.query<iSignUpEmail, any>(FUNCTION.handleSignApple),
     loginQuery: builder.query<iSignUpEmail, any>(FUNCTION.loginQuery),
     handleSignGoogle: builder.query(FUNCTION.handleSignGoogle),
