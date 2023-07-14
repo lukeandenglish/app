@@ -25,6 +25,8 @@ export const MyImage = props => {
   const navigation = useNavigation();
   const ref = React.useRef<BottomSheet | null>(null);
 
+  console.log(props);
+
   return (
     <View style={Styles.flex1}>
       <View
@@ -120,7 +122,13 @@ export const MyImage = props => {
       </Inset>
       <Portal name="UpdateCardWord">
         <BottomSheetCustomComponent ref={ref} mode="fullscreenWithout">
-          <CreateCard onClose={() => ref.current?.close()} />
+          <CreateCard
+            stackId={props?.stackId}
+            onClose={() => {
+              props.onRefetch();
+              ref.current?.close();
+            }}
+          />
         </BottomSheetCustomComponent>
       </Portal>
     </View>

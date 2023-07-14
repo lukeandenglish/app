@@ -6,7 +6,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {Container} from '../../../styleApp/UI/Container';
 import {Units} from '../../../styleApp/Units';
 import colors from '../../../styleApp/colors';
-import {useGetCurrentStack} from './hooks';
+import {useGetCurrentStack} from '../../../hooks/useGetCurrentStack';
 import {renderItem} from './renderItem';
 import * as R from 'ramda';
 
