@@ -1,5 +1,4 @@
 import {ENPOINTS} from '../../../api/endpoints/register';
-import * as R from 'ramda';
 
 export const REGISTER_ENDPOINTS = {
   createNewStack: {
@@ -14,11 +13,31 @@ export const REGISTER_ENDPOINTS = {
       },
     }),
   },
+  editNewStack: {
+    query: ({title, color, fileId, description, stackId}) => ({
+      url: ENPOINTS.STACK.UPDATE.ROUTE,
+      method: ENPOINTS.STACK.UPDATE.METHOD,
+      body: {
+        id: stackId,
+        title: [title ?? ''].join().trim(),
+        color,
+        fileId,
+        description: [description ?? ''].join('').trim(),
+      },
+    }),
+  },
   putNewWordStack: {
     query: ({stackId, title, translatedText, cardId}) => ({
       url: ENPOINTS.CARD.UPDATE.ROUTE,
       method: ENPOINTS.CARD.UPDATE.METHOD,
       body: {stackId, title, translatedText, cardId},
+    }),
+  },
+  setLevelStart: {
+    query: ({level}) => ({
+      url: ENPOINTS.USER.LEVEL.ROUTE,
+      method: ENPOINTS.USER.LEVEL.METHOD,
+      body: {level},
     }),
   },
   deleteNewWordStack: {
@@ -90,12 +109,12 @@ export const REGISTER_ENDPOINTS = {
   listLuke: {
     query: () => ({
       url: [
-        ENPOINTS.USER.STACK_FOVORITE.ROUTE,
+        ENPOINTS.STACK.LUKE_SEARCH.ROUTE,
         '?',
         'limit=30&',
         'offset=0',
       ].join(''),
-      method: ENPOINTS.USER.STACK_FOVORITE.METHOD,
+      method: ENPOINTS.STACK.LUKE_SEARCH.METHOD,
       transformResponse: response => {
         return response;
       },
@@ -144,6 +163,8 @@ type iStack =
   | 'listVideo'
   | 'translateText'
   | 'listLuke'
+  | 'setLevelStart'
   | 'listCard'
   | 'createNewStack'
-  | 'currentStack';
+  | 'currentStack'
+  | 'editNewStack';

@@ -1,17 +1,15 @@
 import {createAction, createReducer} from '@reduxjs/toolkit';
-import {registerApi} from '../api/registerApi';
-import {MODERATE_STYLE} from '../extraReducer/helper';
+import {IUserProfile} from '../api/registerApi/type';
 import {apiResponceGauder} from './apiResponceGauder';
-import {IUserProfile, iGmailToken} from '../api/registerApi/type';
-import {deckCard} from '../api/deckCard';
-import * as R from 'ramda';
 
 export const actionChangeUserEmail = createAction('actionChangeUserEmail');
 export const actionChangeUserName = createAction('actionChangeUserName');
+export const actionChangeUserSurName = createAction('actionChangeUserSurName');
 export const actionChangeUserPhone = createAction('actionChangeUserPhone');
 
 export const actionChangeEmail = createAction('changeEmail');
 export const actionChangeName = createAction('changeName');
+
 export const actionChangePassword = createAction('changePassword');
 export const actionChangePasswordRepeat = createAction('changePasswordRepeat');
 export const actionChangeReset = createAction('changeReset');
@@ -32,118 +30,29 @@ const initialState = {
 export const reducerBranch = createReducer(initialState, (builder: any) => {
   apiResponceGauder(
     builder
-      .addCase(
-        actionChangeEmail,
-        (state: IUserProfile, action: {payload: IUserProfile['email']}) => {
-          state.email = action.payload;
-          return state;
-        },
-      )
-      .addCase(
-        actionChangeUserEmail,
-        (state: IUserProfile, action: {payload: IUserProfile['email']}) => {
-          return R.assocPath(
-            ['userProfile', 'user', 'email'],
-            action.payload,
-          )(state);
-        },
-      )
-      .addCase(
-        actionChangeUserName,
-        (state: IUserProfile, action: {payload: IUserProfile['email']}) => {
-          return R.assocPath(
-            ['userProfile', 'user', 'username'],
-            action.payload,
-          )(state);
-        },
-      )
-      .addCase(
-        actionChangeUserPhone,
-        (state: IUserProfile, action: {payload: IUserProfile['email']}) => {
-          return R.assocPath(
-            ['userProfile', 'user', 'phone'],
-            action.payload,
-          )(state);
-        },
-      )
       .addCase(actionSignOut, () => {
         return initialState;
       })
-      .addCase(
-        actionChangeImage,
-        (state: IUserProfile, action: {payload: IUserProfile['image']}) => {
-          state.image = action.payload;
-          return state;
-        },
-      )
-      .addCase(
-        actionChangePassword,
-        (state: IUserProfile, action: {payload: IUserProfile['password']}) => {
-          state.password = action.payload;
-          return state;
-        },
-      )
-      .addCase(
-        actionChangePasswordRepeat,
-        (
-          state: IUserProfile,
-          action: {payload: IUserProfile['passwordRepeat']},
-        ) => {
-          state.passwordRepeat = action.payload;
-          return state;
-        },
-      )
-
-      .addCase(
-        actionChangeAgreements,
-        (state: IUserProfile, action: {payload?: boolean}) => {
-          state.agreements = action?.payload ?? !state?.agreements;
-          return state;
-        },
-      )
-
-      .addCase(
-        actionChangeApperance,
-        (state: IUserProfile, action: {payload: IUserProfile['apperance']}) => {
-          state.apperance = action.payload;
-          return state;
-        },
-      )
-      .addCase(
-        actionChangeName,
-        (state: IUserProfile, action: {payload: IUserProfile['name']}) => {
-          state.name = action.payload;
-          return state;
-        },
-      )
-      .addCase(actionChangeReset, (state: IUserProfile) => {
-        state.email = initialState.email;
-        state.password = initialState.password;
-        state.agreements = initialState.agreements;
-        state.name = initialState.name;
+      .addCase(actionChangeImage, (state, action: {payload}) => {
+        state.image = action.payload;
         return state;
       })
-      .addMatcher(
-        registerApi.endpoints.handleSignGoogle.matchFulfilled,
-        (
-          state,
-          responce: {payload: {tokens: iGmailToken; userProfile: any}},
-        ) => {
-          const data = responce.payload.tokens as iGmailToken;
-          const userProfile = responce.payload.userProfile as iGmailToken;
-          return MODERATE_STYLE(
-            MODERATE_STYLE(state).DIS_LOADING(),
-          ).GMAIL_LOGIN(data, userProfile);
-        },
-      )
-      .addMatcher(
-        deckCard.endpoints.myProfile.matchFulfilled,
-        (state, responce) => {
-          return MODERATE_STYLE(MODERATE_STYLE(state).DIS_LOADING()).ME_PROFILE(
-            responce,
-          );
-        },
-      ),
+      .addCase(actionChangeUserEmail, (state, action: {payload}) => {
+        state.email = action.payload;
+        return state;
+      })
+      .addCase(actionChangeUserPhone, (state, action: {payload}) => {
+        state.phone = action.payload;
+        return state;
+      })
+      .addCase(actionChangeUserName, (state, action: {payload}) => {
+        state.name = action.payload;
+        return state;
+      })
+      .addCase(actionChangeUserSurName, (state, action: {payload}) => {
+        state.surname = action.payload;
+        return state;
+      }),
   );
 });
 
