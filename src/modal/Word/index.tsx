@@ -12,14 +12,14 @@ import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
 import {closeSvg} from '../../assets/close';
+import {iHandleWordUpdate} from '../../components/HomeScreen/UserCard/Section/SelectionCode';
+import {Layout} from '../../styleApp/Layout';
 import {Inset, Queue, Stack} from '../../styleApp/Spacing';
 import {FontFamily, Styles, Typography} from '../../styleApp/Typografy';
 import {Button} from '../../styleApp/UI/Button';
 import {Units} from '../../styleApp/Units';
 import colors, {cardColor} from '../../styleApp/colors';
 import {useHookStateUpdate} from './useHookStateUpdate';
-import {Layout} from '../../styleApp/Layout';
-import {iHandleWordUpdate} from '../../components/HomeScreen/UserCard/Section/SelectionCode';
 
 export const HeaderModal = ({title, onClose, onBack}) => {
   return (
@@ -77,12 +77,30 @@ export const ModalButton = ({
 
 export const ModalInput = ({inputName}) => {
   return (
-    <View style={styles.btw}>
-      <TextInput
-        {...inputName}
-        style={[Typography.text30, FontFamily.wermut]}
-      />
-      <Stack size="s16" />
+    <View>
+      {[inputName?.placeholderName ?? ''].join('').length !== 0 && (
+        <>
+          <Text
+            numberOfLines={1}
+            style={[Typography.text12, FontFamily['400']]}>
+            {inputName.placeholderName}
+          </Text>
+          <Stack size="s4" />
+        </>
+      )}
+      <View style={styles.btw}>
+        <TextInput
+          {...inputName}
+          numberOfLines={1}
+          style={[Typography.text30, FontFamily.wermut]}
+        />
+        <Stack size="s16" />
+      </View>
+      {[inputName?.errorMsg ?? ''].join('')?.length !== 0 ? (
+        <Text numberOfLines={1}>{inputName.errorMsg}</Text>
+      ) : (
+        <View />
+      )}
     </View>
   );
 };

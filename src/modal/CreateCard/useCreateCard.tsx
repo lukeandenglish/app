@@ -5,7 +5,7 @@ import {registerCallbackEndpoints} from '../../api/registerCallbackEndpoints';
 import {homeApi} from '../../redux/api/homeCard';
 import {cardColor} from '../../styleApp/colors';
 
-export const useCreateCard = () => {
+export const useCreateCard = ({stackId}: {stackId: string}) => {
   const [next, setNext] = React.useState(false);
   const [listImage, setListImage] = React.useState({});
   const [title, setTitleSelect] = React.useState('');
@@ -14,9 +14,24 @@ export const useCreateCard = () => {
 
   const dispatch = useDispatch();
 
+  React.useEffect(() => {
+    if (stackId) {
+      registerCallbackEndpoints({
+        endpoints: homeApi.endpoints.currentStack,
+        dispatch,
+        args: {stackId},
+      })
+        .then(({data}) => {
+          setTitleSelect(data?.title);
+          setColor(data?.color);
+        })
+        .catch(e => console.log(e));
+    }
+  }, []);
+
   const myInput = {
     selectInput: {
-      placeholder: t`Новый стэк`,
+      placeholder: stackId ? t`Изменить стек` : t`Новый стэк`,
       value: title,
       multiline: true,
       numberOfLines: 10,

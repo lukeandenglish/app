@@ -17,7 +17,7 @@ import {FinishScreen} from './FinishScreen';
 import {useCreateCard} from './useCreateCard';
 import React from 'react';
 
-export const CreateCard = ({onClose}) => {
+export const CreateCard = ({onClose, stackId}) => {
   const insets = useSafeAreaInsets();
   const dispatch = useDispatch();
 
@@ -32,13 +32,17 @@ export const CreateCard = ({onClose}) => {
     title,
     listImage,
     handleInitialState,
-  } = useCreateCard();
+  } = useCreateCard({stackId});
 
   const handleCreateCard = async () => {
+    const endpoints = stackId
+      ? homeApi.endpoints.editNewStack
+      : homeApi.endpoints.createNewStack;
+
     await registerCallbackEndpoints({
-      endpoints: homeApi.endpoints.createNewStack,
+      endpoints,
       dispatch,
-      args: {title, fileId: R.path(['id'])(photo), color: color},
+      args: {stackId, title, fileId: R.path(['id'])(photo), color: color},
     }).then(data => {
       onClose(data?.data?.id);
       handleInitialState();
@@ -74,7 +78,7 @@ export const CreateCard = ({onClose}) => {
       <BottomSheetFlatList
         ListHeaderComponent={() => (
           <HeaderModal
-            title={t`Название`}
+            title={t`Выбрать`}
             onClose={onClose}
             onBack={() => setNext(false)}
           />

@@ -7,6 +7,7 @@ UNAUTH:
     Register: Register
     Login: Login
     ForgotPassword: ForgotPassword
+    Verification: Verification
 TAB:
     Home: Home
     Create: Create
@@ -28,6 +29,7 @@ export default yaml.parse(CTX) as {
     Register: string;
     Login: string;
     ForgotPassword: string;
+    Verification: string;
   };
   TAB: {
     Home: string;

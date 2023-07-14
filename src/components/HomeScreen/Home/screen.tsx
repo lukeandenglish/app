@@ -62,6 +62,7 @@ const App = () => {
               });
             }
           }}
+          stackId={undefined}
         />
       </BottomSheetCustomComponent>
     </Container>

@@ -5,63 +5,37 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
 import {apperance, lang, reminder} from '../../../assets/svg/apperance';
-import next from '../../../assets/svg/next';
+import next, {checkboxSvg} from '../../../assets/svg/next';
 import {BlockHeader} from '../../../block/profile/BlockHeader';
-import {Inset, Queue} from '../../../styleApp/Spacing';
+import {Inset, Stack} from '../../../styleApp/Spacing';
+import {FontFamily, Styles, Typography} from '../../../styleApp/Typografy';
 import {LabelText} from '../../../styleApp/UI/LabelText';
-import colors from '../../../styleApp/colors';
-import {useFocusEffect, useNavigation} from '@react-navigation/native';
-import ROUTER_PATH from '../../../config/page';
 import {isCalcSize} from '../../../styleApp/Units';
-import {Styles} from '../../../styleApp/Typografy';
-import {deckCard} from '../../../redux/api/deckCard';
-import {registerCallbackEndpoints} from '../../../api/registerCallbackEndpoints';
-import {useDispatch} from 'react-redux';
+import colors from '../../../styleApp/colors';
+import {GroupPlayComponent} from './GroupPlayComponent';
 
 export default () => {
   const insets = useSafeAreaInsets();
-  const navigation = useNavigation();
-  const dispatch = useDispatch();
-
-  useFocusEffect(
-    React.useCallback(() => {
-      registerCallbackEndpoints({
-        endpoints: deckCard.endpoints.myProfile,
-        args: {},
-        dispatch,
-      });
-    }, []),
-  );
 
   const MAINER = [
     {
-      title: t`Внешний вид`,
-      value: null,
-      onPress: () => navigation.navigate(ROUTER_PATH.AUTH.PROFILE_APPERANCE),
+      title: t`Напоминания`,
+      value: t`Мы будем отправлять вам пуши каждые 5 минут`,
+      onPress: () => null,
       svg: apperance,
     },
-    {title: t`Language`, value: null, onPress: () => null, svg: lang},
     {
-      title: t`Reminders`,
-      value: t`Enable notifications to receive reminders to study cards`,
+      title: t`Соглашение о конфиденциальности`,
+      value: null,
+      onPress: () => null,
+      svg: lang,
+    },
+    {
+      title: t`Пользовательское соглашение`,
+      value: null,
       svg: reminder,
       onPress: () => null,
       noBottom: true,
-    },
-  ];
-  const SECONDARY = [
-    {
-      title: t`Appearance`,
-      value: null,
-      onPress: () => navigation.navigate(ROUTER_PATH.AUTH.PROFILE_APPERANCE),
-      svg: apperance,
-    },
-    {
-      title: t`Language`,
-      value: null,
-      onPress: () => null,
-      noBottom: true,
-      svg: lang,
     },
   ];
 
@@ -76,10 +50,8 @@ export default () => {
         },
       ]}>
       <BlockHeader small={true} />
-      <Inset horizontal="s16" top="s24">
-        <Inset vertical="s16" layout={StyleSheet.flatten(Styles.flex1)}>
-          <LabelText title={t`Основные`} mode="title" />
-        </Inset>
+      <GroupPlayComponent />
+      <Inset horizontal="s20">
         {MAINER.map((item, index) => (
           <View key={[index, 'first'].join('_')}>
             <Inset
@@ -91,15 +63,26 @@ export default () => {
                 ]),
               )}>
               <View style={styles.row}>
-                <SvgXml xml={item.svg} />
-                <Queue size="s8" />
-                <View style={Styles.flex1}>
-                  <LabelText mode="desc" title={item.title} />
+                <View style={[Styles.flex1, {width: isCalcSize(231)}]}>
+                  <LabelText
+                    mode="desc"
+                    title={item.title}
+                    style={Object.assign([
+                      FontFamily['500'],
+                      {color: colors.lightInk},
+                      Typography.text14,
+                    ])}
+                  />
+                  <Stack size={'s6'} />
                   {item.value && (
                     <LabelText
                       mode="notify"
                       title={item.value}
-                      style={{width: '90%'}}
+                      style={Object.assign([
+                        {color: colors.lightInk},
+                        Typography.text14,
+                        FontFamily['400'],
+                      ])}
                     />
                   )}
                 </View>
@@ -107,38 +90,11 @@ export default () => {
               <TouchableOpacity
                 onPress={item.onPress}
                 style={styles.borderIcon}>
-                <SvgXml xml={next} />
-              </TouchableOpacity>
-            </Inset>
-          </View>
-        ))}
-      </Inset>
-      <Inset horizontal="s16" top="s24">
-        <Inset vertical="s16" layout={StyleSheet.flatten(Styles.flex1)}>
-          <LabelText title={t`Additional`} mode="title" />
-        </Inset>
-        {SECONDARY.map((item, index) => (
-          <View key={[index, 'first'].join('_')}>
-            <Inset
-              vertical="s16"
-              layout={StyleSheet.flatten(
-                Object.assign([
-                  styles.itemBlock,
-                  item.noBottom && {borderBottomWidth: 0},
-                ]),
-              )}>
-              <View style={styles.row}>
-                <SvgXml xml={item.svg} />
-                <Queue size="s8" />
-                <View style={Styles.flex1}>
-                  <LabelText mode="desc" title={item.title} />
-                  {item.value && <LabelText mode="notify" title={item.value} />}
-                </View>
-              </View>
-              <TouchableOpacity
-                onPress={item.onPress}
-                style={styles.borderIcon}>
-                <SvgXml xml={next} />
+                {index === 0 ? (
+                  <SvgXml xml={checkboxSvg} />
+                ) : (
+                  <SvgXml xml={next} />
+                )}
               </TouchableOpacity>
             </Inset>
           </View>
@@ -150,9 +106,9 @@ export default () => {
 
 export const styles = StyleSheet.create({
   borderIcon: {
-    width: isCalcSize(20),
-    height: isCalcSize(20),
-    alignItems: 'center',
+    height: isCalcSize(30),
+    minWidth: isCalcSize(30),
+    alignItems: 'flex-end',
     justifyContent: 'center',
   },
   row: {
@@ -168,7 +124,7 @@ export const styles = StyleSheet.create({
     position: 'relative',
     width: '100%',
     borderBottomWidth: 1,
-    borderColor: '#F0F0F0',
+    borderColor: colors.dot,
   },
   scrolView: {
     flexGrow: 1,

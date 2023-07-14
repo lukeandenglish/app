@@ -1,169 +1,145 @@
-/* eslint-disable react-native/no-inline-styles */
-import {useNavigation} from '@react-navigation/native';
-import * as R from 'ramda';
+import {t} from '@lingui/macro';
 import * as React from 'react';
-import {ScrollView, StyleSheet, TextInput, View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Text, View, StyleSheet} from 'react-native';
+import {ScrollView} from 'react-native-gesture-handler';
 import {KeyboardSpacer} from 'react-native-keyboard-spacer-fixed';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {SvgXml} from 'react-native-svg';
-import {closeSvg} from '../../assets/close';
-import {useButtonRegister} from '../../hooks/useButtonRegister';
-import {useHookUserProfile} from '../../hooks/useHookUserProfile';
-import {useIsVisibleKeyboard} from '../../hooks/useIsVisibleKeyboard';
-import {Inset, Stack} from '../../styleApp/Spacing';
-import {Styles} from '../../styleApp/Typografy';
-import {AnimateIInput} from '../../styleApp/UI/AnimatedUIInput';
-import {Button} from '../../styleApp/UI/Button';
-import {Border} from '../../styleApp/Units';
+import {useDispatch} from 'react-redux';
+import {applehomeicon, googlehomeicon, nexthomeicon} from '../../assets/close';
+import {ModalInput} from '../../modal/Word';
+import {registerApi} from '../../redux/api/registerApi';
+import {Layout} from '../../styleApp/Layout';
+import {Queue, Stack} from '../../styleApp/Spacing';
+import {FontFamily, Typography} from '../../styleApp/Typografy';
+import {Units, isCalcSize} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
-import {BlockSelect} from './comp/BlockSelect';
-import Login from './comp/Login';
-import Register from './comp/Register';
-import {
-  placeHolderNameLogin,
-  placeHolderNameRegister,
-} from './placeHolderNameRegister';
+import {TouchableOpacity} from '@gorhom/bottom-sheet';
+import {useRegisterAccount} from '../../hooks/useRegisterAccount';
 
 export const ScrollContext = React.createContext(null);
 
-const LogInOrRegisterScreen = ({disabled = false}: {disabled?: boolean}) => {
-  const {BtnProps, isRegister} = useButtonRegister();
-  const {isKeyboardVisible} = useIsVisibleKeyboard();
-  const [input, action, BtnCreateUser] = useHookUserProfile();
+const LogInOrRegisterScreen = () => {
   const insets = useSafeAreaInsets();
-  const scrollRef = React.useRef<ScrollView | null>(null);
-  const emailRef = React.useRef<TextInput | null>(null);
-  const navigation = useNavigation();
+  const ref = React.useRef(null);
+  const {inputValue, buttonDisabled, inputPassword, handleLoginAccount} =
+    useRegisterAccount();
 
-  const moveToButton = () => {
+  const handleSignApple = registerApi.endpoints.handleSignApple as any;
+  const handleSignGoogle = registerApi.endpoints.handleSignGoogle as any;
+  const dispatch = useDispatch();
+
+  const onFocus = () => {
     setTimeout(() => {
-      scrollRef.current?.scrollToEnd();
-    }, 350);
+      ref?.current?.scrollToEnd({animated: true});
+    }, 500);
   };
 
   return (
-    <ScrollContext.Provider value={{onScroll: moveToButton}}>
-      <View style={[styles.wrapper]}>
-        <View
-          style={[
-            styles.blc,
-            {
-              paddingBottom: insets.bottom,
-            },
-          ]}>
-          <Inset
-            horizontal="s16"
-            top="s16"
-            layout={StyleSheet.flatten({width: 70})}>
+    <ScrollView
+      ref={ref}
+      bounces={false}
+      contentContainerStyle={[
+        styles.growblock,
+        {paddingTop: insets.top, paddingBottom: insets.bottom},
+      ]}>
+      <Stack size="s12" />
+      <View style={styles.flex}>
+        <Stack size="s12" />
+        <View style={styles.cen}>
+          <View style={styles.ima} />
+        </View>
+        <Stack size="s36" />
+        <Text style={[Typography.text38, FontFamily[400], {letterSpacing: 0}]}>
+          {t`Начнём учить!`}
+        </Text>
+        <Stack size="s24" />
+        <Text
+          style={[Typography.text14, FontFamily[400], {letterSpacing: 0.1}]}>
+          {t`Создайте аккаунт или войдите, если вы уже зарегистрированы`}
+        </Text>
+        <Stack size="s48" />
+        <ModalInput inputName={{...inputValue, onFocus}} />
+        <Stack size="s24" />
+        <ModalInput inputName={{...inputPassword, onFocus}} />
+        <Stack size="s24" />
+        <View style={{alignItems: 'flex-end'}}>
+          <View style={buttonDisabled && {opacity: 0.5}}>
             <TouchableOpacity
-              onPress={navigation.goBack}
-              style={[
-                Styles.iconClose,
-                {alignItems: 'center', justifyContent: 'center'},
-              ]}>
-              <SvgXml xml={closeSvg} width="30" height="30" />
+              disabled={buttonDisabled}
+              onPress={handleLoginAccount}
+              style={styles.nexicon}>
+              <SvgXml xml={nexthomeicon} />
             </TouchableOpacity>
-          </Inset>
-          <ScrollView
-            bounces={false}
-            ref={scrollRef}
-            contentContainerStyle={styles.cnt}>
-            <View>
-              <Inset horizontal="s16" layout={styles.insctx}>
-                <BlockSelect disabled={disabled} />
-                <Stack size="s16" />
-                <View style={styles.line} />
-                <Stack size="s32" />
-                <View
-                  style={{
-                    position: 'relative',
-                  }}
-                />
-                <View onTouchStart={moveToButton}>
-                  <AnimateIInput
-                    ref={emailRef}
-                    testID="email"
-                    keyboardType="email-address"
-                    onScrollRef={moveToButton}
-                    {...input.email}
-                    placeholderName={R.cond([
-                      [
-                        R.equals(true),
-                        R.always(placeHolderNameRegister(input)),
-                      ],
-                      [R.equals(false), R.always(placeHolderNameLogin(input))],
-                    ])(isRegister)}
-                  />
-                  {!isRegister && <Login />}
-                  {isRegister && <Register />}
-                </View>
-              </Inset>
-            </View>
-          </ScrollView>
-          <KeyboardSpacer />
-          <Inset
-            horizontal="s16"
-            bottom="s6"
-            layout={StyleSheet.flatten(
-              Object.assign([
-                styles.btnMode,
-                isKeyboardVisible && {display: 'none'},
-              ]),
-            )}>
-            {isRegister && (
-              <>
-                <Button
-                  {...BtnCreateUser}
-                  styleText={styles.btnclr}
-                  style={Object.assign([
-                    {
-                      backgroundColor: colors.actionColor,
-                    },
-                  ])}
-                />
-                <Stack size="s10" />
-              </>
-            )}
-            <Button
-              {...BtnProps}
-              styleText={styles.btnclr}
-              style={Object.assign([
-                {
-                  backgroundColor: colors.actionColor,
-                },
-                isKeyboardVisible && {display: 'none'},
-              ])}
-            />
-          </Inset>
+          </View>
         </View>
       </View>
-    </ScrollContext.Provider>
+      <KeyboardSpacer />
+      <View>
+        <Text
+          style={[Typography.text14, {textAlign: 'center'}, FontFamily[400]]}>
+          {t`Или войдите через`}
+        </Text>
+        <Stack size="s16" />
+        <View style={styles.blockitem}>
+          <View
+            style={styles.soicon}
+            onTouchStart={() => {
+              dispatch(handleSignApple.initiate());
+            }}>
+            <SvgXml xml={applehomeicon} />
+          </View>
+          <Queue size="s16" />
+          <View
+            onTouchStart={() => {
+              dispatch(handleSignGoogle.initiate());
+            }}
+            style={styles.soicon}>
+            <SvgXml xml={googlehomeicon} />
+          </View>
+        </View>
+      </View>
+      <Stack size="s50" />
+    </ScrollView>
   );
 };
 
+export default LogInOrRegisterScreen;
+
 const styles = StyleSheet.create({
-  btnMode: {bottom: 0},
-  btnclr: {color: colors.lightPrimary},
-  insctx: {
-    flex: 1,
+  blockitem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  line: {
-    height: 1,
-    borderBottomWidth: 1,
-    borderColor: colors.stroke,
+  nexicon: {
+    width: Units.s48,
+    height: Units.s48,
+    borderRadius: Units.s50,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: colors.lightInk,
   },
-  cnt: {flexGrow: 1, paddingBottom: 100},
-  wrapper: {
-    flex: 1,
-    backgroundColor: colors.transparent,
+  ima: {
+    borderWidth: Units.s1,
+    height: isCalcSize(224),
+    width: isCalcSize(193),
   },
-  blc: {
-    flex: 1,
-    borderTopRightRadius: Border.br_base,
-    backgroundColor: colors.lightPrimary,
-    borderTopLeftRadius: Border.br_base,
+  cen: {justifyContent: 'center', alignItems: 'center'},
+  flex: {flex: 1},
+  growblock: {
+    backgroundColor: colors.lemon,
+    flexGrow: 1,
+    paddingHorizontal: Units.s20,
+    borderWidth: Units.s1,
+    minHeight: Layout.window.height,
+  },
+  soicon: {
+    width: Units.s64,
+    height: Units.s64,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: Units.s1,
+    borderRadius: Units.s50,
   },
 });
-
-export default LogInOrRegisterScreen;

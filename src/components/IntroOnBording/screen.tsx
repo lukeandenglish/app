@@ -10,10 +10,13 @@ import {Layout} from '../../styleApp/Layout';
 import {Queue, Stack} from '../../styleApp/Spacing';
 import {Border, FontSize, Units, isCalcSize} from '../../styleApp/Units';
 import colors from '../../styleApp/colors';
+import {useNavigation} from '@react-navigation/native';
+import ROUTER_PATH from '../../config/page';
 
 const IntroAndOnboarding = () => {
   const insets = useSafeAreaInsets();
   const [state, setState] = React.useState<number>(0);
+  const navigation = useNavigation();
 
   const TITLE = [
     {
@@ -42,6 +45,7 @@ const IntroAndOnboarding = () => {
 
   const handlePressStart = () => {
     if (state === 4) {
+      navigation.navigate(ROUTER_PATH.UNAUTH.LogInOrRegister);
       return;
     }
     setState(state + 1);

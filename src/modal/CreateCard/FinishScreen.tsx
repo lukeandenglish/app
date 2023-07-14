@@ -72,7 +72,7 @@ export const Card = ({
             </View>
             <TouchableOpacity disabled={!onPress} onPress={onPress}>
               <SvgXml
-                xml={playSvg}
+                xml={playSvg()}
                 width={isCalcSize(36)}
                 height={isCalcSize(36)}
               />
